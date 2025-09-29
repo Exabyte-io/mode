@@ -2,10 +2,10 @@
 . "$(dirname "$0")/_/husky.sh"
 
 SRC_PATTERN="\.y(a?ml)$"
-if git diff --cached --name-only | grep --quiet -E "$SRC_PATTERN"
-then
-  echo "Yaml assets changed. Running build scripts."
-  npm run build:assets
+YAML_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E "$SRC_PATTERN")
+if [ -n "$YAML_FILES" ]; then
+    echo "YAML files detected, running yamllint..."
+    echo "$YAML_FILES" | xargs -r yamllint
 fi
 
 npx lint-staged
