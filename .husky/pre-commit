@@ -4,8 +4,7 @@
 SRC_PATTERN="\.y(a?ml)$"
 if git diff --cached --name-only | grep --quiet -E "$SRC_PATTERN"
 then
-  echo "Yaml assets changed. Running build scripts."
-  npm run build:assets
+  echo "Not building anything -- moved generation to Standata"
 fi
 
 npx lint-staged

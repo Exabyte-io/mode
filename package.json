@@ -6,12 +6,11 @@
         "test": "nyc --reporter=text mocha --recursive --bail --require @babel/register/lib --require tests/setup.js tests",
         "lint": "eslint src tests && prettier --write src tests",
         "lint:fix": "eslint --fix --cache src tests && prettier --write src tests",
-        "build:assets": "node build_entities.js && node build_filter.js",
         "transpile": "babel --out-dir dist src",
         "postinstall": "npm run transpile",
         "prettier": "prettier --check src tests",
         "prepare": "husky install || exit 0",
-        "prepublishOnly": "rm -rf dist; npm run transpile; npm run build:assets"
+        "prepublishOnly": "rm -rf dist; npm run transpile"
     },
     "repository": {
         "type": "git",
