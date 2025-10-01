@@ -37,6 +37,7 @@
         "@babel/preset-react": "7.16.7",
         "@babel/register": "^7.16.0",
         "@babel/runtime-corejs3": "7.16.8",
+        "@mat3ra/standata": "git+https://github.com/Exabyte-io/standata.git#a3e4de121ed5f7cf34b2b2250d7ed52c34db3c5c",
         "ajv": "^8.12.0",
         "js-yaml": "^4.1.0",
         "lodash": "^4.17.21",
