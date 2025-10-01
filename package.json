@@ -18,12 +18,9 @@
     },
     "main": "dist/index.js",
     "files": [
-        "/assets",
         "/dist",
         "/src",
-        ".babelrc",
-        "build_entities.js",
-        "build_filter.js"
+        ".babelrc"
     ],
     "author": "Exabyte Inc.",
     "bugs": {

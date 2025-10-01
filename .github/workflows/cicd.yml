@@ -7,26 +7,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  run-linter:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout this repository
-        uses: actions/checkout@v4
-
-      - name: Checkout actions repository
-        uses: actions/checkout@v4
-        with:
-          repository: Exabyte-io/actions
-          token: ${{ secrets.BOT_GITHUB_TOKEN }}
-          path: actions
-
-      - name: Run Yaml linter
-        uses: ./actions/yaml/lint
-        with:
-          python-version: 3.8
-          targets: ./assets
-
   run-js-tests:
     runs-on: ubuntu-latest
     if: github.repository != 'Exabyte-io/template-definitions'
@@ -73,4 +53,3 @@ jobs:
         with:
           npm-token: ${{ secrets.NPM_TOKEN }}
           github-token: ${{ secrets.BOT_GITHUB_TOKEN }}
-
