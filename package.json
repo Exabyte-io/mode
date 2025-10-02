@@ -37,7 +37,6 @@
         "@babel/preset-react": "7.16.7",
         "@babel/register": "^7.16.0",
         "@babel/runtime-corejs3": "7.16.8",
-        "@mat3ra/standata": "git+https://github.com/Exabyte-io/standata.git#a3e4de121ed5f7cf34b2b2250d7ed52c34db3c5c",
         "ajv": "^8.12.0",
         "js-yaml": "^4.1.0",
         "lodash": "^4.17.21",
@@ -49,6 +48,7 @@
         "@exabyte-io/eslint-config": "^2022.11.17-0",
         "@mat3ra/esse": "2024.4.19-1",
         "@mat3ra/code": "2024.3.25-3",
+        "@mat3ra/standata": "git+https://github.com/Exabyte-io/standata.git#a3e4de121ed5f7cf34b2b2250d7ed52c34db3c5c",
         "chai": "^4.3.4",
         "eslint": "7.32.0",
         "eslint-config-airbnb": "19.0.2",
@@ -68,7 +68,8 @@
     },
     "peerDependencies": {
         "@mat3ra/code": "*",
-        "@mat3ra/esse": "*"
+        "@mat3ra/esse": "*",
+        "@mat3ra/standata": "*"
     },
     "engines": {
         "node": ">=12.0.0"
