@@ -1,4 +1,4 @@
-[![npm version](https://badge.fury.io/js/%40exabyte-io%2Fmode.js.svg)](https://badge.fury.io/js/%40exabyte-io%2Fmode.js)
+[![npm version](https://badge.fury.io/js/%40mat3ra%2Fmode.svg)](https://badge.fury.io/js/%40mat3ra%2Fmode.js)
 [![License: Apache](https://img.shields.io/badge/License-Apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 # mode.js
@@ -11,13 +11,13 @@ MOdel DEfinitions in JS - mode.js - houses model entity definitions for use in t
 For usage within a javascript project:
 
 ```bash
-npm install @exabyte-io/mode.js
+npm install @mat3ra/mode
 ```
 
 For development:
 
 ```bash
-git clone https://github.com/Exabyte-io/mode.js.git
+git clone https://github.com/Exabyte-io/mode.git
 ```
 
 
@@ -47,6 +47,8 @@ npm run test
 ```
 
 #### How to Add New Models and Methods
+
+!NOTE: this section is moved to [@mat3ra/standata](github.com/Exabyte-io/standata).
 
 The list of model and method entities is compiled from Yaml assets located in the `./assets` directory
 using the `build_entities.js` script. The assets processed by this script usually involve custom Yaml
@@ -83,8 +85,6 @@ combinations of those will be avoided.
 
 For more examples, please see the asset files in `./assets` or [code.js](https://github.com/Exabyte-io/code.js)
 for the definition of Yaml types such as `!combine` or `!parameter`.
-
-
 
 MoDe
 ====

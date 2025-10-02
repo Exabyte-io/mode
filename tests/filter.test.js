@@ -5,16 +5,25 @@ import { filterMethodsByModel } from "../src/tree";
 describe("model-method filter", () => {
     const methodConfigs = [
         {
-            path: "/qm/wf/none/smearing/gaussian::/opt/diff/ordern/cg/none::/qm/wf/none/psp/us::/qm/wf/none/pw/none",
             name: "mock method A",
+            units: [
+                { path: "/qm/wf/none/smearing/gaussian" },
+                { path: "/opt/diff/ordern/cg/none" },
+                { path: "/qm/wf/none/psp/us" },
+                { path: "/qm/wf/none/pw/none" },
+            ],
         },
         {
-            path: "/linalg/diag/none/davidson/none::/qm/wf/none/psp/paw::/qm/wf/none/pw/none",
             name: "mock method B",
+            units: [
+                { path: "/linalg/diag/none/davidson/none" },
+                { path: "/qm/wf/none/psp/paw" },
+                { path: "/qm/wf/none/pw/none" },
+            ],
         },
         {
-            path: "/some/unsupported/method/path::/qm/wf/none/pw/none",
             name: "mock method C",
+            units: [{ path: "/some/unsupported/method/path" }, { path: "/qm/wf/none/pw/none" }],
         },
     ];
 
@@ -27,12 +36,7 @@ describe("model-method filter", () => {
             model: modelConfig,
         });
         expect(filteredConfigs).to.have.length(2);
-        expect(filteredConfigs).not.to.have.deep.members([
-            {
-                path: "/some/unsupported/method/path::/qm/wf/none/pw/none",
-                name: "mock method C",
-            },
-        ]);
+        expect(filteredConfigs.map((c) => c.name)).not.to.include("mock method C");
     });
 
     it("should return empty array if no filter assets are available", () => {

@@ -1,37 +1,33 @@
 {
-    "name": "@exabyte-io/mode.js",
+    "name": "@mat3ra/mode",
     "version": "0.0.0",
     "description": "MOdel and method DEfinitions",
     "scripts": {
         "test": "nyc --reporter=text mocha --recursive --bail --require @babel/register/lib --require tests/setup.js tests",
         "lint": "eslint src tests && prettier --write src tests",
         "lint:fix": "eslint --fix --cache src tests && prettier --write src tests",
-        "build:assets": "node build_entities.js && node build_filter.js",
         "transpile": "babel --out-dir dist src",
         "postinstall": "npm run transpile",
         "prettier": "prettier --check src tests",
         "prepare": "husky install || exit 0",
-        "prepublishOnly": "rm -rf dist; npm run transpile; npm run build:assets"
+        "prepublishOnly": "rm -rf dist; npm run transpile"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/Exabyte-io/mode.js.git"
+        "url": "https://github.com/Exabyte-io/mode.git"
     },
     "main": "dist/index.js",
     "files": [
-        "/assets",
         "/dist",
         "/src",
-        ".babelrc",
-        "build_entities.js",
-        "build_filter.js"
+        ".babelrc"
     ],
     "author": "Exabyte Inc.",
     "bugs": {
-        "url": "https://github.com/Exabyte-io/mode.js/issues"
+        "url": "https://github.com/Exabyte-io/mode/issues"
     },
     "license": "Apache-2.0",
-    "homepage": "https://github.com/Exabyte-io/mode.js",
+    "homepage": "https://github.com/Exabyte-io/mode",
     "dependencies": {
         "@babel/cli": "7.16.0",
         "@babel/core": "7.16.0",
@@ -51,6 +47,7 @@
     "devDependencies": {
         "@exabyte-io/eslint-config": "^2022.11.17-0",
         "@mat3ra/esse": "2024.4.19-1",
+        "@mat3ra/standata": "2025.10.2-0",
         "@mat3ra/code": "2024.3.25-3",
         "chai": "^4.3.4",
         "eslint": "7.32.0",
@@ -70,11 +67,12 @@
         "prettier": "^2.7.1"
     },
     "peerDependencies": {
-        "@mat3ra/code": "*",
-        "@mat3ra/esse": "*"
+        "@mat3ra/esse": "*",
+        "@mat3ra/standata": "*",
+        "@mat3ra/code": "*"
     },
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">20.0.0"
     },
     "lint-staged": {
         "*.js": "eslint --cache --fix",
