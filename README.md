@@ -1,14 +1,20 @@
-[![npm version](https://badge.fury.io/js/%40mat3ra%2Fmode.svg)](https://badge.fury.io/js/%40mat3ra%2Fmode.js)
+[![npm version](https://badge.fury.io/js/%40mat3ra%2Fmode.svg)](https://badge.fury.io/js/%40mat3ra%2Fmode)
 [![License: Apache](https://img.shields.io/badge/License-Apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
-# mode.js
+# mode
 
-MOdel DEfinitions in JS - mode.js - houses model entity definitions for use in the Mat3ra platform.
+MOdel DEfinitions package. Houses the definitions for:
+
+- `Method` - See [Method Overview](https://docs.mat3ra.com/methods/overview/) for more details
+- `Model` - See [Model Overview](https://docs.mat3ra.com/models/overview/) for more details
+
+The relevant data parameterizing supported entities is housed in the
+[Standata](https://github.com/Exabyte-io/standata) repository.
 
 
-### Installation
+## Installation
 
-For usage within a javascript project:
+For usage within a JavaScript project:
 
 ```bash
 npm install @mat3ra/mode
@@ -21,7 +27,7 @@ git clone https://github.com/Exabyte-io/mode.git
 ```
 
 
-### Contribution
+## Contributions
 
 This repository is an [open-source](LICENSE.md) work-in-progress and we welcome contributions.
 
@@ -46,9 +52,9 @@ npm run transpile
 npm run test
 ```
 
-#### How to Add New Models and Methods
+### How to Add New Models and Methods
 
-!NOTE: this section is moved to [@mat3ra/standata](github.com/Exabyte-io/standata).
+!NOTE: this capability/section is moved to [@mat3ra/standata](github.com/Exabyte-io/standata).
 
 The list of model and method entities is compiled from Yaml assets located in the `./assets` directory
 using the `build_entities.js` script. The assets processed by this script usually involve custom Yaml
@@ -85,13 +91,3 @@ combinations of those will be avoided.
 
 For more examples, please see the asset files in `./assets` or [code.js](https://github.com/Exabyte-io/code.js)
 for the definition of Yaml types such as `!combine` or `!parameter`.
-
-MoDe
-====
-
-The `MoDe` package is used in conjunction with the `ADe` package to define top-level parameters
-present in Subworkflow units in the `WoDe` package ecosystem. The entities provided by `MoDe` are:
-
-- `Method` - See [Method Overview](https://docs.mat3ra.com/methods/overview/) for more details
-- `Model` - See [Model Overview](https://docs.mat3ra.com/models/overview/) for more details
-
