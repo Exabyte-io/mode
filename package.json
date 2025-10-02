@@ -47,7 +47,7 @@
     "devDependencies": {
         "@exabyte-io/eslint-config": "^2022.11.17-0",
         "@mat3ra/esse": "2024.4.19-1",
-        "@mat3ra/standata": "git+https://github.com/Exabyte-io/standata.git#feature/SOF-7727",
+        "@mat3ra/standata": "2025.10.2-0",
         "@mat3ra/code": "2024.3.25-3",
         "chai": "^4.3.4",
         "eslint": "7.32.0",
