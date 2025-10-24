@@ -1,4 +1,5 @@
-import { allModels } from "./data/model_list";
+import { ModelStandata } from "@mat3ra/standata";
+
 import * as tree from "./tree";
 
 export function safelyGetSlug(slugObj) {
@@ -72,6 +73,7 @@ export class ModelConversionHandler {
             functional = safelyGetSlug(functionalStringOrObject);
         }
         const path = `/pb/qm/dft/ksdft/${subtype}?functional=${functional}`;
+        const allModels = new ModelStandata().getAll();
         return allModels.find((cm) => cm.path === path);
     }
 

@@ -1,4 +1,5 @@
-import { allMethods } from "./data/method_list";
+import { MethodStandata } from "@mat3ra/standata";
+
 import { LocalOrbitalMethodConfig, UnknownMethodConfig } from "./default_methods";
 
 export function safelyGetSlug(slugObj) {
@@ -74,6 +75,7 @@ export class MethodConversionHandler {
             subtype === "any"
                 ? "/qm/wf/none/psp/us::/qm/wf/none/psp/nc::/qm/wf/none/psp/nc-fr::/qm/wf/none/psp/paw::/qm/wf/none/pw/none"
                 : `/qm/wf/none/smearing/gaussian::/linalg/diag/none/davidson/none::/qm/wf/none/psp/${subtype}::/qm/wf/none/pw/none`;
+        const allMethods = new MethodStandata().getAll();
 
         return allMethods.find((catMethod) => {
             return catMethod.path === path;
