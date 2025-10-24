@@ -1,5 +1,3 @@
-import { ModelStandata } from "@mat3ra/standata";
-
 import * as tree from "./tree";
 
 export function safelyGetSlug(slugObj) {
@@ -50,10 +48,10 @@ export class ModelConversionHandler {
         };
     }
 
-    static convertToCategorized(sm) {
+    static convertToCategorized(sm, allModels = []) {
         switch (sm?.type) {
             case "dft":
-                return this.convertDftToCategorized(sm);
+                return this.convertDftToCategorized(sm, allModels);
             case "ml":
                 return this.convertMlToCategorized(sm);
             case "unknown":
@@ -63,7 +61,7 @@ export class ModelConversionHandler {
         }
     }
 
-    static convertDftToCategorized(sm) {
+    static convertDftToCategorized(sm, allModels = []) {
         const { subtype, functional: functionalStringOrObject } = sm;
         const defaultFunctionals = { lda: "pz", gga: "pbe", hybrid: "b3lyp" };
         let functional;
@@ -73,7 +71,6 @@ export class ModelConversionHandler {
             functional = safelyGetSlug(functionalStringOrObject);
         }
         const path = `/pb/qm/dft/ksdft/${subtype}?functional=${functional}`;
-        const allModels = new ModelStandata().getAll();
         return allModels.find((cm) => cm.path === path);
     }
 

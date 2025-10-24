@@ -1,5 +1,4 @@
 import { deepClone } from "@mat3ra/code/dist/js/utils";
-import { ModelMethodFilter } from "@mat3ra/standata";
 import lodash from "lodash";
 import _ from "underscore";
 
@@ -166,10 +165,10 @@ export const getDefaultModelTypeForApplication = (application) => {
  * Filter list of method configs based on model
  * @param {Object[]} methodList - Array of method configs
  * @param {Object} model - Model config for which methods should be filtered
+ * @param {Object} modelMethodFilter - ModelMethodFilter instance from standata
  * @return {Object[]}
  */
-export function filterMethodsByModel({ methodList, model }) {
-    if (!model) return [];
-    const modelMethodFilter = new ModelMethodFilter();
+export function filterMethodsByModel({ methodList, model, modelMethodFilter }) {
+    if (!model || !modelMethodFilter) return [];
     return modelMethodFilter.getCompatibleMethods(model, methodList);
 }
