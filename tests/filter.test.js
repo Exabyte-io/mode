@@ -1,6 +1,5 @@
+import { ModelMethodFilter } from "@mat3ra/standata";
 import { expect } from "chai";
-
-import { filterMethodsByModel } from "../src/tree";
 
 describe("model-method filter", () => {
     const methodConfigs = [
@@ -31,10 +30,8 @@ describe("model-method filter", () => {
         const modelConfig = {
             categories: { tier1: "pb", tier2: "qm", tier3: "dft", type: "ksdft", subtype: "lda" },
         };
-        const filteredConfigs = filterMethodsByModel({
-            methodList: methodConfigs,
-            model: modelConfig,
-        });
+        const modelMethodFilter = new ModelMethodFilter();
+        const filteredConfigs = modelMethodFilter.getCompatibleMethods(modelConfig, methodConfigs);
         expect(filteredConfigs).to.have.length(2);
         expect(filteredConfigs.map((c) => c.name)).not.to.include("mock method C");
     });
@@ -43,18 +40,8 @@ describe("model-method filter", () => {
         const fakeModel = {
             categories: { tier1: "a", tier2: "b", tier3: "c", type: "d", subtype: "e" },
         };
-        const filteredConfigs = filterMethodsByModel({
-            methodList: methodConfigs,
-            model: fakeModel,
-        });
-        expect(filteredConfigs).to.have.length(0);
-    });
-
-    it("should return empty array if no model is given", () => {
-        const filteredConfigs = filterMethodsByModel({
-            methodList: methodConfigs,
-            model: undefined,
-        });
+        const modelMethodFilter = new ModelMethodFilter();
+        const filteredConfigs = modelMethodFilter.getCompatibleMethods(fakeModel, methodConfigs);
         expect(filteredConfigs).to.have.length(0);
     });
 });

@@ -160,15 +160,3 @@ export const getTreeByApplicationNameAndVersion = ({
 export const getDefaultModelTypeForApplication = (application) => {
     return Object.keys(getTreeByApplicationNameAndVersion(application))[0];
 };
-
-/**
- * Filter list of method configs based on model
- * @param {Object[]} methodList - Array of method configs
- * @param {Object} model - Model config for which methods should be filtered
- * @param {Object} modelMethodFilter - ModelMethodFilter instance from standata
- * @return {Object[]}
- */
-export function filterMethodsByModel({ methodList, model, modelMethodFilter }) {
-    if (!model || !modelMethodFilter) return [];
-    return modelMethodFilter.getCompatibleMethods(model, methodList);
-}
