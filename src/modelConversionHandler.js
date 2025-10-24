@@ -1,23 +1,7 @@
-// @ts-nocheck
-import { categorizedModelList, tree } from "@exabyte-io/mode.js/dist";
-import {
-    BaseModel,
-    CategorizedModel,
-    LegacyModelDensityFunctionalTheory,
-    LegacyModelRegression,
-    LegacyModelUnknown,
-    ModelGeneralizedGradientApproximation,
-    ModelHybridFunctional,
-    ModelLocalDensityApproximation,
-    ModelRegression,
-} from "@mat3ra/esse/dist/js//types";
+import { allModels } from "./data/model_list";
+import * as tree from "./tree";
 
-type CategorizedDftModel =
-    | Omit<ModelLocalDensityApproximation, "method">
-    | Omit<ModelGeneralizedGradientApproximation, "method">
-    | Omit<ModelHybridFunctional, "method">;
-
-export function safelyGetSlug(slugObj: { slug: string } | string): string {
+export function safelyGetSlug(slugObj) {
     return typeof slugObj === "string" ? slugObj : slugObj.slug;
 }
 
@@ -26,7 +10,7 @@ export function safelyGetSlug(slugObj: { slug: string } | string): string {
  * and the categorized model data structure (tier1, tier2, ...).
  */
 export class ModelConversionHandler {
-    static convertToSimple(cm?: Omit<CategorizedModel, "method">): Omit<BaseModel, "method"> {
+    static convertToSimple(cm) {
         if (!cm) return this.convertUnknownToSimple();
 
         // eslint-disable-next-line default-case
@@ -40,9 +24,7 @@ export class ModelConversionHandler {
         }
     }
 
-    static convertDftToSimple(
-        cm: CategorizedDftModel,
-    ): Omit<LegacyModelDensityFunctionalTheory, "method"> {
+    static convertDftToSimple(cm) {
         if (!cm.categories?.subtype) return this.convertUnknownToSimple();
         const { subtype } = cm.categories;
         const functional = cm.parameters?.functional;
@@ -53,24 +35,24 @@ export class ModelConversionHandler {
         };
     }
 
-    static convertMlToSimple(): Omit<LegacyModelRegression, "method"> {
+    static convertMlToSimple() {
         return {
             type: "ml",
             subtype: "re",
         };
     }
 
-    static convertUnknownToSimple(): Omit<LegacyModelUnknown, "method"> {
+    static convertUnknownToSimple() {
         return {
             type: "unknown",
             subtype: "unknown",
         };
     }
 
-    static convertToCategorized(sm?: BaseModel): Omit<CategorizedModel, "method"> | undefined {
+    static convertToCategorized(sm) {
         switch (sm?.type) {
             case "dft":
-                return this.convertDftToCategorized(sm as LegacyModelDensityFunctionalTheory);
+                return this.convertDftToCategorized(sm);
             case "ml":
                 return this.convertMlToCategorized(sm);
             case "unknown":
@@ -80,22 +62,20 @@ export class ModelConversionHandler {
         }
     }
 
-    static convertDftToCategorized(sm: LegacyModelDensityFunctionalTheory): CategorizedDftModel {
+    static convertDftToCategorized(sm) {
         const { subtype, functional: functionalStringOrObject } = sm;
         const defaultFunctionals = { lda: "pz", gga: "pbe", hybrid: "b3lyp" };
-        let functional: string;
+        let functional;
         if (!functionalStringOrObject) {
             functional = defaultFunctionals[subtype];
         } else {
             functional = safelyGetSlug(functionalStringOrObject);
         }
         const path = `/pb/qm/dft/ksdft/${subtype}?functional=${functional}`;
-        return categorizedModelList.find(
-            (cm: Omit<CategorizedModel, "method">) => cm.path === path,
-        ) as CategorizedDftModel;
+        return allModels.find((cm) => cm.path === path);
     }
 
-    static convertMlToCategorized(sm: BaseModel): Omit<ModelRegression, "method"> {
+    static convertMlToCategorized(sm) {
         const subtype = safelyGetSlug(sm.subtype);
         return {
             name: "Regression",
