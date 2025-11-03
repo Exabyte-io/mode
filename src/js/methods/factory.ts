@@ -1,4 +1,5 @@
 import { Method } from "../method";
+import type { MethodConfig } from "../types";
 import { PseudopotentialMethod } from "./pseudopotential";
 
 export class MethodFactory {
@@ -6,7 +7,7 @@ export class MethodFactory {
 
     static PseudopotentialMethod = PseudopotentialMethod;
 
-    static create(config) {
+    static create(config: MethodConfig): Method {
         switch (config.type) {
             case "pseudopotential":
                 return new this.PseudopotentialMethod(config);
@@ -15,3 +16,4 @@ export class MethodFactory {
         }
     }
 }
+

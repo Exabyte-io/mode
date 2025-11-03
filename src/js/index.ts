@@ -8,7 +8,6 @@ import { Model } from "./model";
 import { ModelConversionHandler } from "./modelConversionHandler";
 import { DFTModel } from "./models/dft";
 import { ModelFactory } from "./models/factory";
-// TODO : can replace these with subpackages in exports in package.json
 import * as tree from "./tree";
 
 export {
@@ -24,3 +23,4 @@ export {
     default_models,
     default_methods,
 };
+

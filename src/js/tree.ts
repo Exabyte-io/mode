@@ -2,22 +2,24 @@ import { deepClone } from "@mat3ra/code/dist/js/utils";
 import lodash from "lodash";
 import _ from "underscore";
 
+import type { ApplicationInfo, ModelTree, NamedSlug } from "./types";
+
 // TODO: migrate to use manifest instead
 
 export const METHODS = {
     pseudopotential: "pseudopotential",
     localorbital: "localorbital",
     unknown: "unknown",
-};
+} as const;
 
-const methods = {
+const methods: Record<string, string[]> = {
     [METHODS.pseudopotential]: ["paw", "nc", "nc-fr", "us"],
     // TODO: Add additional basis set options, once user choice of specific (i.e 3-21G vs cc-pVDZ) is implemented.
     [METHODS.localorbital]: ["pople"],
     [METHODS.unknown]: ["unknown"],
 };
 
-export const getPseudopotentialTypesFromTree = () => methods[METHODS.pseudopotential];
+export const getPseudopotentialTypesFromTree = (): string[] => methods[METHODS.pseudopotential];
 
 // DFT-specific
 
@@ -47,16 +49,16 @@ const DFTModelTree = {
     },
 };
 
-export const getDFTFunctionalsFromTree = () => Object.keys(DFTModelTree);
+export const getDFTFunctionalsFromTree = (): string[] => Object.keys(DFTModelTree);
 
-export const getDFTFunctionalsByApproximation = (approximation) => {
-    const branch = DFTModelTree[approximation];
+export const getDFTFunctionalsByApproximation = (approximation: string): string[] | undefined => {
+    const branch = DFTModelTree[approximation as keyof typeof DFTModelTree];
     return branch && branch.functionals;
 };
 
 // GENERAL
 
-export const MODEL_TREE = {
+export const MODEL_TREE: ModelTree = {
     dft: DFTModelTree,
     ml: {
         re: {
@@ -75,7 +77,7 @@ export const MODEL_TREE = {
     },
 };
 
-export const MODEL_NAMES = {
+export const MODEL_NAMES: Record<string, string> = {
     dft: "density functional theory",
     lda: "local density approximation",
     gga: "generalized gradient approximation",
@@ -84,7 +86,7 @@ export const MODEL_NAMES = {
     re: "regression",
 };
 
-export const treeSlugToNamedObject = (modelSlug) => {
+export const treeSlugToNamedObject = (modelSlug: string): NamedSlug => {
     return {
         slug: modelSlug,
         name: lodash.get(MODEL_NAMES, modelSlug, modelSlug),
@@ -96,9 +98,11 @@ export const treeSlugToNamedObject = (modelSlug) => {
 // demonstrate how tree can be modified
 // VASP_MODELS_TREE.gga.functionals = _.omit(VASP_MODELS_TREE.gga.functionals);
 
-const VASP_MODELS_TREE = deepClone(_.pick(MODEL_TREE, "dft"));
-const ESPRESSO_MODELS_TREE = deepClone(_.pick(MODEL_TREE, "dft"));
-const NWCHEM_MODELS_TREE = deepClone(_.pick(MODEL_TREE, "dft"));
+type DftOnlyTree = { dft: typeof DFTModelTree };
+
+const VASP_MODELS_TREE = deepClone(_.pick(MODEL_TREE, "dft")) as DftOnlyTree;
+const ESPRESSO_MODELS_TREE = deepClone(_.pick(MODEL_TREE, "dft")) as DftOnlyTree;
+const NWCHEM_MODELS_TREE = deepClone(_.pick(MODEL_TREE, "dft")) as DftOnlyTree;
 
 ["gga", "lda"].forEach((approximation) => {
     // pick "paw" for vasp
@@ -111,10 +115,13 @@ const NWCHEM_MODELS_TREE = deepClone(_.pick(MODEL_TREE, "dft"));
         ESPRESSO_MODELS_TREE.dft[approximation].methods.pseudopotential.reverse();
 });
 
-const UNKNOWN_MODELS_TREE = _.pick(MODEL_TREE, "unknown");
+const UNKNOWN_MODELS_TREE = _.pick(MODEL_TREE, "unknown") as ModelTree;
 // const ML_MODELS_TREE = _.pick(MODEL_TREE, "ml");
 
-const MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION = [
+const MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION: Array<{
+    name: string;
+    tree: ModelTree;
+}> = [
     {
         name: "vasp",
         tree: VASP_MODELS_TREE,
@@ -147,16 +154,16 @@ const MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION = [
 
 export const getTreeByApplicationNameAndVersion = ({
     name,
-    // eslint-disable-next-line no-unused-vars
     version,
-}) => {
+}: Pick<ApplicationInfo, "name" | "version">): ModelTree => {
     // TODO: add logic to filter by version when necessary
-    const cfgs = MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION.filter(
-        (cfg) => cfg.name === name,
-    ).map((x) => x.tree);
+    const cfgs = MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION.filter((cfg) => cfg.name === name).map(
+        (cfg) => cfg.tree,
+    );
     return Object.assign({}, ...cfgs);
 };
 
-export const getDefaultModelTypeForApplication = (application) => {
+export const getDefaultModelTypeForApplication = (application: ApplicationInfo): string => {
     return Object.keys(getTreeByApplicationNameAndVersion(application))[0];
 };
+
