@@ -38,17 +38,6 @@ export interface PseudopotentialLike {
 
 export type PseudopotentialCtor = new (config: Record<string, unknown>) => PseudopotentialLike;
 
-export interface ModelConfig extends EntityConfig {
-    type: string;
-    subtype: StringOrNamedSlug;
-    application?: ApplicationInfo;
-    method?: MethodConfig;
-    functional?: StringOrNamedSlug;
-    refiners?: Array<StringOrNamedSlug>;
-    modifiers?: Array<StringOrNamedSlug>;
-    [key: string]: unknown;
-}
-
 export interface ModelDescriptor {
     type: string;
     subtype: string;
@@ -85,4 +74,3 @@ export interface MethodTreeBranch {
 }
 
 export type ModelTree = Record<string, Record<string, MethodTreeBranch>>;
-
