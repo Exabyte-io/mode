@@ -1,7 +1,7 @@
 import { ModelStandata } from "@mat3ra/standata";
 import { expect } from "chai";
 
-import { ModelConversionHandler } from "../src";
+import { ModelConversionHandler } from "../dist/js";
 
 const allModels = new ModelStandata().getAll();
 

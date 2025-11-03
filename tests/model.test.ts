@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { Model } from "../src/model";
+import { Model } from "../dist/js/model";
 
 describe("Model", () => {
     const obj = { type: "dft" };
