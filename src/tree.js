@@ -1,5 +1,4 @@
 import { deepClone } from "@mat3ra/code/dist/js/utils";
-import { ModelMethodFilter } from "@mat3ra/standata";
 import lodash from "lodash";
 import _ from "underscore";
 
@@ -161,15 +160,3 @@ export const getTreeByApplicationNameAndVersion = ({
 export const getDefaultModelTypeForApplication = (application) => {
     return Object.keys(getTreeByApplicationNameAndVersion(application))[0];
 };
-
-/**
- * Filter list of method configs based on model
- * @param {Object[]} methodList - Array of method configs
- * @param {Object} model - Model config for which methods should be filtered
- * @return {Object[]}
- */
-export function filterMethodsByModel({ methodList, model }) {
-    if (!model) return [];
-    const modelMethodFilter = new ModelMethodFilter();
-    return modelMethodFilter.getCompatibleMethods(model, methodList);
-}
