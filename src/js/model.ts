@@ -1,49 +1,47 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
+import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import type { BaseModel } from "@mat3ra/esse/dist/js/types";
 import lodash from "lodash";
 
 import { DFTModelConfig } from "./default_models";
+import { type ModelSchemaMixin, modelSchemaMixin } from "./generated/ModelSchemaMixin";
 import { Method } from "./method";
 import { MethodFactory } from "./methods/factory";
-import {
-    getTreeByApplicationNameAndVersion,
-    MODEL_TREE,
-    treeSlugToNamedObject,
-} from "./tree";
+import { getTreeByApplicationNameAndVersion, MODEL_TREE, treeSlugToNamedObject } from "./tree";
 import type {
     ApplicationInfo,
     MethodConfig,
-    ModelConfig,
     MethodTreeBranch,
     ModelTree,
     NamedSlug,
     StringOrNamedSlug,
 } from "./types";
 
-type ModelEntityConfig = Omit<ModelConfig, "application">;
-
 const EMPTY_BRANCH: MethodTreeBranch = { methods: {} };
 
-export class Model extends InMemoryEntity<ModelEntityConfig> {
+type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin>;
+
+export class Model extends (InMemoryEntity as Base) implements BaseModel {
     protected _application?: ApplicationInfo;
 
     protected _MethodFactory: typeof MethodFactory;
 
     protected _method?: Method;
 
-    constructor(config: ModelConfig) {
+    constructor(config: BaseModel) {
         const { application, ...entityConfig } = config;
-        super(entityConfig as ModelEntityConfig);
+        super(entityConfig);
         this._application = application;
         this._MethodFactory = MethodFactory;
     }
 
-    get type(): string {
-        return this.prop<string>("type", this.defaultType);
-    }
+    // get type(): string {
+    //     return this.prop<string>("type", this.defaultType);
+    // }
 
-    get subtype(): StringOrNamedSlug {
-        return this.prop<StringOrNamedSlug>("subtype", this.defaultSubtype);
-    }
+    // get subtype(): StringOrNamedSlug {
+    //     return this.prop<StringOrNamedSlug>("subtype", this.defaultSubtype);
+    // }
 
     setSubtype(subtype: StringOrNamedSlug): void {
         this.setProp("subtype", subtype);
@@ -94,15 +92,11 @@ export class Model extends InMemoryEntity<ModelEntityConfig> {
         return `${this._application.shortName}:${this.type}:${subtype}`;
     }
 
-    get method(): Method {
+    get Method(): Method {
         if (!this._method) {
-            const methodOrConfig = this.prop<Method | MethodConfig | undefined>("method");
-            if (methodOrConfig instanceof Method) {
-                this._method = methodOrConfig;
-            } else {
-                const config = methodOrConfig || this.defaultMethodConfig;
-                this._method = this._MethodFactory.create(config);
-            }
+            const methodOrConfig = this.method;
+            const config = methodOrConfig || this.defaultMethodConfig;
+            this._method = this._MethodFactory.create(config);
         }
         return this._method;
     }
@@ -120,7 +114,7 @@ export class Model extends InMemoryEntity<ModelEntityConfig> {
     }
 
     get methodSubtypes(): NamedSlug[] {
-        const type = this.method.type;
+        const { type } = this.method;
         const subtypes = this.methodsFromTree[type] || [];
         return subtypes.map((slug) => treeSlugToNamedObject(slug));
     }
@@ -167,8 +161,9 @@ export class Model extends InMemoryEntity<ModelEntityConfig> {
     }
 
     protected get subtypeSlug(): string {
-        const subtype = this.subtype;
+        const { subtype } = this;
         return typeof subtype === "string" ? subtype : subtype.slug;
     }
 }
 
+modelSchemaMixin(Model.prototype);

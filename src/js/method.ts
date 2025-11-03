@@ -54,7 +54,7 @@ export class Method extends InMemoryEntity<MethodConfigWithData> {
     }
 
     get omitInHashCalculation(): boolean {
-        const data = this.data;
+        const { data } = this;
         return !data.searchText && lodash.isEmpty(lodash.omit(data, "searchText"));
     }
 
@@ -71,4 +71,3 @@ export class Method extends InMemoryEntity<MethodConfigWithData> {
         return deepClone(json);
     }
 }
-
