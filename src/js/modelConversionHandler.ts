@@ -1,7 +1,7 @@
-import { SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
+import { CategorizedModel, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
 
 import * as tree from "./tree";
-import type { CategorizedModel, ModelConfig } from "./types";
+import type { ModelConfig, SimplifiedCategorizedModel } from "./types";
 
 export function safelyGetSlug(slugObj: SlugifiedEntryOrSlug): string {
     return typeof slugObj === "string" ? slugObj : slugObj.slug;
@@ -23,7 +23,7 @@ export class ModelConversionHandler {
     static convertDftToSimple(categorizedModel: CategorizedModel): ModelConfig {
         if (!categorizedModel.categories?.subtype) return this.convertUnknownToSimple();
         const { subtype } = categorizedModel.categories;
-        const functionalParam = categorizedModel.parameters?.functional;
+        const functionalParam = (categorizedModel.parameters as any)?.functional;
         const functionalSlug = functionalParam
             ? safelyGetSlug(functionalParam as SlugifiedEntryOrSlug)
             : "";
@@ -51,7 +51,7 @@ export class ModelConversionHandler {
     static convertToCategorized(
         simpleModel: ModelConfig | undefined,
         allModels: CategorizedModel[] = [],
-    ): CategorizedModel | undefined {
+    ): SimplifiedCategorizedModel | undefined {
         switch (simpleModel?.type) {
             case "dft":
                 return this.convertDftToCategorized(simpleModel, allModels);
@@ -67,7 +67,7 @@ export class ModelConversionHandler {
     static convertDftToCategorized(
         simpleModel: ModelConfig,
         allModels: CategorizedModel[] = [],
-    ): CategorizedModel | undefined {
+    ): SimplifiedCategorizedModel | undefined {
         const { subtype, functional: functionalStringOrObject } = simpleModel;
         const defaultFunctionals: Record<string, string> = {
             lda: "pz",
@@ -84,7 +84,7 @@ export class ModelConversionHandler {
         return allModels.find((categorized) => categorized.path === path);
     }
 
-    static convertMlToCategorized(simpleModel: ModelConfig): CategorizedModel {
+    static convertMlToCategorized(simpleModel: ModelConfig): SimplifiedCategorizedModel {
         const subtype = safelyGetSlug(simpleModel.subtype as SlugifiedEntryOrSlug);
         return {
             name: "Regression",
