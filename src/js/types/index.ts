@@ -1,6 +1,5 @@
 import type {
     ApplicationSchemaBase,
-    BaseMethod,
     BaseModel,
     CategorizedMethod,
     CategorizedModel,
@@ -17,12 +16,9 @@ export type SimplifiedCategorizedMethod = Pick<CategorizedMethod, "name" | "path
 };
 
 export type ModelConfig = Omit<BaseModel, "method"> & {
-    method?: BaseMethod;
+    method?: BaseModel["method"];
     application?: ApplicationSchemaBase;
-    [key: string]: unknown;
 };
-
-export type ModelDescriptor = Pick<BaseModel, "type" | "subtype">;
 
 export interface PseudopotentialLike {
     element?: string;
