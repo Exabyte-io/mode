@@ -1,6 +1,6 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
-import type { BaseModel } from "@mat3ra/esse/dist/js/types";
+import type { BaseMethod, BaseModel } from "@mat3ra/esse/dist/js/types";
 import lodash from "lodash";
 
 import { DFTModelConfig } from "./default_models";
@@ -10,7 +10,6 @@ import { MethodFactory } from "./methods/factory";
 import { getTreeByApplicationNameAndVersion, MODEL_TREE, treeSlugToNamedObject } from "./tree";
 import type {
     ApplicationInfo,
-    MethodConfig,
     MethodTreeBranch,
     ModelTree,
     NamedSlug,
@@ -29,9 +28,9 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     protected _method?: Method;
 
     constructor(config: BaseModel) {
-        const { application, ...entityConfig } = config;
+        const { application, ...entityConfig } = config as any;
         super(entityConfig);
-        this._application = application;
+        this._application = application as ApplicationInfo | undefined;
         this._MethodFactory = MethodFactory;
     }
 
@@ -119,7 +118,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return subtypes.map((slug) => treeSlugToNamedObject(slug));
     }
 
-    get defaultMethodConfig(): MethodConfig {
+    get defaultMethodConfig(): BaseMethod {
         const methodTypes = Object.keys(this.methodsFromTree);
         const type = methodTypes[0];
         if (!type) return Method.defaultConfig;
@@ -128,7 +127,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return { type, subtype };
     }
 
-    static get defaultConfig(): ModelConfig {
+    static get defaultConfig(): BaseModel {
         return {
             ...DFTModelConfig,
             method: Method.defaultConfig,

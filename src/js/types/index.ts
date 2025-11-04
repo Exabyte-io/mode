@@ -1,5 +1,3 @@
-import type { EntityConfig } from "@mat3ra/code/dist/js/entity";
-
 export interface NamedSlug {
     slug: string;
     name?: string;
@@ -11,24 +9,6 @@ export interface ApplicationInfo {
     name: string;
     shortName: string;
     version?: string;
-}
-
-export interface MethodData extends Record<string, unknown> {
-    searchText?: string;
-}
-
-export interface MethodConfig extends EntityConfig {
-    type: string;
-    subtype: StringOrNamedSlug;
-    precision?: number;
-    data?: MethodData;
-    extraData?: Record<string, unknown>;
-    isEdited?: boolean;
-    [key: string]: unknown;
-}
-
-export interface MethodConfigWithData extends MethodConfig {
-    data: MethodData;
 }
 
 export interface PseudopotentialLike {

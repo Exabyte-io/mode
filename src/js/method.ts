@@ -1,12 +1,12 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import { deepClone } from "@mat3ra/code/dist/js/utils";
+import { BaseMethod } from "@mat3ra/esse/dist/js/types";
 import lodash from "lodash";
 
 import { PseudopotentialMethodConfig } from "./default_methods";
-import type { MethodConfig, MethodConfigWithData, MethodData, StringOrNamedSlug } from "./types";
 
 export class Method extends InMemoryEntity<MethodConfigWithData> {
-    constructor(config: MethodConfig) {
+    constructor(config: BaseMethod) {
         const data = config.data || {};
         super({ ...config, data });
     }
