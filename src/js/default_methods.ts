@@ -1,8 +1,8 @@
-import { BaseMethod } from "@mat3ra/esse/dist/js/types";
+import { BaseMethod, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
 import lodash from "lodash";
 
 import { MODEL_NAMES, MODEL_TREE } from "./tree";
-import type { ModelDescriptor, NamedSlug } from "./types";
+import type { ModelDescriptor } from "./types";
 
 export const PseudopotentialMethodConfig: BaseMethod = {
     type: "pseudopotential",
@@ -19,19 +19,19 @@ export const UnknownMethodConfig: BaseMethod = {
     subtype: "unknown",
 };
 
-const mapSlugToNamedObject = (slug: string): NamedSlug => {
+const mapSlugToNamedObject = (slug: string): SlugifiedEntry => {
     return {
         slug,
         name: lodash.get(MODEL_NAMES, slug, slug),
     };
 };
 
-export function allowedTypes(model: ModelDescriptor): NamedSlug[] {
+export function allowedTypes(model: ModelDescriptor): SlugifiedEntry[] {
     const branch = lodash.get(MODEL_TREE, `${model.type}.${model.subtype}.methods`, {});
     return lodash.keys(branch).map(mapSlugToNamedObject);
 }
 
-export function allowedSubtypes(model: ModelDescriptor, type: string): NamedSlug[] {
+export function allowedSubtypes(model: ModelDescriptor, type: string): SlugifiedEntry[] {
     const branch = lodash.get(MODEL_TREE, `${model.type}.${model.subtype}.methods.${type}`, []);
     return (branch as string[]).map(mapSlugToNamedObject);
 }

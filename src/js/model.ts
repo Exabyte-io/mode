@@ -1,6 +1,12 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
-import type { BaseMethod, BaseModel } from "@mat3ra/esse/dist/js/types";
+import type {
+    ApplicationSchemaBase,
+    BaseMethod,
+    BaseModel,
+    SlugifiedEntry,
+    SlugifiedEntryOrSlug,
+} from "@mat3ra/esse/dist/js/types";
 import lodash from "lodash";
 
 import { DFTModelConfig } from "./default_models";
@@ -8,21 +14,14 @@ import { type ModelSchemaMixin, modelSchemaMixin } from "./generated/ModelSchema
 import { Method } from "./method";
 import { MethodFactory } from "./methods/factory";
 import { getTreeByApplicationNameAndVersion, MODEL_TREE, treeSlugToNamedObject } from "./tree";
-import type {
-    ApplicationInfo,
-    MethodTreeBranch,
-    ModelConfig,
-    ModelTree,
-    NamedSlug,
-    StringOrNamedSlug,
-} from "./types";
+import type { MethodTreeBranch, ModelConfig, ModelTree } from "./types";
 
 const EMPTY_BRANCH: MethodTreeBranch = { methods: {} };
 
 type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin>;
 
 export class Model extends (InMemoryEntity as Base) implements BaseModel {
-    protected _application?: ApplicationInfo;
+    protected _application?: ApplicationSchemaBase;
 
     protected _MethodFactory: typeof MethodFactory;
 
@@ -31,7 +30,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     constructor(config: ModelConfig) {
         const { application, ...entityConfig } = config as any;
         super(entityConfig);
-        this._application = application as ApplicationInfo | undefined;
+        this._application = application as ApplicationSchemaBase | undefined;
         this._MethodFactory = MethodFactory;
     }
 
@@ -43,16 +42,16 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     //     return this.prop<StringOrNamedSlug>("subtype", this.defaultSubtype);
     // }
 
-    setSubtype(subtype: StringOrNamedSlug): void {
+    setSubtype(subtype: SlugifiedEntryOrSlug): void {
         this.setProp("subtype", subtype);
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
     }
 
-    get allowedTypes(): NamedSlug[] {
+    get allowedTypes(): SlugifiedEntry[] {
         return Object.keys(this.tree).map((modelSlug) => treeSlugToNamedObject(modelSlug));
     }
 
-    get allowedSubtypes(): NamedSlug[] {
+    get allowedSubtypes(): SlugifiedEntry[] {
         return Object.keys(this.treeBranchForType).map((slug) => treeSlugToNamedObject(slug));
     }
 
@@ -109,11 +108,11 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return this.treeBranchForSubType.methods || {};
     }
 
-    get methodTypes(): NamedSlug[] {
+    get methodTypes(): SlugifiedEntry[] {
         return Object.keys(this.methodsFromTree).map((type) => treeSlugToNamedObject(type));
     }
 
-    get methodSubtypes(): NamedSlug[] {
+    get methodSubtypes(): SlugifiedEntry[] {
         const { type } = this.method;
         const subtypes = this.methodsFromTree[type] || [];
         return subtypes.map((slug) => treeSlugToNamedObject(slug));
@@ -135,7 +134,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         };
     }
 
-    static get allTypes(): NamedSlug[] {
+    static get allTypes(): SlugifiedEntry[] {
         return Object.keys(MODEL_TREE).map((modelSlug) => treeSlugToNamedObject(modelSlug));
     }
 
@@ -145,13 +144,13 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
             ...json,
             type: this.type,
             subtype: this.subtype,
-            method: this.method.toJSONWithCleanData(),
+            method: (this.method as any).toJSONWithCleanData(),
         };
     }
 
-    protected _stringToSlugifiedObject(slug: StringOrNamedSlug): NamedSlug {
+    protected _stringToSlugifiedObject(slug: SlugifiedEntryOrSlug): SlugifiedEntry {
         if (lodash.isString(slug)) {
-            return { slug } as NamedSlug;
+            return { slug } as SlugifiedEntry;
         }
         return slug;
     }
@@ -161,7 +160,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     }
 
     protected get subtypeSlug(): string {
-        const { subtype } = this;
+        const subtype = this.subtype as SlugifiedEntryOrSlug;
         return typeof subtype === "string" ? subtype : subtype.slug;
     }
 }

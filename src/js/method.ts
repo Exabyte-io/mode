@@ -1,12 +1,11 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import { deepClone } from "@mat3ra/code/dist/js/utils";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
-import type { BaseMethod } from "@mat3ra/esse/dist/js/types";
+import type { BaseMethod, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
 import lodash from "lodash";
 
 import { PseudopotentialMethodConfig } from "./default_methods";
 import { type MethodSchemaMixin, methodSchemaMixin } from "./generated/MethodSchemaMixin";
-import type { StringOrNamedSlug } from "./types";
 
 type Base = typeof InMemoryEntity & Constructor<MethodSchemaMixin>;
 
@@ -26,7 +25,7 @@ export class Method extends (InMemoryEntity as Base) implements BaseMethod {
         return clone;
     }
 
-    setSubtype(subtype: StringOrNamedSlug): void {
+    setSubtype(subtype: SlugifiedEntry): void {
         this.setProp("subtype", subtype);
     }
 
@@ -47,12 +46,12 @@ export class Method extends (InMemoryEntity as Base) implements BaseMethod {
     }
 
     get omitInHashCalculation(): boolean {
-        const { data } = this;
-        return !data.searchText && lodash.isEmpty(lodash.omit(data, "searchText"));
+        const data = this.data as MethodData;
+        return !data?.searchText && lodash.isEmpty(lodash.omit(data, "searchText"));
     }
 
     cleanData(fieldsToExclude: string[] = []): MethodData {
-        const filteredData = { ...this.data };
+        const filteredData = { ...(this.data as MethodData) };
         fieldsToExclude.forEach((field) => {
             delete filteredData[field];
         });

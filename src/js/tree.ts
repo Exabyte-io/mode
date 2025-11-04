@@ -1,8 +1,9 @@
 import { deepClone } from "@mat3ra/code/dist/js/utils";
+import { ApplicationSchemaBase, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
 import lodash from "lodash";
 import _ from "underscore";
 
-import type { ApplicationInfo, ModelTree, NamedSlug } from "./types";
+import type { ModelTree } from "./types";
 
 // TODO: migrate to use manifest instead
 
@@ -86,7 +87,7 @@ export const MODEL_NAMES: Record<string, string> = {
     re: "regression",
 };
 
-export const treeSlugToNamedObject = (modelSlug: string): NamedSlug => {
+export const treeSlugToNamedObject = (modelSlug: string): SlugifiedEntry => {
     return {
         slug: modelSlug,
         name: lodash.get(MODEL_NAMES, modelSlug, modelSlug),
@@ -104,7 +105,7 @@ const VASP_MODELS_TREE = deepClone(_.pick(MODEL_TREE, "dft")) as DftOnlyTree;
 const ESPRESSO_MODELS_TREE = deepClone(_.pick(MODEL_TREE, "dft")) as DftOnlyTree;
 const NWCHEM_MODELS_TREE = deepClone(_.pick(MODEL_TREE, "dft")) as DftOnlyTree;
 
-["gga", "lda"].forEach((approximation) => {
+(["gga", "lda"] as const).forEach((approximation) => {
     // pick "paw" for vasp
     VASP_MODELS_TREE.dft[approximation].methods.pseudopotential = VASP_MODELS_TREE.dft[
         approximation
@@ -154,16 +155,14 @@ const MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION: Array<{
 
 export const getTreeByApplicationNameAndVersion = ({
     name,
-    version,
-}: Pick<ApplicationInfo, "name" | "version">): ModelTree => {
+}: Pick<ApplicationSchemaBase, "name" | "version">): ModelTree => {
     // TODO: add logic to filter by version when necessary
-    const cfgs = MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION.filter((cfg) => cfg.name === name).map(
-        (cfg) => cfg.tree,
-    );
+    const cfgs = MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION.filter(
+        (cfg) => cfg.name === name,
+    ).map((cfg) => cfg.tree);
     return Object.assign({}, ...cfgs);
 };
 
-export const getDefaultModelTypeForApplication = (application: ApplicationInfo): string => {
+export const getDefaultModelTypeForApplication = (application: ApplicationSchemaBase): string => {
     return Object.keys(getTreeByApplicationNameAndVersion(application))[0];
 };
-

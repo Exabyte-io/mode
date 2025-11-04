@@ -1,25 +1,21 @@
-// Re-export ESSE base types as our config types
-export type { BaseMethod as MethodConfig } from "@mat3ra/esse/dist/js/types";
-import type { BaseMethod, BaseModel } from "@mat3ra/esse/dist/js/types";
+// Import ESSE types
+import type { ApplicationSchemaBase, BaseMethod, BaseModel } from "@mat3ra/esse/dist/js/types";
 
-// ModelConfig is like BaseModel but with optional method (common pattern in codebase)
-export type ModelConfig = Omit<BaseModel, 'method'> & {
+export type {
+    BaseMethod as MethodConfig,
+    BaseModel,
+    ApplicationSchemaBase,
+} from "@mat3ra/esse/dist/js/types";
+
+// ModelConfig: BaseModel with optional method and application (repo-specific pattern)
+export type ModelConfig = Omit<BaseModel, "method"> & {
     method?: BaseMethod;
+    application?: ApplicationSchemaBase;
     [key: string]: unknown;
 };
 
-export interface NamedSlug {
-    slug: string;
-    name?: string;
-}
-
-export type StringOrNamedSlug = string | NamedSlug;
-
-export interface ApplicationInfo {
-    name: string;
-    shortName: string;
-    version?: string;
-}
+// ModelDescriptor: subset of BaseModel
+export type ModelDescriptor = Pick<BaseModel, "type" | "subtype">;
 
 export interface PseudopotentialLike {
     element?: string;
@@ -27,11 +23,6 @@ export interface PseudopotentialLike {
 }
 
 export type PseudopotentialCtor = new (config: Record<string, unknown>) => PseudopotentialLike;
-
-export interface ModelDescriptor {
-    type: string;
-    subtype: string;
-}
 
 export interface CategorizedUnit {
     categories: Record<string, any>;

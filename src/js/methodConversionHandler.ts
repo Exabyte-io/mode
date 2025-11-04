@@ -1,24 +1,16 @@
-import {
-    LocalOrbitalMethodConfig,
-    UnknownMethodConfig,
-} from "./default_methods";
-import type {
-    CategorizedMethod,
-    CategorizedUnit,
-    MethodConfig,
-    StringOrNamedSlug,
-} from "./types";
+import { SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
 
-export function safelyGetSlug(slugObj: StringOrNamedSlug): string {
+import { LocalOrbitalMethodConfig, UnknownMethodConfig } from "./default_methods";
+import type { CategorizedMethod, CategorizedUnit, MethodConfig } from "./types";
+
+export function safelyGetSlug(slugObj: SlugifiedEntry | string): SlugifiedEntry["slug"] {
     return typeof slugObj === "string" ? slugObj : slugObj.slug;
 }
 
 export class MethodConversionHandler {
     static convertToSimple(categorizedMethod: CategorizedMethod | undefined): MethodConfig {
         if (!categorizedMethod) return this.convertUnknownToSimple();
-        const pspUnits = categorizedMethod.units.filter(
-            (unit) => unit.categories.type === "psp",
-        );
+        const pspUnits = categorizedMethod.units.filter((unit) => unit.categories.type === "psp");
         const aoUnit = categorizedMethod.units.find((unit) => unit.categories.type === "ao");
         const regressionUnit = categorizedMethod.units.find((unit) => {
             return unit.name && unit.name.includes("regression");
@@ -118,7 +110,8 @@ export class MethodConversionHandler {
     static convertRegressionToCategorized(simpleMethod: MethodConfig): CategorizedMethod {
         const type = safelyGetSlug(simpleMethod.type);
         const subtype = safelyGetSlug(simpleMethod.subtype);
-        const { precision, data } = simpleMethod;
+        const precision = simpleMethod.precision as number | undefined;
+        const { data } = simpleMethod;
         const path = `/none/none/none/${type}/${subtype}`;
         const nameMap: Record<string, string> = {
             kernel_ridge: "Kernel ridge",
@@ -145,4 +138,3 @@ export class MethodConversionHandler {
         };
     }
 }
-

@@ -1,7 +1,9 @@
-import * as tree from "./tree";
-import type { CategorizedModel, ModelConfig, StringOrNamedSlug } from "./types";
+import { SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
 
-export function safelyGetSlug(slugObj: StringOrNamedSlug): string {
+import * as tree from "./tree";
+import type { CategorizedModel, ModelConfig } from "./types";
+
+export function safelyGetSlug(slugObj: SlugifiedEntryOrSlug): string {
     return typeof slugObj === "string" ? slugObj : slugObj.slug;
 }
 
@@ -23,7 +25,7 @@ export class ModelConversionHandler {
         const { subtype } = categorizedModel.categories;
         const functionalParam = categorizedModel.parameters?.functional;
         const functionalSlug = functionalParam
-            ? safelyGetSlug(functionalParam as StringOrNamedSlug)
+            ? safelyGetSlug(functionalParam as SlugifiedEntryOrSlug)
             : "";
         return {
             type: "dft",
@@ -76,14 +78,14 @@ export class ModelConversionHandler {
         if (!functionalStringOrObject) {
             functional = defaultFunctionals[subtype as string];
         } else {
-            functional = safelyGetSlug(functionalStringOrObject);
+            functional = safelyGetSlug(functionalStringOrObject as SlugifiedEntryOrSlug);
         }
         const path = `/pb/qm/dft/ksdft/${subtype}?functional=${functional}`;
         return allModels.find((categorized) => categorized.path === path);
     }
 
     static convertMlToCategorized(simpleModel: ModelConfig): CategorizedModel {
-        const subtype = safelyGetSlug(simpleModel.subtype);
+        const subtype = safelyGetSlug(simpleModel.subtype as SlugifiedEntryOrSlug);
         return {
             name: "Regression",
             path: "/st/det/ml/re/none",
@@ -97,4 +99,3 @@ export class ModelConversionHandler {
         };
     }
 }
-

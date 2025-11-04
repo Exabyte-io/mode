@@ -1,10 +1,11 @@
 import { safeMakeArray } from "@mat3ra/code/dist/js/utils";
+import { SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
 import _ from "underscore";
 
 import { MethodFactory } from "../methods/factory";
 import { Model } from "../model";
 import { treeSlugToNamedObject } from "../tree";
-import type { ModelConfig, NamedSlug, StringOrNamedSlug } from "../types";
+import type { ModelConfig } from "../types";
 
 export class DFTModel extends Model {
     constructor(config: ModelConfig & { MethodFactory?: typeof MethodFactory }) {
@@ -27,60 +28,60 @@ export class DFTModel extends Model {
         return slugs.join(":");
     }
 
-    get defaultFunctional(): NamedSlug {
+    get defaultFunctional(): SlugifiedEntry {
         const [slug] = this.treeBranchForSubType.functionals || [];
         return treeSlugToNamedObject(slug);
     }
 
-    get defaultRefiners(): NamedSlug[] {
+    get defaultRefiners(): SlugifiedEntry[] {
         return [];
     }
 
-    get defaultModifiers(): NamedSlug[] {
+    get defaultModifiers(): SlugifiedEntry[] {
         return [];
     }
 
-    get functional(): NamedSlug {
-        return this.prop<NamedSlug>("functional", this.defaultFunctional);
+    get functional(): SlugifiedEntry {
+        return this.prop<SlugifiedEntry>("functional", this.defaultFunctional);
     }
 
-    get refiners(): NamedSlug[] {
-        return this.prop<NamedSlug[]>("refiners", this.defaultRefiners);
+    get refiners(): SlugifiedEntry[] {
+        return this.prop<SlugifiedEntry[]>("refiners", this.defaultRefiners);
     }
 
-    get modifiers(): NamedSlug[] {
-        return this.prop<NamedSlug[]>("modifiers", this.defaultModifiers);
+    get modifiers(): SlugifiedEntry[] {
+        return this.prop<SlugifiedEntry[]>("modifiers", this.defaultModifiers);
     }
 
-    setSubtype(subtype: StringOrNamedSlug): void {
+    setSubtype(subtype: SlugifiedEntryOrSlug): void {
         this.setProp("subtype", subtype);
         this.setFunctional(this.defaultFunctional);
     }
 
-    setFunctional(functional: StringOrNamedSlug): void {
+    setFunctional(functional: SlugifiedEntryOrSlug): void {
         this.setProp("functional", this._stringToSlugifiedObject(functional));
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
     }
 
     private _setArrayProp(
         name: "refiners" | "modifiers",
-        data: StringOrNamedSlug | StringOrNamedSlug[],
+        data: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[],
     ): void {
         const normalized = safeMakeArray(data).map((item) => this._stringToSlugifiedObject(item));
         this.setProp(name, normalized);
-        (this as unknown as Record<string, NamedSlug[]>)[`_${name}`] = normalized;
+        (this as unknown as Record<string, SlugifiedEntry[]>)[`_${name}`] = normalized;
     }
 
-    setRefiners(refiners: StringOrNamedSlug | StringOrNamedSlug[]): void {
+    setRefiners(refiners: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[]): void {
         this._setArrayProp("refiners", refiners);
     }
 
-    setModifiers(modifiers: StringOrNamedSlug | StringOrNamedSlug[]): void {
+    setModifiers(modifiers: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[]): void {
         this._setArrayProp("modifiers", modifiers);
     }
 
     toJSON(): Record<string, unknown> {
-        const pickSlugFromObject = (item: NamedSlug) => _.pick(item, "slug");
+        const pickSlugFromObject = (item: SlugifiedEntry) => _.pick(item, "slug");
         return {
             ...super.toJSON(),
             functional: pickSlugFromObject(this.functional),
@@ -89,16 +90,21 @@ export class DFTModel extends Model {
         };
     }
 
-    get allFunctionals(): NamedSlug[] {
-        return (this.treeBranchForSubType.functionals || []).map((slug) => treeSlugToNamedObject(slug));
+    get allFunctionals(): SlugifiedEntry[] {
+        return (this.treeBranchForSubType.functionals || []).map((slug) =>
+            treeSlugToNamedObject(slug),
+        );
     }
 
-    get allRefiners(): NamedSlug[] {
-        return (this.treeBranchForSubType.refiners || []).map((slug) => treeSlugToNamedObject(slug));
+    get allRefiners(): SlugifiedEntry[] {
+        return (this.treeBranchForSubType.refiners || []).map((slug) =>
+            treeSlugToNamedObject(slug),
+        );
     }
 
-    get allModifiers(): NamedSlug[] {
-        return (this.treeBranchForSubType.modifiers || []).map((slug) => treeSlugToNamedObject(slug));
+    get allModifiers(): SlugifiedEntry[] {
+        return (this.treeBranchForSubType.modifiers || []).map((slug) =>
+            treeSlugToNamedObject(slug),
+        );
     }
 }
-

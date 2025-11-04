@@ -19,7 +19,10 @@ export class ModelFactory {
 
     static createFromApplication(config: ModelConfig): Model {
         const { application } = config;
-        const type = application && getDefaultModelTypeForApplication(application);
+        if (!application) {
+            throw new Error("ModelFactory.createFromApplication: application is required");
+        }
+        const type = getDefaultModelTypeForApplication(application);
         if (!type) {
             throw new Error(
                 `ModelFactory.createFromApplication: cannot determine model type: ${type}`,
@@ -28,4 +31,3 @@ export class ModelFactory {
         return this.create({ ...config, type });
     }
 }
-
