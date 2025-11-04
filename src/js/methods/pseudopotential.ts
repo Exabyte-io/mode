@@ -1,13 +1,14 @@
 import { safeMakeArray } from "@mat3ra/code/dist/js/utils";
+import { BaseMethod } from "@mat3ra/esse/dist/js/types";
 import _ from "underscore";
 
 import { Method } from "../method";
-import type { MethodConfig, PseudopotentialCtor, PseudopotentialLike } from "../types";
+import type { PseudopotentialCtor, PseudopotentialLike } from "../types";
 
 export class PseudopotentialMethod extends Method {
     PseudopotentialCls: PseudopotentialCtor | null;
 
-    constructor(config: MethodConfig) {
+    constructor(config: BaseMethod) {
         super(config);
         this.PseudopotentialCls = null;
     }
@@ -79,8 +80,7 @@ export class PseudopotentialMethod extends Method {
         });
     }
 
-    toJSONWithCleanData(exclude: string[] = []): MethodConfig {
+    toJSONWithCleanData(exclude: string[] = []): BaseMethod {
         return super.toJSONWithCleanData(exclude.concat(["allPseudo"]));
     }
 }
-

@@ -1,8 +1,4 @@
-// Import ESSE types
 import type { ApplicationSchemaBase, BaseMethod, BaseModel } from "@mat3ra/esse/dist/js/types";
-
-// MethodConfig: BaseMethod (repo-specific pattern)
-export type MethodConfig = BaseMethod;
 
 // ModelConfig: BaseModel with optional method and application (repo-specific pattern)
 export type ModelConfig = Omit<BaseModel, "method"> & {

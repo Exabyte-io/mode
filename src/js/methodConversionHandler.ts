@@ -1,14 +1,14 @@
-import { SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
+import { BaseMethod, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
 
 import { LocalOrbitalMethodConfig, UnknownMethodConfig } from "./default_methods";
-import type { CategorizedMethod, CategorizedUnit, MethodConfig } from "./types";
+import type { CategorizedMethod, CategorizedUnit } from "./types";
 
 export function safelyGetSlug(slugObj: SlugifiedEntry | string): SlugifiedEntry["slug"] {
     return typeof slugObj === "string" ? slugObj : slugObj.slug;
 }
 
 export class MethodConversionHandler {
-    static convertToSimple(categorizedMethod: CategorizedMethod | undefined): MethodConfig {
+    static convertToSimple(categorizedMethod: CategorizedMethod | undefined): BaseMethod {
         if (!categorizedMethod) return this.convertUnknownToSimple();
         const pspUnits = categorizedMethod.units.filter((unit) => unit.categories.type === "psp");
         const aoUnit = categorizedMethod.units.find((unit) => unit.categories.type === "ao");
@@ -21,11 +21,11 @@ export class MethodConversionHandler {
         return this.convertUnknownToSimple();
     }
 
-    static convertUnknownToSimple(): MethodConfig {
+    static convertUnknownToSimple(): BaseMethod {
         return UnknownMethodConfig;
     }
 
-    static convertPspUnitsToSimple(units: CategorizedUnit[]): MethodConfig {
+    static convertPspUnitsToSimple(units: CategorizedUnit[]): BaseMethod {
         const [firstUnit, ...otherUnits] = units;
         if (!firstUnit || !firstUnit.categories?.subtype) return this.convertUnknownToSimple();
         const subtype = otherUnits.length ? "any" : firstUnit.categories.subtype;
@@ -35,11 +35,11 @@ export class MethodConversionHandler {
         };
     }
 
-    static convertAoUnitToSimple(): MethodConfig {
+    static convertAoUnitToSimple(): BaseMethod {
         return LocalOrbitalMethodConfig;
     }
 
-    static convertRegressionUnitToSimple(unit: CategorizedUnit): MethodConfig {
+    static convertRegressionUnitToSimple(unit: CategorizedUnit): BaseMethod {
         const type = unit.categories.type || "linear";
         const subtype = unit.categories.subtype || "least_squares";
         return {
@@ -51,7 +51,7 @@ export class MethodConversionHandler {
     }
 
     static convertToCategorized(
-        simpleMethod: MethodConfig | undefined,
+        simpleMethod: BaseMethod | undefined,
         allMethods: CategorizedMethod[] = [],
     ): CategorizedMethod | undefined {
         switch (simpleMethod?.type) {
@@ -68,7 +68,7 @@ export class MethodConversionHandler {
     }
 
     static convertPspToCategorized(
-        simpleMethod: MethodConfig,
+        simpleMethod: BaseMethod,
         allMethods: CategorizedMethod[] = [],
     ): CategorizedMethod | undefined {
         const subtype = safelyGetSlug(simpleMethod.subtype);
@@ -83,7 +83,7 @@ export class MethodConversionHandler {
         return allMethods.find((categorized) => categorized.path === path);
     }
 
-    static convertAoToCategorized(simpleMethod: MethodConfig): CategorizedMethod {
+    static convertAoToCategorized(simpleMethod: BaseMethod): CategorizedMethod {
         const subtype = safelyGetSlug(simpleMethod.subtype);
         return {
             units: [
@@ -107,7 +107,7 @@ export class MethodConversionHandler {
         };
     }
 
-    static convertRegressionToCategorized(simpleMethod: MethodConfig): CategorizedMethod {
+    static convertRegressionToCategorized(simpleMethod: BaseMethod): CategorizedMethod {
         const type = safelyGetSlug(simpleMethod.type);
         const subtype = safelyGetSlug(simpleMethod.subtype);
         const precision = simpleMethod.precision as number | undefined;
