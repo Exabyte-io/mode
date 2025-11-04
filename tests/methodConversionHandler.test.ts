@@ -1,7 +1,7 @@
 import { MethodStandata } from "@mat3ra/standata";
 import { expect } from "chai";
 
-import { MethodConversionHandler } from "../dist/js";
+import { MethodConversionHandler } from "../src/js";
 
 const allMethods = new MethodStandata().getAll();
 
