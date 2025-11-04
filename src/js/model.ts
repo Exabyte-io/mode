@@ -11,6 +11,7 @@ import { getTreeByApplicationNameAndVersion, MODEL_TREE, treeSlugToNamedObject }
 import type {
     ApplicationInfo,
     MethodTreeBranch,
+    ModelConfig,
     ModelTree,
     NamedSlug,
     StringOrNamedSlug,
@@ -27,7 +28,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
 
     protected _method?: Method;
 
-    constructor(config: BaseModel) {
+    constructor(config: ModelConfig) {
         const { application, ...entityConfig } = config as any;
         super(entityConfig);
         this._application = application as ApplicationInfo | undefined;
@@ -127,7 +128,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return { type, subtype };
     }
 
-    static get defaultConfig(): BaseModel {
+    static get defaultConfig(): ModelConfig {
         return {
             ...DFTModelConfig,
             method: Method.defaultConfig,

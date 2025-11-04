@@ -1,11 +1,20 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import { deepClone } from "@mat3ra/code/dist/js/utils";
-import { BaseMethod } from "@mat3ra/esse/dist/js/types";
+import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import type { BaseMethod } from "@mat3ra/esse/dist/js/types";
 import lodash from "lodash";
 
 import { PseudopotentialMethodConfig } from "./default_methods";
+import { type MethodSchemaMixin, methodSchemaMixin } from "./generated/MethodSchemaMixin";
+import type { StringOrNamedSlug } from "./types";
 
-export class Method extends InMemoryEntity<MethodConfigWithData> {
+type Base = typeof InMemoryEntity & Constructor<MethodSchemaMixin>;
+
+interface MethodData extends Record<string, unknown> {
+    searchText?: string;
+}
+
+export class Method extends (InMemoryEntity as Base) implements BaseMethod {
     constructor(config: BaseMethod) {
         const data = config.data || {};
         super({ ...config, data });
@@ -17,28 +26,12 @@ export class Method extends InMemoryEntity<MethodConfigWithData> {
         return clone;
     }
 
-    get type(): string {
-        return this.prop<string>("type");
-    }
-
-    get subtype(): StringOrNamedSlug {
-        return this.prop<StringOrNamedSlug>("subtype");
-    }
-
     setSubtype(subtype: StringOrNamedSlug): void {
         this.setProp("subtype", subtype);
     }
 
-    static get defaultConfig(): MethodConfig {
+    static get defaultConfig(): BaseMethod {
         return PseudopotentialMethodConfig;
-    }
-
-    get precision(): number | undefined {
-        return this.prop<number | undefined>("precision");
-    }
-
-    get data(): MethodData {
-        return this.prop<MethodData>("data", {});
     }
 
     get searchText(): string {
@@ -66,8 +59,10 @@ export class Method extends InMemoryEntity<MethodConfigWithData> {
         return filteredData;
     }
 
-    toJSONWithCleanData(fieldsToExclude: string[] = []): MethodConfig {
+    toJSONWithCleanData(fieldsToExclude: string[] = []): BaseMethod {
         const json = { ...this._json, data: this.cleanData(fieldsToExclude) };
         return deepClone(json);
     }
 }
+
+methodSchemaMixin(Method.prototype);

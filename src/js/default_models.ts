@@ -1,11 +1,11 @@
-import { BaseModel } from "@mat3ra/esse/dist/js/types";
+import type { ModelConfig } from "./types";
 
-export const DFTModelConfig: BaseModel = {
+export const DFTModelConfig: ModelConfig = {
     type: "dft",
     subtype: "gga",
 };
 
-export const UnknownModelConfig: BaseModel = {
+export const UnknownModelConfig: ModelConfig = {
     type: "unknown",
     subtype: "unknown",
 };

@@ -24,6 +24,7 @@ const SKIP_FIELDS: string[] = [];
  */
 const OUTPUT_PATHS = {
     model: "src/js/generated/ModelSchemaMixin.ts",
+    method: "src/js/generated/MethodSchemaMixin.ts",
 };
 
 function main() {

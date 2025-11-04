@@ -1,3 +1,13 @@
+// Re-export ESSE base types as our config types
+export type { BaseMethod as MethodConfig } from "@mat3ra/esse/dist/js/types";
+import type { BaseMethod, BaseModel } from "@mat3ra/esse/dist/js/types";
+
+// ModelConfig is like BaseModel but with optional method (common pattern in codebase)
+export type ModelConfig = Omit<BaseModel, 'method'> & {
+    method?: BaseMethod;
+    [key: string]: unknown;
+};
+
 export interface NamedSlug {
     slug: string;
     name?: string;
