@@ -7,23 +7,21 @@
         "pretest": "npm run transpile",
         "lint": "eslint src tests && prettier --write src tests",
         "lint:fix": "eslint --fix --cache src tests && prettier --write src tests",
-        "transpile": "npm run transpile:js && npm run transpile:ts",
-        "transpile:js": "babel --out-dir dist src",
-        "transpile:ts": "tsc --project tsconfig.json",
+        "transpile": "tsc --project tsconfig.json",
         "prettier": "prettier --check src tests",
         "prepare": "husky install || exit 0",
-        "prepublishOnly": "rm -rf dist; npm run transpile",
+        "prepublishOnly": "rm -rf dist && npm run transpile",
         "generate-mixins": "ts-node scripts/generate-mixins.ts"
     },
     "repository": {
         "type": "git",
         "url": "https://github.com/Exabyte-io/mode.git"
     },
-    "main": "dist/index.js",
+    "main": "dist/js/index.js",
     "types": "dist/js/index.d.ts",
     "files": [
         "/dist",
-        "/src",
+        "/src/js",
         "tsconfig.json"
     ],
     "author": "Exabyte Inc.",
