@@ -14,7 +14,7 @@ import { type ModelSchemaMixin, modelSchemaMixin } from "./generated/ModelSchema
 import { Method } from "./method";
 import { MethodFactory } from "./methods/factory";
 import { getTreeByApplicationNameAndVersion, MODEL_TREE, treeSlugToNamedObject } from "./tree";
-import type { ModelConfig, MethodTreeBranch, ModelTree } from "./types";
+import type { MethodTreeBranch, ModelConfig, ModelTree } from "./types";
 
 const EMPTY_BRANCH: MethodTreeBranch = { methods: {} };
 
@@ -33,14 +33,6 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         this._application = application as ApplicationSchemaBase | undefined;
         this._MethodFactory = MethodFactory;
     }
-
-    // get type(): string {
-    //     return this.prop<string>("type", this.defaultType);
-    // }
-
-    // get subtype(): StringOrNamedSlug {
-    //     return this.prop<StringOrNamedSlug>("subtype", this.defaultSubtype);
-    // }
 
     setSubtype(subtype: SlugifiedEntryOrSlug): void {
         this.setProp("subtype", subtype);
