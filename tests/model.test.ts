@@ -67,9 +67,7 @@ describe("Model", () => {
             expect(methodValue.constructor.name).to.not.equal("Object");
 
             // Check that it has Method class methods
-            // @ts-ignore
             expect(methodValue).to.have.property("setSearchText");
-            // @ts-ignore
             expect(methodValue.setSearchText).to.be.a("function");
         });
     });
