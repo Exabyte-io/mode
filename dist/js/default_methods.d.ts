@@ -1,7 +1,6 @@
-import type { MethodConfig, ModelDescriptor, NamedSlug } from "./types";
-export declare const PseudopotentialMethodConfig: MethodConfig;
-export declare const LocalOrbitalMethodConfig: MethodConfig;
-export declare const UnknownMethodConfig: MethodConfig;
-export declare function allowedTypes(model: ModelDescriptor): NamedSlug[];
-export declare function allowedSubtypes(model: ModelDescriptor, type: string): NamedSlug[];
-//# sourceMappingURL=default_methods.d.ts.map
+import { BaseMethod, BaseModel, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
+export declare const PseudopotentialMethodConfig: BaseMethod;
+export declare const LocalOrbitalMethodConfig: BaseMethod;
+export declare const UnknownMethodConfig: BaseMethod;
+export declare function allowedTypes(model: Pick<BaseModel, "type" | "subtype">): SlugifiedEntry[];
+export declare function allowedSubtypes(model: Pick<BaseModel, "type" | "subtype">, type: string): SlugifiedEntry[];

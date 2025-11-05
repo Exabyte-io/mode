@@ -72,9 +72,13 @@ class ModelConversionHandler {
         }
     }
     static convertDftToSimple(categorizedModel) {
-        if (!categorizedModel.categories?.subtype) return this.convertUnknownToSimple();
-        const { subtype } = categorizedModel.categories;
-        const functionalParam = categorizedModel.parameters?.functional;
+        var _a, _b;
+        if (!((_a = categorizedModel.categories) === null || _a === void 0 ? void 0 : _a.subtype))
+            return this.convertUnknownToSimple();
+        const subtypeCategory = categorizedModel.categories.subtype;
+        const subtype = safelyGetSlug(subtypeCategory);
+        const functionalParam =
+            (_b = categorizedModel.parameters) === null || _b === void 0 ? void 0 : _b.functional;
         const functionalSlug = functionalParam ? safelyGetSlug(functionalParam) : "";
         return {
             type: "dft",
@@ -95,7 +99,7 @@ class ModelConversionHandler {
         };
     }
     static convertToCategorized(simpleModel, allModels = []) {
-        switch (simpleModel?.type) {
+        switch (simpleModel === null || simpleModel === void 0 ? void 0 : simpleModel.type) {
             case "dft":
                 return this.convertDftToCategorized(simpleModel, allModels);
             case "ml":
@@ -138,4 +142,3 @@ class ModelConversionHandler {
     }
 }
 exports.ModelConversionHandler = ModelConversionHandler;
-//# sourceMappingURL=modelConversionHandler.js.map

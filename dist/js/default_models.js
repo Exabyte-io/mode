@@ -9,4 +9,3 @@ exports.UnknownModelConfig = {
     type: "unknown",
     subtype: "unknown",
 };
-//# sourceMappingURL=default_models.js.map

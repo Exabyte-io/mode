@@ -1,8 +1,9 @@
+import { BaseMethod } from "@mat3ra/esse/dist/js/types";
 import { Method } from "../method";
-import type { MethodConfig, PseudopotentialCtor, PseudopotentialLike } from "../types";
+import type { PseudopotentialCtor, PseudopotentialLike } from "../types";
 export declare class PseudopotentialMethod extends Method {
     PseudopotentialCls: PseudopotentialCtor | null;
-    constructor(config: MethodConfig);
+    constructor(config: BaseMethod);
     get pseudo(): Record<string, unknown>[];
     get allPseudo(): Record<string, unknown>[];
     get pseudopotentials(): PseudopotentialLike[];
@@ -16,6 +17,5 @@ export declare class PseudopotentialMethod extends Method {
     addToAllPseudos(pseudos: PseudopotentialLike | PseudopotentialLike[]): void;
     setPseudopotentials(pseudopotentials: PseudopotentialLike[]): void;
     setAllPseudopotentials(pseudopotentials: PseudopotentialLike[]): void;
-    toJSONWithCleanData(exclude?: string[]): MethodConfig;
+    toJSONWithCleanData(exclude?: string[]): BaseMethod;
 }
-//# sourceMappingURL=pseudopotential.d.ts.map

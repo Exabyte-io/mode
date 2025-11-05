@@ -42,10 +42,12 @@ class Model extends entity_1.InMemoryEntity {
         );
     }
     get defaultType() {
-        return this.allowedTypes[0]?.slug || "";
+        var _a;
+        return ((_a = this.allowedTypes[0]) === null || _a === void 0 ? void 0 : _a.slug) || "";
     }
     get defaultSubtype() {
-        return this.allowedSubtypes[0]?.slug || "";
+        var _a;
+        return ((_a = this.allowedSubtypes[0]) === null || _a === void 0 ? void 0 : _a.slug) || "";
     }
     get tree() {
         if (this._application) {
@@ -95,10 +97,12 @@ class Model extends entity_1.InMemoryEntity {
         return subtypes.map((slug) => (0, tree_1.treeSlugToNamedObject)(slug));
     }
     get defaultMethodConfig() {
+        var _a;
         const methodTypes = Object.keys(this.methodsFromTree);
         const type = methodTypes[0];
         if (!type) return method_1.Method.defaultConfig;
-        const subtype = this.methodsFromTree[type]?.[0];
+        const subtype =
+            (_a = this.methodsFromTree[type]) === null || _a === void 0 ? void 0 : _a[0];
         if (!subtype) return method_1.Method.defaultConfig;
         return { type, subtype };
     }
@@ -132,10 +136,9 @@ class Model extends entity_1.InMemoryEntity {
         return this.type === "unknown";
     }
     get subtypeSlug() {
-        const { subtype } = this;
+        const subtype = this.subtype;
         return typeof subtype === "string" ? subtype : subtype.slug;
     }
 }
 exports.Model = Model;
 (0, ModelSchemaMixin_1.modelSchemaMixin)(Model.prototype);
-//# sourceMappingURL=model.js.map

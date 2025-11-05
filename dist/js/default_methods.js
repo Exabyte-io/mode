@@ -47,4 +47,3 @@ function allowedSubtypes(model, type) {
     );
     return branch.map(mapSlugToNamedObject);
 }
-//# sourceMappingURL=default_methods.js.map

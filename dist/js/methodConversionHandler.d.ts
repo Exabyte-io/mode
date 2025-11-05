@@ -1,14 +1,14 @@
-import type { CategorizedMethod, CategorizedUnit, MethodConfig, StringOrNamedSlug } from "./types";
-export declare function safelyGetSlug(slugObj: StringOrNamedSlug): string;
+import { BaseMethod, CategorizedMethod, CategorizedUnitMethod, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
+import type { SimplifiedCategorizedMethod } from "./types";
+export declare function safelyGetSlug(slugObj: SlugifiedEntry | string): SlugifiedEntry["slug"];
 export declare class MethodConversionHandler {
-    static convertToSimple(categorizedMethod: CategorizedMethod | undefined): MethodConfig;
-    static convertUnknownToSimple(): MethodConfig;
-    static convertPspUnitsToSimple(units: CategorizedUnit[]): MethodConfig;
-    static convertAoUnitToSimple(): MethodConfig;
-    static convertRegressionUnitToSimple(unit: CategorizedUnit): MethodConfig;
-    static convertToCategorized(simpleMethod: MethodConfig | undefined, allMethods?: CategorizedMethod[]): CategorizedMethod | undefined;
-    static convertPspToCategorized(simpleMethod: MethodConfig, allMethods?: CategorizedMethod[]): CategorizedMethod | undefined;
-    static convertAoToCategorized(simpleMethod: MethodConfig): CategorizedMethod;
-    static convertRegressionToCategorized(simpleMethod: MethodConfig): CategorizedMethod;
+    static convertToSimple(categorizedMethod: CategorizedMethod | undefined): BaseMethod;
+    static convertUnknownToSimple(): BaseMethod;
+    static convertPspUnitsToSimple(units: CategorizedUnitMethod[]): BaseMethod;
+    static convertAoUnitToSimple(): BaseMethod;
+    static convertRegressionUnitToSimple(unit: CategorizedUnitMethod): BaseMethod;
+    static convertToCategorized(simpleMethod: BaseMethod | undefined, allMethods?: CategorizedMethod[]): SimplifiedCategorizedMethod | undefined;
+    static convertPspToCategorized(simpleMethod: BaseMethod, allMethods?: CategorizedMethod[]): SimplifiedCategorizedMethod | undefined;
+    static convertAoToCategorized(simpleMethod: BaseMethod): SimplifiedCategorizedMethod;
+    static convertRegressionToCategorized(simpleMethod: BaseMethod): SimplifiedCategorizedMethod;
 }
-//# sourceMappingURL=methodConversionHandler.d.ts.map

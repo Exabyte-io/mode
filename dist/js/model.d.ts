@@ -1,20 +1,20 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
-import type { BaseModel } from "@mat3ra/esse/dist/js/types";
+import type { ApplicationSchemaBase, BaseMethod, BaseModel, SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
 import { type ModelSchemaMixin } from "./generated/ModelSchemaMixin";
 import { Method } from "./method";
 import { MethodFactory } from "./methods/factory";
-import type { ApplicationInfo, MethodConfig, MethodTreeBranch, ModelTree, NamedSlug, StringOrNamedSlug } from "./types";
+import type { ModelConfig, MethodTreeBranch, ModelTree } from "./types";
 type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin>;
 declare const Model_base: Base;
 export declare class Model extends Model_base implements BaseModel {
-    protected _application?: ApplicationInfo;
+    protected _application?: ApplicationSchemaBase;
     protected _MethodFactory: typeof MethodFactory;
     protected _method?: Method;
-    constructor(config: BaseModel);
-    setSubtype(subtype: StringOrNamedSlug): void;
-    get allowedTypes(): NamedSlug[];
-    get allowedSubtypes(): NamedSlug[];
+    constructor(config: ModelConfig);
+    setSubtype(subtype: SlugifiedEntryOrSlug): void;
+    get allowedTypes(): SlugifiedEntry[];
+    get allowedSubtypes(): SlugifiedEntry[];
     get defaultType(): string;
     get defaultSubtype(): string;
     get tree(): ModelTree;
@@ -25,15 +25,14 @@ export declare class Model extends Model_base implements BaseModel {
     get Method(): Method;
     setMethod(method: Method): void;
     get methodsFromTree(): Record<string, string[]>;
-    get methodTypes(): NamedSlug[];
-    get methodSubtypes(): NamedSlug[];
-    get defaultMethodConfig(): MethodConfig;
+    get methodTypes(): SlugifiedEntry[];
+    get methodSubtypes(): SlugifiedEntry[];
+    get defaultMethodConfig(): BaseMethod;
     static get defaultConfig(): ModelConfig;
-    static get allTypes(): NamedSlug[];
+    static get allTypes(): SlugifiedEntry[];
     toJSON(): Record<string, unknown>;
-    protected _stringToSlugifiedObject(slug: StringOrNamedSlug): NamedSlug;
+    protected _stringToSlugifiedObject(slug: SlugifiedEntryOrSlug): SlugifiedEntry;
     get isUnknown(): boolean;
     protected get subtypeSlug(): string;
 }
 export {};
-//# sourceMappingURL=model.d.ts.map

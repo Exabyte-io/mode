@@ -3,4 +3,3 @@ import type { BaseModel } from "@mat3ra/esse/dist/js/types";
 export type ModelSchemaMixin = BaseModel;
 export type ModelInMemoryEntity = InMemoryEntity & ModelSchemaMixin;
 export declare function modelSchemaMixin(item: InMemoryEntity): void;
-//# sourceMappingURL=ModelSchemaMixin.d.ts.map

@@ -10,6 +10,7 @@ const entity_1 = require("@mat3ra/code/dist/js/entity");
 const utils_1 = require("@mat3ra/code/dist/js/utils");
 const lodash_1 = __importDefault(require("lodash"));
 const default_methods_1 = require("./default_methods");
+const MethodSchemaMixin_1 = require("./generated/MethodSchemaMixin");
 class Method extends entity_1.InMemoryEntity {
     constructor(config) {
         const data = config.data || {};
@@ -20,23 +21,11 @@ class Method extends entity_1.InMemoryEntity {
         clone.setData({});
         return clone;
     }
-    get type() {
-        return this.prop("type");
-    }
-    get subtype() {
-        return this.prop("subtype");
-    }
     setSubtype(subtype) {
         this.setProp("subtype", subtype);
     }
     static get defaultConfig() {
         return default_methods_1.PseudopotentialMethodConfig;
-    }
-    get precision() {
-        return this.prop("precision");
-    }
-    get data() {
-        return this.prop("data", {});
     }
     get searchText() {
         return this.prop("data.searchText", "");
@@ -48,9 +37,10 @@ class Method extends entity_1.InMemoryEntity {
         this.setProp("data", data);
     }
     get omitInHashCalculation() {
-        const { data } = this;
+        const data = this.data;
         return (
-            !data.searchText && lodash_1.default.isEmpty(lodash_1.default.omit(data, "searchText"))
+            !(data === null || data === void 0 ? void 0 : data.searchText) &&
+            lodash_1.default.isEmpty(lodash_1.default.omit(data, "searchText"))
         );
     }
     cleanData(fieldsToExclude = []) {
@@ -66,4 +56,4 @@ class Method extends entity_1.InMemoryEntity {
     }
 }
 exports.Method = Method;
-//# sourceMappingURL=method.js.map
+(0, MethodSchemaMixin_1.methodSchemaMixin)(Method.prototype);

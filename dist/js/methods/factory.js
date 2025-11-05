@@ -16,4 +16,3 @@ class MethodFactory {
 exports.MethodFactory = MethodFactory;
 MethodFactory.Method = method_1.Method;
 MethodFactory.PseudopotentialMethod = pseudopotential_1.PseudopotentialMethod;
-//# sourceMappingURL=factory.js.map

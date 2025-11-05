@@ -148,7 +148,7 @@ const MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION = [
         tree: UNKNOWN_MODELS_TREE,
     },
 ];
-const getTreeByApplicationNameAndVersion = ({ name, version }) => {
+const getTreeByApplicationNameAndVersion = ({ name }) => {
     // TODO: add logic to filter by version when necessary
     const cfgs = MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION.filter(
         (cfg) => cfg.name === name,
@@ -160,4 +160,3 @@ const getDefaultModelTypeForApplication = (application) => {
     return Object.keys((0, exports.getTreeByApplicationNameAndVersion)(application))[0];
 };
 exports.getDefaultModelTypeForApplication = getDefaultModelTypeForApplication;
-//# sourceMappingURL=tree.js.map

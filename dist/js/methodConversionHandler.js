@@ -9,8 +9,14 @@ function safelyGetSlug(slugObj) {
 class MethodConversionHandler {
     static convertToSimple(categorizedMethod) {
         if (!categorizedMethod) return this.convertUnknownToSimple();
-        const pspUnits = categorizedMethod.units.filter((unit) => unit.categories.type === "psp");
-        const aoUnit = categorizedMethod.units.find((unit) => unit.categories.type === "ao");
+        const pspUnits = categorizedMethod.units.filter((unit) => {
+            var _a;
+            return ((_a = unit.categories) === null || _a === void 0 ? void 0 : _a.type) === "psp";
+        });
+        const aoUnit = categorizedMethod.units.find((unit) => {
+            var _a;
+            return ((_a = unit.categories) === null || _a === void 0 ? void 0 : _a.type) === "ao";
+        });
         const regressionUnit = categorizedMethod.units.find((unit) => {
             return unit.name && unit.name.includes("regression");
         });
@@ -23,9 +29,14 @@ class MethodConversionHandler {
         return default_methods_1.UnknownMethodConfig;
     }
     static convertPspUnitsToSimple(units) {
+        var _a;
         const [firstUnit, ...otherUnits] = units;
-        if (!firstUnit || !firstUnit.categories?.subtype) return this.convertUnknownToSimple();
-        const subtype = otherUnits.length ? "any" : firstUnit.categories.subtype;
+        if (
+            !firstUnit ||
+            !((_a = firstUnit.categories) === null || _a === void 0 ? void 0 : _a.subtype)
+        )
+            return this.convertUnknownToSimple();
+        const subtype = otherUnits.length ? "any" : safelyGetSlug(firstUnit.categories.subtype);
         return {
             type: "pseudopotential",
             subtype,
@@ -35,17 +46,20 @@ class MethodConversionHandler {
         return default_methods_1.LocalOrbitalMethodConfig;
     }
     static convertRegressionUnitToSimple(unit) {
-        const type = unit.categories.type || "linear";
-        const subtype = unit.categories.subtype || "least_squares";
+        var _a, _b;
+        const type =
+            ((_a = unit.categories) === null || _a === void 0 ? void 0 : _a.type) || "linear";
+        const subtype =
+            ((_b = unit.categories) === null || _b === void 0 ? void 0 : _b.subtype) ||
+            "least_squares";
         return {
             type: safelyGetSlug(type),
             subtype: safelyGetSlug(subtype),
-            data: unit.data,
             precision: unit.precision,
         };
     }
     static convertToCategorized(simpleMethod, allMethods = []) {
-        switch (simpleMethod?.type) {
+        switch (simpleMethod === null || simpleMethod === void 0 ? void 0 : simpleMethod.type) {
             case "pseudopotential":
                 return this.convertPspToCategorized(simpleMethod, allMethods);
             case "localorbital":
@@ -95,7 +109,7 @@ class MethodConversionHandler {
     static convertRegressionToCategorized(simpleMethod) {
         const type = safelyGetSlug(simpleMethod.type);
         const subtype = safelyGetSlug(simpleMethod.subtype);
-        const { precision, data } = simpleMethod;
+        const precision = simpleMethod.precision;
         const path = `/none/none/none/${type}/${subtype}`;
         const nameMap = {
             kernel_ridge: "Kernel ridge",
@@ -114,7 +128,6 @@ class MethodConversionHandler {
                     name,
                     path,
                     precision,
-                    data,
                 },
             ],
             name,
@@ -123,4 +136,3 @@ class MethodConversionHandler {
     }
 }
 exports.MethodConversionHandler = MethodConversionHandler;
-//# sourceMappingURL=methodConversionHandler.js.map

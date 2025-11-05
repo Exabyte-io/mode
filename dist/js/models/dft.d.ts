@@ -1,25 +1,25 @@
+import { SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
 import { MethodFactory } from "../methods/factory";
 import { Model } from "../model";
-import type { ModelConfig, NamedSlug, StringOrNamedSlug } from "../types";
+import type { ModelConfig } from "../types";
 export declare class DFTModel extends Model {
     constructor(config: ModelConfig & {
         MethodFactory?: typeof MethodFactory;
     });
     get groupSlug(): string;
-    get defaultFunctional(): NamedSlug;
-    get defaultRefiners(): NamedSlug[];
-    get defaultModifiers(): NamedSlug[];
-    get functional(): NamedSlug;
-    get refiners(): NamedSlug[];
-    get modifiers(): NamedSlug[];
-    setSubtype(subtype: StringOrNamedSlug): void;
-    setFunctional(functional: StringOrNamedSlug): void;
+    get defaultFunctional(): SlugifiedEntry;
+    get defaultRefiners(): SlugifiedEntry[];
+    get defaultModifiers(): SlugifiedEntry[];
+    get functional(): SlugifiedEntry;
+    get refiners(): SlugifiedEntry[];
+    get modifiers(): SlugifiedEntry[];
+    setSubtype(subtype: SlugifiedEntryOrSlug): void;
+    setFunctional(functional: SlugifiedEntryOrSlug): void;
     private _setArrayProp;
-    setRefiners(refiners: StringOrNamedSlug | StringOrNamedSlug[]): void;
-    setModifiers(modifiers: StringOrNamedSlug | StringOrNamedSlug[]): void;
+    setRefiners(refiners: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[]): void;
+    setModifiers(modifiers: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[]): void;
     toJSON(): Record<string, unknown>;
-    get allFunctionals(): NamedSlug[];
-    get allRefiners(): NamedSlug[];
-    get allModifiers(): NamedSlug[];
+    get allFunctionals(): SlugifiedEntry[];
+    get allRefiners(): SlugifiedEntry[];
+    get allModifiers(): SlugifiedEntry[];
 }
-//# sourceMappingURL=dft.d.ts.map

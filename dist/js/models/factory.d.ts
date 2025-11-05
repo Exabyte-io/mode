@@ -7,4 +7,3 @@ export declare class ModelFactory {
     static create(config: ModelConfig): Model;
     static createFromApplication(config: ModelConfig): Model;
 }
-//# sourceMappingURL=factory.d.ts.map

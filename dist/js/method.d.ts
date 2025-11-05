@@ -1,19 +1,22 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
-import type { MethodConfig, MethodConfigWithData, MethodData, StringOrNamedSlug } from "./types";
-export declare class Method extends InMemoryEntity<MethodConfigWithData> {
-    constructor(config: MethodConfig);
+import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import type { BaseMethod, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
+import { type MethodSchemaMixin } from "./generated/MethodSchemaMixin";
+type Base = typeof InMemoryEntity & Constructor<MethodSchemaMixin>;
+interface MethodData extends Record<string, unknown> {
+    searchText?: string;
+}
+declare const Method_base: Base;
+export declare class Method extends Method_base implements BaseMethod {
+    constructor(config: BaseMethod);
     cloneWithoutData(): Method;
-    get type(): string;
-    get subtype(): StringOrNamedSlug;
-    setSubtype(subtype: StringOrNamedSlug): void;
-    static get defaultConfig(): MethodConfig;
-    get precision(): number | undefined;
-    get data(): MethodData;
+    setSubtype(subtype: SlugifiedEntry): void;
+    static get defaultConfig(): BaseMethod;
     get searchText(): string;
     setSearchText(searchText: string): void;
     setData(data?: MethodData): void;
     get omitInHashCalculation(): boolean;
     cleanData(fieldsToExclude?: string[]): MethodData;
-    toJSONWithCleanData(fieldsToExclude?: string[]): MethodConfig;
+    toJSONWithCleanData(fieldsToExclude?: string[]): BaseMethod;
 }
-//# sourceMappingURL=method.d.ts.map
+export {};
