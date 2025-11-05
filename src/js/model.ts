@@ -28,10 +28,14 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     protected _method?: Method;
 
     constructor(config: ModelConfig) {
-        const { application, ...entityConfig } = config as any;
+        const { application, method, ...entityConfig } = config as any;
         super(entityConfig);
         this._application = application as ApplicationSchemaBase | undefined;
         this._MethodFactory = MethodFactory;
+
+        if (method) {
+            this._method = this._MethodFactory.create(method);
+        }
     }
 
     setSubtype(subtype: SlugifiedEntryOrSlug): void {
@@ -83,11 +87,9 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return `${this._application.shortName}:${this.type}:${subtype}`;
     }
 
-    get Method(): Method {
+    get method(): Method {
         if (!this._method) {
-            const methodOrConfig = this.method;
-            const config = methodOrConfig || this.defaultMethodConfig;
-            this._method = this._MethodFactory.create(config);
+            this._method = this._MethodFactory.create(this.defaultMethodConfig);
         }
         return this._method;
     }
@@ -105,7 +107,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     }
 
     get methodSubtypes(): SlugifiedEntry[] {
-        const { type } = this.method;
+        const { type } = this.method as Method;
         const subtypes = this.methodsFromTree[type] || [];
         return subtypes.map((slug) => treeSlugToNamedObject(slug));
     }
@@ -136,7 +138,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
             ...json,
             type: this.type,
             subtype: this.subtype,
-            method: this.Method.toJSONWithCleanData(),
+            method: (this.method as Method).toJSONWithCleanData(),
         };
     }
 
