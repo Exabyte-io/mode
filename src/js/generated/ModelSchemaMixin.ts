@@ -14,6 +14,9 @@ export function modelSchemaMixin(item: InMemoryEntity) {
         get subtype() {
             return this.requiredProp<BaseModel["subtype"]>("subtype");
         },
+        get method() {
+            return this.requiredProp<BaseModel["method"]>("method");
+        },
     };
 
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));

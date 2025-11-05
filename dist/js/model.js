@@ -14,17 +14,14 @@ const tree_1 = require("./tree");
 const EMPTY_BRANCH = { methods: {} };
 class Model extends entity_1.InMemoryEntity {
     constructor(config) {
-        const { application, ...entityConfig } = config;
+        const { application, method, ...entityConfig } = config;
         super(entityConfig);
         this._application = application;
         this._MethodFactory = factory_1.MethodFactory;
+        if (method) {
+            this._method = this._MethodFactory.create(method);
+        }
     }
-    // get type(): string {
-    //     return this.prop<string>("type", this.defaultType);
-    // }
-    // get subtype(): StringOrNamedSlug {
-    //     return this.prop<StringOrNamedSlug>("subtype", this.defaultSubtype);
-    // }
     setSubtype(subtype) {
         this.setProp("subtype", subtype);
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
@@ -71,9 +68,7 @@ class Model extends entity_1.InMemoryEntity {
     }
     get Method() {
         if (!this._method) {
-            const methodOrConfig = this.method;
-            const config = methodOrConfig || this.defaultMethodConfig;
-            this._method = this._MethodFactory.create(config);
+            this._method = this._MethodFactory.create(this.defaultMethodConfig);
         }
         return this._method;
     }
@@ -117,7 +112,7 @@ class Model extends entity_1.InMemoryEntity {
             ...json,
             type: this.type,
             subtype: this.subtype,
-            method: this.Method.toJSONWithCleanData(),
+            method: this.method.toJSONWithCleanData(),
         };
     }
     _stringToSlugifiedObject(slug) {

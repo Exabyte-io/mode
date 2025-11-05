@@ -87,7 +87,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return `${this._application.shortName}:${this.type}:${subtype}`;
     }
 
-    get method(): Method {
+    get Method(): Method {
         if (!this._method) {
             this._method = this._MethodFactory.create(this.defaultMethodConfig);
         }

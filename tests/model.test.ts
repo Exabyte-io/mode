@@ -37,7 +37,7 @@ describe("Model", () => {
                 method: { type: "pseudopotential", subtype: "nc" },
             });
 
-            const methodValue = model.method;
+            const methodValue = model.Method;
 
             // Check that method is an instance, not a plain object
             expect(methodValue).to.exist;
@@ -60,7 +60,7 @@ describe("Model", () => {
                 method: { type: "pseudopotential", subtype: "nc" },
             });
 
-            const methodValue = dftModel.method;
+            const methodValue = dftModel.Method;
 
             // Check that method is an instance, not a plain object
             expect(methodValue).to.exist;
