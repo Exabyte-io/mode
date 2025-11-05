@@ -1,0 +1,1 @@
+{"version":3,"file":"ModelSchemaMixin.d.ts","sourceRoot":"","sources":["../../../src/js/generated/ModelSchemaMixin.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,cAAc,EAAE,MAAM,6BAA6B,CAAC;AAClE,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,4BAA4B,CAAC;AAE5D,MAAM,MAAM,gBAAgB,GAAG,SAAS,CAAC;AAEzC,MAAM,MAAM,mBAAmB,GAAG,cAAc,GAAG,gBAAgB,CAAC;AAEpE,wBAAgB,gBAAgB,CAAC,IAAI,EAAE,cAAc,QAepD"}
