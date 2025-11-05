@@ -28,14 +28,10 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     protected _method?: Method;
 
     constructor(config: ModelConfig) {
-        const { application, method, ...entityConfig } = config as any;
+        const { application, ...entityConfig } = config as any;
         super(entityConfig);
         this._application = application as ApplicationSchemaBase | undefined;
         this._MethodFactory = MethodFactory;
-
-        if (method) {
-            this._method = this._MethodFactory.create(method);
-        }
     }
 
     setSubtype(subtype: SlugifiedEntryOrSlug): void {

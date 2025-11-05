@@ -14,13 +14,10 @@ const tree_1 = require("./tree");
 const EMPTY_BRANCH = { methods: {} };
 class Model extends entity_1.InMemoryEntity {
     constructor(config) {
-        const { application, method, ...entityConfig } = config;
+        const { application, ...entityConfig } = config;
         super(entityConfig);
         this._application = application;
         this._MethodFactory = factory_1.MethodFactory;
-        if (method) {
-            this._method = this._MethodFactory.create(method);
-        }
     }
     setSubtype(subtype) {
         this.setProp("subtype", subtype);
