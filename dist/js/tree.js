@@ -1,20 +1,9 @@
 "use strict";
-var __importDefault =
-    (this && this.__importDefault) ||
-    function (mod) {
-        return mod && mod.__esModule ? mod : { default: mod };
-    };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDefaultModelTypeForApplication =
-    exports.getTreeByApplicationNameAndVersion =
-    exports.treeSlugToNamedObject =
-    exports.MODEL_NAMES =
-    exports.MODEL_TREE =
-    exports.getDFTFunctionalsByApproximation =
-    exports.getDFTFunctionalsFromTree =
-    exports.getPseudopotentialTypesFromTree =
-    exports.METHODS =
-        void 0;
+exports.getDefaultModelTypeForApplication = exports.getTreeByApplicationNameAndVersion = exports.treeSlugToNamedObject = exports.MODEL_NAMES = exports.MODEL_TREE = exports.getDFTFunctionalsByApproximation = exports.getDFTFunctionalsFromTree = exports.getPseudopotentialTypesFromTree = exports.METHODS = void 0;
 const utils_1 = require("@mat3ra/code/dist/js/utils");
 const lodash_1 = __importDefault(require("lodash"));
 const underscore_1 = __importDefault(require("underscore"));
@@ -98,20 +87,12 @@ const treeSlugToNamedObject = (modelSlug) => {
     };
 };
 exports.treeSlugToNamedObject = treeSlugToNamedObject;
-const VASP_MODELS_TREE = (0, utils_1.deepClone)(
-    underscore_1.default.pick(exports.MODEL_TREE, "dft"),
-);
-const ESPRESSO_MODELS_TREE = (0, utils_1.deepClone)(
-    underscore_1.default.pick(exports.MODEL_TREE, "dft"),
-);
-const NWCHEM_MODELS_TREE = (0, utils_1.deepClone)(
-    underscore_1.default.pick(exports.MODEL_TREE, "dft"),
-);
+const VASP_MODELS_TREE = (0, utils_1.deepClone)(underscore_1.default.pick(exports.MODEL_TREE, "dft"));
+const ESPRESSO_MODELS_TREE = (0, utils_1.deepClone)(underscore_1.default.pick(exports.MODEL_TREE, "dft"));
+const NWCHEM_MODELS_TREE = (0, utils_1.deepClone)(underscore_1.default.pick(exports.MODEL_TREE, "dft"));
 ["gga", "lda"].forEach((approximation) => {
     // pick "paw" for vasp
-    VASP_MODELS_TREE.dft[approximation].methods.pseudopotential = VASP_MODELS_TREE.dft[
-        approximation
-    ].methods.pseudopotential.splice(0, 1);
+    VASP_MODELS_TREE.dft[approximation].methods.pseudopotential = VASP_MODELS_TREE.dft[approximation].methods.pseudopotential.splice(0, 1);
     // assert "us" is the first option
     ESPRESSO_MODELS_TREE.dft[approximation].methods.pseudopotential =
         ESPRESSO_MODELS_TREE.dft[approximation].methods.pseudopotential.reverse();
@@ -148,11 +129,9 @@ const MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION = [
         tree: UNKNOWN_MODELS_TREE,
     },
 ];
-const getTreeByApplicationNameAndVersion = ({ name }) => {
+const getTreeByApplicationNameAndVersion = ({ name, }) => {
     // TODO: add logic to filter by version when necessary
-    const cfgs = MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION.filter(
-        (cfg) => cfg.name === name,
-    ).map((cfg) => cfg.tree);
+    const cfgs = MODELS_TREE_CONFIGS_BY_APPLICATION_NAME_VERSION.filter((cfg) => cfg.name === name).map((cfg) => cfg.tree);
     return Object.assign({}, ...cfgs);
 };
 exports.getTreeByApplicationNameAndVersion = getTreeByApplicationNameAndVersion;

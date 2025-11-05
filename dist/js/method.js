@@ -1,9 +1,7 @@
 "use strict";
-var __importDefault =
-    (this && this.__importDefault) ||
-    function (mod) {
-        return mod && mod.__esModule ? mod : { default: mod };
-    };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Method = void 0;
 const entity_1 = require("@mat3ra/code/dist/js/entity");
@@ -38,10 +36,7 @@ class Method extends entity_1.InMemoryEntity {
     }
     get omitInHashCalculation() {
         const data = this.data;
-        return (
-            !(data === null || data === void 0 ? void 0 : data.searchText) &&
-            lodash_1.default.isEmpty(lodash_1.default.omit(data, "searchText"))
-        );
+        return !(data === null || data === void 0 ? void 0 : data.searchText) && lodash_1.default.isEmpty(lodash_1.default.omit(data, "searchText"));
     }
     cleanData(fieldsToExclude = []) {
         const filteredData = { ...this.data };

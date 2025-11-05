@@ -8,21 +8,19 @@ function safelyGetSlug(slugObj) {
 }
 class MethodConversionHandler {
     static convertToSimple(categorizedMethod) {
-        if (!categorizedMethod) return this.convertUnknownToSimple();
-        const pspUnits = categorizedMethod.units.filter((unit) => {
-            var _a;
-            return ((_a = unit.categories) === null || _a === void 0 ? void 0 : _a.type) === "psp";
-        });
-        const aoUnit = categorizedMethod.units.find((unit) => {
-            var _a;
-            return ((_a = unit.categories) === null || _a === void 0 ? void 0 : _a.type) === "ao";
-        });
+        if (!categorizedMethod)
+            return this.convertUnknownToSimple();
+        const pspUnits = categorizedMethod.units.filter((unit) => { var _a; return ((_a = unit.categories) === null || _a === void 0 ? void 0 : _a.type) === "psp"; });
+        const aoUnit = categorizedMethod.units.find((unit) => { var _a; return ((_a = unit.categories) === null || _a === void 0 ? void 0 : _a.type) === "ao"; });
         const regressionUnit = categorizedMethod.units.find((unit) => {
             return unit.name && unit.name.includes("regression");
         });
-        if (pspUnits.length) return this.convertPspUnitsToSimple(pspUnits);
-        if (aoUnit) return this.convertAoUnitToSimple();
-        if (regressionUnit) return this.convertRegressionUnitToSimple(regressionUnit);
+        if (pspUnits.length)
+            return this.convertPspUnitsToSimple(pspUnits);
+        if (aoUnit)
+            return this.convertAoUnitToSimple();
+        if (regressionUnit)
+            return this.convertRegressionUnitToSimple(regressionUnit);
         return this.convertUnknownToSimple();
     }
     static convertUnknownToSimple() {
@@ -31,10 +29,7 @@ class MethodConversionHandler {
     static convertPspUnitsToSimple(units) {
         var _a;
         const [firstUnit, ...otherUnits] = units;
-        if (
-            !firstUnit ||
-            !((_a = firstUnit.categories) === null || _a === void 0 ? void 0 : _a.subtype)
-        )
+        if (!firstUnit || !((_a = firstUnit.categories) === null || _a === void 0 ? void 0 : _a.subtype))
             return this.convertUnknownToSimple();
         const subtype = otherUnits.length ? "any" : safelyGetSlug(firstUnit.categories.subtype);
         return {
@@ -47,11 +42,8 @@ class MethodConversionHandler {
     }
     static convertRegressionUnitToSimple(unit) {
         var _a, _b;
-        const type =
-            ((_a = unit.categories) === null || _a === void 0 ? void 0 : _a.type) || "linear";
-        const subtype =
-            ((_b = unit.categories) === null || _b === void 0 ? void 0 : _b.subtype) ||
-            "least_squares";
+        const type = ((_a = unit.categories) === null || _a === void 0 ? void 0 : _a.type) || "linear";
+        const subtype = ((_b = unit.categories) === null || _b === void 0 ? void 0 : _b.subtype) || "least_squares";
         return {
             type: safelyGetSlug(type),
             subtype: safelyGetSlug(subtype),
@@ -75,12 +67,10 @@ class MethodConversionHandler {
         const subtype = safelyGetSlug(simpleMethod.subtype);
         // the "any" subtype is equivalent to the method representing all planewave-pseudopotential
         // methods. All other subtypes are equivalent to using a specific PW-PSP method.
-        const allPath =
-            "/qm/wf/none/psp/us::/qm/wf/none/psp/nc::/qm/wf/none/psp/nc-fr::/qm/wf/none/psp/paw::/qm/wf/none/pw/none";
-        const path =
-            subtype === "any"
-                ? allPath
-                : `/qm/wf/none/smearing/gaussian::/linalg/diag/none/davidson/none::/qm/wf/none/psp/${subtype}::/qm/wf/none/pw/none`;
+        const allPath = "/qm/wf/none/psp/us::/qm/wf/none/psp/nc::/qm/wf/none/psp/nc-fr::/qm/wf/none/psp/paw::/qm/wf/none/pw/none";
+        const path = subtype === "any"
+            ? allPath
+            : `/qm/wf/none/smearing/gaussian::/linalg/diag/none/davidson/none::/qm/wf/none/psp/${subtype}::/qm/wf/none/pw/none`;
         return allMethods.find((categorized) => categorized.path === path);
     }
     static convertAoToCategorized(simpleMethod) {

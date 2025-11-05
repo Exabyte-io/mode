@@ -1,9 +1,7 @@
 "use strict";
-var __importDefault =
-    (this && this.__importDefault) ||
-    function (mod) {
-        return mod && mod.__esModule ? mod : { default: mod };
-    };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Model = void 0;
 const entity_1 = require("@mat3ra/code/dist/js/entity");
@@ -32,14 +30,10 @@ class Model extends entity_1.InMemoryEntity {
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
     }
     get allowedTypes() {
-        return Object.keys(this.tree).map((modelSlug) =>
-            (0, tree_1.treeSlugToNamedObject)(modelSlug),
-        );
+        return Object.keys(this.tree).map((modelSlug) => (0, tree_1.treeSlugToNamedObject)(modelSlug));
     }
     get allowedSubtypes() {
-        return Object.keys(this.treeBranchForType).map((slug) =>
-            (0, tree_1.treeSlugToNamedObject)(slug),
-        );
+        return Object.keys(this.treeBranchForType).map((slug) => (0, tree_1.treeSlugToNamedObject)(slug));
     }
     get defaultType() {
         var _a;
@@ -52,7 +46,8 @@ class Model extends entity_1.InMemoryEntity {
     get tree() {
         if (this._application) {
             const treeByApplication = this.treeByApplicationNameAndVersion;
-            if (treeByApplication) return treeByApplication;
+            if (treeByApplication)
+                return treeByApplication;
         }
         return tree_1.MODEL_TREE;
     }
@@ -63,13 +58,15 @@ class Model extends entity_1.InMemoryEntity {
         return this.treeBranchForType[this.subtypeSlug] || EMPTY_BRANCH;
     }
     get treeByApplicationNameAndVersion() {
-        if (!this._application) return undefined;
+        if (!this._application)
+            return undefined;
         const { name, version } = this._application;
         return (0, tree_1.getTreeByApplicationNameAndVersion)({ name, version });
     }
     get groupSlug() {
         const subtype = this.subtypeSlug;
-        if (!this._application) return `${this.type}:${subtype}`;
+        if (!this._application)
+            return `${this.type}:${subtype}`;
         return `${this._application.shortName}:${this.type}:${subtype}`;
     }
     get Method() {
@@ -87,9 +84,7 @@ class Model extends entity_1.InMemoryEntity {
         return this.treeBranchForSubType.methods || {};
     }
     get methodTypes() {
-        return Object.keys(this.methodsFromTree).map((type) =>
-            (0, tree_1.treeSlugToNamedObject)(type),
-        );
+        return Object.keys(this.methodsFromTree).map((type) => (0, tree_1.treeSlugToNamedObject)(type));
     }
     get methodSubtypes() {
         const { type } = this.method;
@@ -100,10 +95,11 @@ class Model extends entity_1.InMemoryEntity {
         var _a;
         const methodTypes = Object.keys(this.methodsFromTree);
         const type = methodTypes[0];
-        if (!type) return method_1.Method.defaultConfig;
-        const subtype =
-            (_a = this.methodsFromTree[type]) === null || _a === void 0 ? void 0 : _a[0];
-        if (!subtype) return method_1.Method.defaultConfig;
+        if (!type)
+            return method_1.Method.defaultConfig;
+        const subtype = (_a = this.methodsFromTree[type]) === null || _a === void 0 ? void 0 : _a[0];
+        if (!subtype)
+            return method_1.Method.defaultConfig;
         return { type, subtype };
     }
     static get defaultConfig() {
@@ -113,9 +109,7 @@ class Model extends entity_1.InMemoryEntity {
         };
     }
     static get allTypes() {
-        return Object.keys(tree_1.MODEL_TREE).map((modelSlug) =>
-            (0, tree_1.treeSlugToNamedObject)(modelSlug),
-        );
+        return Object.keys(tree_1.MODEL_TREE).map((modelSlug) => (0, tree_1.treeSlugToNamedObject)(modelSlug));
     }
     toJSON() {
         const json = super.toJSON();

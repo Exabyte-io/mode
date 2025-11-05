@@ -20,9 +20,7 @@ class ModelFactory {
         }
         const type = (0, tree_1.getDefaultModelTypeForApplication)(application);
         if (!type) {
-            throw new Error(
-                `ModelFactory.createFromApplication: cannot determine model type: ${type}`,
-            );
+            throw new Error(`ModelFactory.createFromApplication: cannot determine model type: ${type}`);
         }
         return this.create({ ...config, type });
     }
