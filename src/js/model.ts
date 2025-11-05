@@ -144,7 +144,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
             ...json,
             type: this.type,
             subtype: this.subtype,
-            method: (this.method as any).toJSONWithCleanData(),
+            method: this.Method.toJSONWithCleanData(),
         };
     }
 

@@ -123,7 +123,7 @@ class Model extends entity_1.InMemoryEntity {
             ...json,
             type: this.type,
             subtype: this.subtype,
-            method: this.method.toJSONWithCleanData(),
+            method: this.Method.toJSONWithCleanData(),
         };
     }
     _stringToSlugifiedObject(slug) {
