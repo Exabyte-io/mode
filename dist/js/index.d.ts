@@ -10,4 +10,3 @@ import { DFTModel } from "./models/dft";
 import { ModelFactory } from "./models/factory";
 import * as tree from "./tree";
 export { Method, Model, MethodFactory, ModelFactory, PseudopotentialMethod, DFTModel, MethodConversionHandler, ModelConversionHandler, tree, default_models, default_methods, };
-//# sourceMappingURL=index.d.ts.map

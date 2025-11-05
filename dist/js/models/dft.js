@@ -17,11 +17,12 @@ class DFTModel extends model_1.Model {
         this._MethodFactory = config.MethodFactory || factory_1.MethodFactory;
     }
     get groupSlug() {
+        var _a;
         const functionalSlug = this.functional.slug;
         const refinersSlug = this.refiners.map((o) => o.slug).join("+");
         const modifiersSlug = this.modifiers.map((o) => o.slug).join("+");
         const slugs = [
-            this._application?.shortName,
+            (_a = this._application) === null || _a === void 0 ? void 0 : _a.shortName,
             this.type,
             this.subtype,
             functionalSlug,
@@ -96,4 +97,3 @@ class DFTModel extends model_1.Model {
     }
 }
 exports.DFTModel = DFTModel;
-//# sourceMappingURL=dft.js.map

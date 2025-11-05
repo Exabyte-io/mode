@@ -77,4 +77,3 @@ class PseudopotentialMethod extends method_1.Method {
     }
 }
 exports.PseudopotentialMethod = PseudopotentialMethod;
-//# sourceMappingURL=pseudopotential.js.map

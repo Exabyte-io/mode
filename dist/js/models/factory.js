@@ -15,7 +15,10 @@ class ModelFactory {
     }
     static createFromApplication(config) {
         const { application } = config;
-        const type = application && (0, tree_1.getDefaultModelTypeForApplication)(application);
+        if (!application) {
+            throw new Error("ModelFactory.createFromApplication: application is required");
+        }
+        const type = (0, tree_1.getDefaultModelTypeForApplication)(application);
         if (!type) {
             throw new Error(
                 `ModelFactory.createFromApplication: cannot determine model type: ${type}`,
@@ -27,4 +30,3 @@ class ModelFactory {
 exports.ModelFactory = ModelFactory;
 ModelFactory.DFTModel = dft_1.DFTModel;
 ModelFactory.Model = model_1.Model;
-//# sourceMappingURL=factory.js.map
