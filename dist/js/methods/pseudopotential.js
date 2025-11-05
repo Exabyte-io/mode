@@ -1,9 +1,7 @@
 "use strict";
-var __importDefault =
-    (this && this.__importDefault) ||
-    function (mod) {
-        return mod && mod.__esModule ? mod : { default: mod };
-    };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PseudopotentialMethod = void 0;
 const utils_1 = require("@mat3ra/code/dist/js/utils");
@@ -21,11 +19,13 @@ class PseudopotentialMethod extends method_1.Method {
         return this.prop("data.allPseudo", []);
     }
     get pseudopotentials() {
-        if (!this.PseudopotentialCls) return [];
+        if (!this.PseudopotentialCls)
+            return [];
         return this.pseudo.map((config) => new this.PseudopotentialCls(config));
     }
     get allPseudopotentials() {
-        if (!this.PseudopotentialCls) return [];
+        if (!this.PseudopotentialCls)
+            return [];
         return this.allPseudo.map((config) => new this.PseudopotentialCls(config));
     }
     static extractExchangeCorrelationFromSubworkflow(subworkflow) {
@@ -59,17 +59,13 @@ class PseudopotentialMethod extends method_1.Method {
     setPseudopotentials(pseudopotentials) {
         this.setData({
             ...this.data,
-            pseudo: underscore_1.default
-                .sortBy(pseudopotentials, "element")
-                .map((item) => item.toJSON()),
+            pseudo: underscore_1.default.sortBy(pseudopotentials, "element").map((item) => item.toJSON()),
         });
     }
     setAllPseudopotentials(pseudopotentials) {
         this.setData({
             ...this.data,
-            allPseudo: underscore_1.default
-                .sortBy(pseudopotentials, "element")
-                .map((item) => item.toJSON()),
+            allPseudo: underscore_1.default.sortBy(pseudopotentials, "element").map((item) => item.toJSON()),
         });
     }
     toJSONWithCleanData(exclude = []) {

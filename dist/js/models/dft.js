@@ -1,9 +1,7 @@
 "use strict";
-var __importDefault =
-    (this && this.__importDefault) ||
-    function (mod) {
-        return mod && mod.__esModule ? mod : { default: mod };
-    };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DFTModel = void 0;
 const utils_1 = require("@mat3ra/code/dist/js/utils");
@@ -59,9 +57,7 @@ class DFTModel extends model_1.Model {
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
     }
     _setArrayProp(name, data) {
-        const normalized = (0, utils_1.safeMakeArray)(data).map((item) =>
-            this._stringToSlugifiedObject(item),
-        );
+        const normalized = (0, utils_1.safeMakeArray)(data).map((item) => this._stringToSlugifiedObject(item));
         this.setProp(name, normalized);
         this[`_${name}`] = normalized;
     }
@@ -81,19 +77,13 @@ class DFTModel extends model_1.Model {
         };
     }
     get allFunctionals() {
-        return (this.treeBranchForSubType.functionals || []).map((slug) =>
-            (0, tree_1.treeSlugToNamedObject)(slug),
-        );
+        return (this.treeBranchForSubType.functionals || []).map((slug) => (0, tree_1.treeSlugToNamedObject)(slug));
     }
     get allRefiners() {
-        return (this.treeBranchForSubType.refiners || []).map((slug) =>
-            (0, tree_1.treeSlugToNamedObject)(slug),
-        );
+        return (this.treeBranchForSubType.refiners || []).map((slug) => (0, tree_1.treeSlugToNamedObject)(slug));
     }
     get allModifiers() {
-        return (this.treeBranchForSubType.modifiers || []).map((slug) =>
-            (0, tree_1.treeSlugToNamedObject)(slug),
-        );
+        return (this.treeBranchForSubType.modifiers || []).map((slug) => (0, tree_1.treeSlugToNamedObject)(slug));
     }
 }
 exports.DFTModel = DFTModel;
