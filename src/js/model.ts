@@ -14,7 +14,7 @@ import { type ModelSchemaMixin, modelSchemaMixin } from "./generated/ModelSchema
 import { Method } from "./method";
 import { MethodFactory } from "./methods/factory";
 import { getTreeByApplicationNameAndVersion, MODEL_TREE, treeSlugToNamedObject } from "./tree";
-import type { MethodTreeBranch, ModelConfig, ModelTree } from "./types";
+import type { ModelConfig, MethodTreeBranch, ModelTree } from "./types";
 
 const EMPTY_BRANCH: MethodTreeBranch = { methods: {} };
 

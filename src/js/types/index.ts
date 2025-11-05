@@ -6,18 +6,18 @@ import type {
     CategorizedUnitMethod,
 } from "@mat3ra/esse/dist/js/types";
 
-export type SimplifiedCategorizedModel = Pick<CategorizedModel, "name" | "path"> & {
-    categories: Record<string, any>;
-    parameters?: Record<string, unknown>;
-};
+export type ModelConfig = Pick<BaseModel, "type" | "subtype"> &
+    Partial<Omit<BaseModel, "type" | "subtype">> & {
+        application?: ApplicationSchemaBase;
+    };
+
+export type SimplifiedCategorizedModel = Pick<
+    CategorizedModel,
+    "name" | "path" | "categories" | "parameters"
+>;
 
 export type SimplifiedCategorizedMethod = Pick<CategorizedMethod, "name" | "path"> & {
     units: CategorizedUnitMethod[];
-};
-
-export type ModelConfig = Omit<BaseModel, "method"> & {
-    method?: BaseModel["method"];
-    application?: ApplicationSchemaBase;
 };
 
 export interface PseudopotentialLike {

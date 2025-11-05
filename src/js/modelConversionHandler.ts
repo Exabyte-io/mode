@@ -22,7 +22,8 @@ export class ModelConversionHandler {
 
     static convertDftToSimple(categorizedModel: CategorizedModel): ModelConfig {
         if (!categorizedModel.categories?.subtype) return this.convertUnknownToSimple();
-        const { subtype } = categorizedModel.categories;
+        const subtypeCategory = categorizedModel.categories.subtype as SlugifiedEntryOrSlug;
+        const subtype = safelyGetSlug(subtypeCategory);
         const functionalParam = (categorizedModel.parameters as any)?.functional;
         const functionalSlug = functionalParam
             ? safelyGetSlug(functionalParam as SlugifiedEntryOrSlug)
