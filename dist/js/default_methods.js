@@ -1,14 +1,9 @@
 "use strict";
-var __importDefault =
-    (this && this.__importDefault) ||
-    function (mod) {
-        return mod && mod.__esModule ? mod : { default: mod };
-    };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UnknownMethodConfig =
-    exports.LocalOrbitalMethodConfig =
-    exports.PseudopotentialMethodConfig =
-        void 0;
+exports.UnknownMethodConfig = exports.LocalOrbitalMethodConfig = exports.PseudopotentialMethodConfig = void 0;
 exports.allowedTypes = allowedTypes;
 exports.allowedSubtypes = allowedSubtypes;
 const lodash_1 = __importDefault(require("lodash"));
@@ -32,18 +27,10 @@ const mapSlugToNamedObject = (slug) => {
     };
 };
 function allowedTypes(model) {
-    const branch = lodash_1.default.get(
-        tree_1.MODEL_TREE,
-        `${model.type}.${model.subtype}.methods`,
-        {},
-    );
+    const branch = lodash_1.default.get(tree_1.MODEL_TREE, `${model.type}.${model.subtype}.methods`, {});
     return lodash_1.default.keys(branch).map(mapSlugToNamedObject);
 }
 function allowedSubtypes(model, type) {
-    const branch = lodash_1.default.get(
-        tree_1.MODEL_TREE,
-        `${model.type}.${model.subtype}.methods.${type}`,
-        [],
-    );
+    const branch = lodash_1.default.get(tree_1.MODEL_TREE, `${model.type}.${model.subtype}.methods.${type}`, []);
     return branch.map(mapSlugToNamedObject);
 }
