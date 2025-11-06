@@ -14,10 +14,13 @@ const tree_1 = require("./tree");
 const EMPTY_BRANCH = { methods: {} };
 class Model extends entity_1.InMemoryEntity {
     constructor(config) {
-        const { application, ...entityConfig } = config;
+        const { application, method, ...entityConfig } = config;
         super(entityConfig);
         this._application = application;
         this._MethodFactory = factory_1.MethodFactory;
+        if (method) {
+            this.setProp("method", method);
+        }
     }
     setSubtype(subtype) {
         this.setProp("subtype", subtype);
@@ -65,12 +68,13 @@ class Model extends entity_1.InMemoryEntity {
     }
     get Method() {
         if (!this._method) {
-            this._method = this._MethodFactory.create(this.defaultMethodConfig);
+            this._method = this._MethodFactory.create(this.method);
         }
         return this._method;
     }
     setMethod(method) {
         this._method = method;
+        this.setProp("method", method.toJSON());
     }
     get methodsFromTree() {
         return this.treeBranchForSubType.methods || {};
@@ -109,7 +113,7 @@ class Model extends entity_1.InMemoryEntity {
             ...json,
             type: this.type,
             subtype: this.subtype,
-            method: this.method.toJSONWithCleanData(),
+            method: this.Method.toJSONWithCleanData(),
         };
     }
     _stringToSlugifiedObject(slug) {
@@ -128,3 +132,19 @@ class Model extends entity_1.InMemoryEntity {
 }
 exports.Model = Model;
 (0, ModelSchemaMixin_1.modelSchemaMixin)(Model.prototype);
+Object.defineProperty(Model.prototype, "method", {
+    get() {
+        const storedMethod = this.prop("method", false);
+        if (storedMethod) {
+            return storedMethod;
+        }
+        if (!this.prop("subtype", false)) {
+            this.setProp("subtype", this.defaultSubtype);
+        }
+        const defaultMethod = this.defaultMethodConfig;
+        this.setProp("method", defaultMethod);
+        return defaultMethod;
+    },
+    configurable: true,
+    enumerable: true,
+});

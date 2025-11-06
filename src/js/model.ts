@@ -28,10 +28,13 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     protected _method?: Method;
 
     constructor(config: ModelConfig) {
-        const { application, ...entityConfig } = config as any;
+        const { application, method, ...entityConfig } = config as any;
         super(entityConfig);
         this._application = application as ApplicationSchemaBase | undefined;
         this._MethodFactory = MethodFactory;
+        if (method) {
+            this.setProp("method", method);
+        }
     }
 
     setSubtype(subtype: SlugifiedEntryOrSlug): void {
@@ -85,13 +88,14 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
 
     get Method(): Method {
         if (!this._method) {
-            this._method = this._MethodFactory.create(this.defaultMethodConfig);
+            this._method = this._MethodFactory.create(this.method);
         }
         return this._method;
     }
 
     setMethod(method: Method): void {
         this._method = method;
+        this.setProp("method", method.toJSON());
     }
 
     get methodsFromTree(): Record<string, string[]> {
@@ -134,7 +138,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
             ...json,
             type: this.type,
             subtype: this.subtype,
-            method: (this.method as Method).toJSONWithCleanData(),
+            method: this.Method.toJSONWithCleanData(),
         };
     }
 
@@ -156,3 +160,20 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
 }
 
 modelSchemaMixin(Model.prototype);
+
+Object.defineProperty(Model.prototype, "method", {
+    get(this: Model): BaseMethod {
+        const storedMethod = this.prop("method", false);
+        if (storedMethod) {
+            return storedMethod as BaseMethod;
+        }
+        if (!this.prop("subtype", false)) {
+            this.setProp("subtype", this.defaultSubtype);
+        }
+        const defaultMethod = this.defaultMethodConfig;
+        this.setProp("method", defaultMethod);
+        return defaultMethod;
+    },
+    configurable: true,
+    enumerable: true,
+});
