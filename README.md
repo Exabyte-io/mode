@@ -1,14 +1,17 @@
 [![npm version](https://badge.fury.io/js/%40mat3ra%2Fmode.svg)](https://badge.fury.io/js/%40mat3ra%2Fmode)
 [![License: Apache](https://img.shields.io/badge/License-Apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
-# mode.js
+# mode
 
-MOdel DEfinitions in JS - mode.js - houses model entity definitions for use in the Mat3ra platform.
+MOdel DEfinitions in JS/TS/Py - houses entity definitions for:
+
+- `Method` - See [Method Overview](https://docs.mat3ra.com/methods/overview/)
+- `Model` - See [Model Overview](https://docs.mat3ra.com/models/overview/)
 
 
 ### Installation
 
-For usage within a javascript project:
+For usage within a JavaScript project:
 
 ```bash
 npm install @mat3ra/mode
@@ -85,13 +88,3 @@ combinations of those will be avoided.
 
 For more examples, please see the asset files in `./assets` or [code.js](https://github.com/Exabyte-io/code.js)
 for the definition of Yaml types such as `!combine` or `!parameter`.
-
-MoDe
-====
-
-The `MoDe` package is used in conjunction with the `ADe` package to define top-level parameters
-present in Subworkflow units in the `WoDe` package ecosystem. The entities provided by `MoDe` are:
-
-- `Method` - See [Method Overview](https://docs.mat3ra.com/methods/overview/) for more details
-- `Model` - See [Model Overview](https://docs.mat3ra.com/models/overview/) for more details
-
