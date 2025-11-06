@@ -28,7 +28,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     protected _method?: Method;
 
     constructor(config: ModelConfig) {
-        const { application, method, ...entityConfig } = config as any;
+        const { application, method = Method.defaultConfig, ...entityConfig } = config;
         super(entityConfig);
         this._application = application as ApplicationSchemaBase | undefined;
         this._MethodFactory = MethodFactory;
@@ -160,20 +160,3 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
 }
 
 modelSchemaMixin(Model.prototype);
-
-Object.defineProperty(Model.prototype, "method", {
-    get(this: Model): BaseMethod {
-        const storedMethod = this.prop("method", false);
-        if (storedMethod) {
-            return storedMethod as BaseMethod;
-        }
-        if (!this.prop("subtype", false)) {
-            this.setProp("subtype", this.defaultSubtype);
-        }
-        const defaultMethod = this.defaultMethodConfig;
-        this.setProp("method", defaultMethod);
-        return defaultMethod;
-    },
-    configurable: true,
-    enumerable: true,
-});

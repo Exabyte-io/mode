@@ -14,7 +14,7 @@ const tree_1 = require("./tree");
 const EMPTY_BRANCH = { methods: {} };
 class Model extends entity_1.InMemoryEntity {
     constructor(config) {
-        const { application, method, ...entityConfig } = config;
+        const { application, method = method_1.Method.defaultConfig, ...entityConfig } = config;
         super(entityConfig);
         this._application = application;
         this._MethodFactory = factory_1.MethodFactory;
@@ -132,19 +132,3 @@ class Model extends entity_1.InMemoryEntity {
 }
 exports.Model = Model;
 (0, ModelSchemaMixin_1.modelSchemaMixin)(Model.prototype);
-Object.defineProperty(Model.prototype, "method", {
-    get() {
-        const storedMethod = this.prop("method", false);
-        if (storedMethod) {
-            return storedMethod;
-        }
-        if (!this.prop("subtype", false)) {
-            this.setProp("subtype", this.defaultSubtype);
-        }
-        const defaultMethod = this.defaultMethodConfig;
-        this.setProp("method", defaultMethod);
-        return defaultMethod;
-    },
-    configurable: true,
-    enumerable: true,
-});
