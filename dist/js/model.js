@@ -19,12 +19,6 @@ class Model extends entity_1.InMemoryEntity {
         this._application = application;
         this._MethodFactory = factory_1.MethodFactory;
     }
-    // get type(): string {
-    //     return this.prop<string>("type", this.defaultType);
-    // }
-    // get subtype(): StringOrNamedSlug {
-    //     return this.prop<StringOrNamedSlug>("subtype", this.defaultSubtype);
-    // }
     setSubtype(subtype) {
         this.setProp("subtype", subtype);
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
@@ -71,14 +65,13 @@ class Model extends entity_1.InMemoryEntity {
     }
     get Method() {
         if (!this._method) {
-            const methodOrConfig = this.method;
-            const config = methodOrConfig || this.defaultMethodConfig;
-            this._method = this._MethodFactory.create(config);
+            this._method = this._MethodFactory.create(this.method || this.defaultMethodConfig);
         }
         return this._method;
     }
     setMethod(method) {
         this._method = method;
+        this.setProp("method", method.toJSON());
     }
     get methodsFromTree() {
         return this.treeBranchForSubType.methods || {};

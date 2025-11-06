@@ -4,7 +4,7 @@ import type { ApplicationSchemaBase, BaseMethod, BaseModel, SlugifiedEntry, Slug
 import { type ModelSchemaMixin } from "./generated/ModelSchemaMixin";
 import { Method } from "./method";
 import { MethodFactory } from "./methods/factory";
-import type { ModelConfig, MethodTreeBranch, ModelTree } from "./types";
+import type { MethodTreeBranch, ModelConfig, ModelTree } from "./types";
 type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin>;
 declare const Model_base: Base;
 export declare class Model extends Model_base implements BaseModel {

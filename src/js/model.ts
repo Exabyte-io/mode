@@ -14,7 +14,7 @@ import { type ModelSchemaMixin, modelSchemaMixin } from "./generated/ModelSchema
 import { Method } from "./method";
 import { MethodFactory } from "./methods/factory";
 import { getTreeByApplicationNameAndVersion, MODEL_TREE, treeSlugToNamedObject } from "./tree";
-import type { ModelConfig, MethodTreeBranch, ModelTree } from "./types";
+import type { MethodTreeBranch, ModelConfig, ModelTree } from "./types";
 
 const EMPTY_BRANCH: MethodTreeBranch = { methods: {} };
 
@@ -28,19 +28,11 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     protected _method?: Method;
 
     constructor(config: ModelConfig) {
-        const { application, ...entityConfig } = config as any;
+        const { application, ...entityConfig } = config;
         super(entityConfig);
         this._application = application as ApplicationSchemaBase | undefined;
         this._MethodFactory = MethodFactory;
     }
-
-    // get type(): string {
-    //     return this.prop<string>("type", this.defaultType);
-    // }
-
-    // get subtype(): StringOrNamedSlug {
-    //     return this.prop<StringOrNamedSlug>("subtype", this.defaultSubtype);
-    // }
 
     setSubtype(subtype: SlugifiedEntryOrSlug): void {
         this.setProp("subtype", subtype);
@@ -93,15 +85,14 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
 
     get Method(): Method {
         if (!this._method) {
-            const methodOrConfig = this.method;
-            const config = methodOrConfig || this.defaultMethodConfig;
-            this._method = this._MethodFactory.create(config);
+            this._method = this._MethodFactory.create(this.method || this.defaultMethodConfig);
         }
         return this._method;
     }
 
     setMethod(method: Method): void {
         this._method = method;
+        this.setProp("method", method.toJSON());
     }
 
     get methodsFromTree(): Record<string, string[]> {
@@ -113,7 +104,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     }
 
     get methodSubtypes(): SlugifiedEntry[] {
-        const { type } = this.method;
+        const { type } = this.method as Method;
         const subtypes = this.methodsFromTree[type] || [];
         return subtypes.map((slug) => treeSlugToNamedObject(slug));
     }
