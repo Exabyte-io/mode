@@ -1,10 +1,6 @@
 """Type definitions for mode package."""
 
-from typing import Any, Dict, List, Optional, Protocol, Union
-
-from mat3ra.esse.models.core.primitive.slugified_entry import SlugifiedEntry
-from mat3ra.esse.models.method import BaseMethod
-from mat3ra.esse.models.model import BaseModel1
+from typing import Any, Dict, List, Optional, Protocol
 
 
 class MethodTreeBranch:

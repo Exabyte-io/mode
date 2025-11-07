@@ -5,7 +5,6 @@ from typing import Any, Dict, Optional
 
 from mat3ra.code.entity import InMemoryEntity
 from mat3ra.esse.models.core.primitive.slugified_entry import SlugifiedEntry
-from mat3ra.esse.models.method import BaseMethod as EsseBaseMethod
 
 from .default_methods import PseudopotentialMethodConfig
 
@@ -15,7 +14,7 @@ class Method(InMemoryEntity):
 
     def __init__(self, config: Dict[str, Any]):
         """Initialize Method.
-        
+
         Args:
             config: Configuration dictionary with at least 'type' and 'subtype'
         """
@@ -90,7 +89,7 @@ class Method(InMemoryEntity):
         """Clean data by excluding specified fields."""
         if fields_to_exclude is None:
             fields_to_exclude = []
-        
+
         filtered_data = self.data.copy()
         for field in fields_to_exclude:
             filtered_data.pop(field, None)
@@ -100,7 +99,7 @@ class Method(InMemoryEntity):
         """Convert to JSON with clean data."""
         if fields_to_exclude is None:
             fields_to_exclude = []
-        
+
         json_data = copy.deepcopy(self._json)
         json_data["data"] = self.clean_data(fields_to_exclude)
         return json_data

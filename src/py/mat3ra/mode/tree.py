@@ -117,11 +117,9 @@ def tree_slug_to_named_object(slug: str) -> SlugifiedEntry:
     return SlugifiedEntry(slug=slug, name=name)
 
 
-def get_tree_by_application_name_and_version(
-    name: str, version: str
-) -> Optional[Dict[str, Any]]:
+def get_tree_by_application_name_and_version(name: str, version: str) -> Optional[Dict[str, Any]]:
     """Get tree by application name and version.
-    
+
     TODO: Implement this when application-specific trees are needed.
     """
     # Placeholder for future implementation
@@ -130,7 +128,7 @@ def get_tree_by_application_name_and_version(
 
 def get_default_model_type_for_application(application: Dict[str, Any]) -> Optional[str]:
     """Get default model type for an application.
-    
+
     TODO: Implement this when application-specific defaults are needed.
     """
     # Placeholder for future implementation

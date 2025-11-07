@@ -20,18 +20,18 @@ class Model(InMemoryEntity):
 
     def __init__(self, config: Dict[str, Any]):
         """Initialize Model.
-        
+
         Args:
             config: Configuration dictionary with at least 'type' and 'subtype'
         """
         self._application = config.pop("application", None)
         method_config = config.pop("method", Method.get_default_config())
-        
+
         super().__init__(config)
         self._json = config
         self._method_factory = MethodFactory
         self._method: Optional[Method] = None
-        
+
         if method_config:
             self.set_prop("method", method_config)
 
@@ -98,10 +98,10 @@ class Model(InMemoryEntity):
         """Get tree branch for current subtype."""
         subtype_slug = self._subtype_slug
         branch_dict = self.tree_branch_for_type.get(subtype_slug, {})
-        
+
         if not branch_dict:
             return EMPTY_BRANCH
-        
+
         return MethodTreeBranch(
             methods=branch_dict.get("methods", {}),
             functionals=branch_dict.get("functionals", []),
@@ -154,12 +154,12 @@ class Model(InMemoryEntity):
         method_types = list(self.methods_from_tree.keys())
         if not method_types:
             return Method.get_default_config()
-        
+
         method_type = method_types[0]
         subtypes = self.methods_from_tree.get(method_type, [])
         if not subtypes:
             return Method.get_default_config()
-        
+
         return {"type": method_type, "subtype": subtypes[0]}
 
     @classmethod

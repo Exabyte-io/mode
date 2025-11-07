@@ -1,7 +1,5 @@
 """Tests for Method class."""
 
-import pytest
-
 from mat3ra.mode import Method, PseudopotentialMethod
 
 
@@ -19,7 +17,7 @@ class TestMethod:
         """Test type property returns string."""
         method = Method({"type": "pseudopotential", "subtype": "us"})
         type_value = method.type
-        
+
         assert isinstance(type_value, str)
         assert type_value == "pseudopotential"
 
@@ -27,18 +25,20 @@ class TestMethod:
         """Test subtype property."""
         method = Method({"type": "pseudopotential", "subtype": "us"})
         subtype_value = method.subtype
-        
+
         assert subtype_value is not None
         assert subtype_value == "us"
 
     def test_data_property(self):
         """Test data property."""
-        method = Method({
-            "type": "pseudopotential",
-            "subtype": "us",
-            "data": {"key": "value"},
-        })
-        
+        method = Method(
+            {
+                "type": "pseudopotential",
+                "subtype": "us",
+                "data": {"key": "value"},
+            }
+        )
+
         data = method.data
         assert isinstance(data, dict)
         assert data["key"] == "value"
@@ -53,36 +53,40 @@ class TestMethod:
         """Test set_data method."""
         method = Method({"type": "pseudopotential", "subtype": "us"})
         method.set_data({"test": "data"})
-        
+
         assert method.data["test"] == "data"
 
     def test_set_search_text(self):
         """Test set_search_text method."""
         method = Method({"type": "pseudopotential", "subtype": "us"})
         method.set_search_text("test search")
-        
+
         assert method.search_text == "test search"
 
     def test_clean_data(self):
         """Test clean_data method."""
-        method = Method({
-            "type": "pseudopotential",
-            "subtype": "us",
-            "data": {"field1": "value1", "field2": "value2"},
-        })
-        
+        method = Method(
+            {
+                "type": "pseudopotential",
+                "subtype": "us",
+                "data": {"field1": "value1", "field2": "value2"},
+            }
+        )
+
         cleaned = method.clean_data(["field1"])
         assert "field2" in cleaned
         assert "field1" not in cleaned
 
     def test_to_json(self):
         """Test to_json method."""
-        method = Method({
-            "type": "pseudopotential",
-            "subtype": "us",
-            "data": {"key": "value"},
-        })
-        
+        method = Method(
+            {
+                "type": "pseudopotential",
+                "subtype": "us",
+                "data": {"key": "value"},
+            }
+        )
+
         json_data = method.to_json()
         assert json_data["type"] == "pseudopotential"
         assert json_data["subtype"] == "us"
@@ -90,12 +94,14 @@ class TestMethod:
 
     def test_clone_without_data(self):
         """Test clone_without_data method."""
-        method = Method({
-            "type": "pseudopotential",
-            "subtype": "us",
-            "data": {"key": "value"},
-        })
-        
+        method = Method(
+            {
+                "type": "pseudopotential",
+                "subtype": "us",
+                "data": {"key": "value"},
+            }
+        )
+
         cloned = method.clone_without_data()
         assert cloned.type == method.type
         assert cloned.data == {}
@@ -112,12 +118,14 @@ class TestPseudopotentialMethod:
 
     def test_pseudo_property(self):
         """Test pseudo property."""
-        method = PseudopotentialMethod({
-            "type": "pseudopotential",
-            "subtype": "us",
-            "data": {"pseudo": [{"element": "Si"}]},
-        })
-        
+        method = PseudopotentialMethod(
+            {
+                "type": "pseudopotential",
+                "subtype": "us",
+                "data": {"pseudo": [{"element": "Si"}]},
+            }
+        )
+
         pseudo = method.pseudo
         assert isinstance(pseudo, list)
         assert len(pseudo) == 1
@@ -125,12 +133,14 @@ class TestPseudopotentialMethod:
 
     def test_all_pseudo_property(self):
         """Test all_pseudo property."""
-        method = PseudopotentialMethod({
-            "type": "pseudopotential",
-            "subtype": "us",
-            "data": {"allPseudo": [{"element": "Si"}, {"element": "O"}]},
-        })
-        
+        method = PseudopotentialMethod(
+            {
+                "type": "pseudopotential",
+                "subtype": "us",
+                "data": {"allPseudo": [{"element": "Si"}, {"element": "O"}]},
+            }
+        )
+
         all_pseudo = method.all_pseudo
         assert isinstance(all_pseudo, list)
         assert len(all_pseudo) == 2
@@ -143,22 +153,24 @@ class TestPseudopotentialMethod:
                 "functional": {"slug": "pbe"},
             }
         }
-        
+
         result = PseudopotentialMethod.extract_exchange_correlation_from_subworkflow(subworkflow)
         assert result["approximation"] == "gga"
         assert result["functional"] == "pbe"
 
     def test_to_json_with_clean_data_excludes_all_pseudo(self):
         """Test that to_json_with_clean_data excludes allPseudo by default."""
-        method = PseudopotentialMethod({
-            "type": "pseudopotential",
-            "subtype": "us",
-            "data": {
-                "pseudo": [{"element": "Si"}],
-                "allPseudo": [{"element": "Si"}, {"element": "O"}],
-            },
-        })
-        
+        method = PseudopotentialMethod(
+            {
+                "type": "pseudopotential",
+                "subtype": "us",
+                "data": {
+                    "pseudo": [{"element": "Si"}],
+                    "allPseudo": [{"element": "Si"}, {"element": "O"}],
+                },
+            }
+        )
+
         json_data = method.to_json_with_clean_data()
         assert "allPseudo" not in json_data["data"]
         assert "pseudo" in json_data["data"]

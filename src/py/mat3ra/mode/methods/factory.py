@@ -15,16 +15,16 @@ class MethodFactory:
     @classmethod
     def create(cls, config: Dict[str, Any]) -> Method:
         """Create a method instance based on configuration.
-        
+
         Args:
             config: Method configuration dictionary
-            
+
         Returns:
             Method instance (or specialized subclass)
         """
         method_type = config.get("type", "")
-        
+
         if method_type == "pseudopotential":
             return cls.PseudopotentialMethod(config)
-        
+
         return cls.Method(config)

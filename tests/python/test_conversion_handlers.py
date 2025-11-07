@@ -1,7 +1,5 @@
 """Tests for conversion handlers."""
 
-import pytest
-
 from mat3ra.mode import MethodConversionHandler, ModelConversionHandler
 
 
@@ -19,9 +17,9 @@ class TestModelConversionHandler:
                 "functional": {"slug": "pbe"},
             },
         }
-        
+
         simple = ModelConversionHandler.convert_to_simple(categorized)
-        
+
         assert simple["type"] == "dft"
         assert simple["subtype"] == "gga"
         assert simple["functional"].slug == "pbe"
@@ -33,16 +31,16 @@ class TestModelConversionHandler:
                 "tier3": "ml",
             },
         }
-        
+
         simple = ModelConversionHandler.convert_to_simple(categorized)
-        
+
         assert simple["type"] == "ml"
         assert simple["subtype"] == "re"
 
     def test_convert_to_simple_unknown(self):
         """Test converting unknown model to simple."""
         simple = ModelConversionHandler.convert_to_simple(None)
-        
+
         assert simple["type"] == "unknown"
         assert simple["subtype"] == "unknown"
 
@@ -53,7 +51,7 @@ class TestModelConversionHandler:
             "subtype": "gga",
             "functional": {"slug": "pbe"},
         }
-        
+
         all_models = [
             {
                 "name": "DFT GGA PBE",
@@ -62,9 +60,9 @@ class TestModelConversionHandler:
                 "parameters": {"functional": "pbe"},
             }
         ]
-        
+
         categorized = ModelConversionHandler.convert_to_categorized(simple, all_models)
-        
+
         assert categorized is not None
         assert categorized.name == "DFT GGA PBE"
 
@@ -74,9 +72,9 @@ class TestModelConversionHandler:
             "type": "ml",
             "subtype": "re",
         }
-        
+
         categorized = ModelConversionHandler.convert_ml_to_categorized(simple)
-        
+
         assert categorized.name == "Regression"
         assert categorized.path == "/st/det/ml/re/none"
 
@@ -96,9 +94,9 @@ class TestMethodConversionHandler:
                 }
             ]
         }
-        
+
         simple = MethodConversionHandler.convert_to_simple(categorized)
-        
+
         assert simple["type"] == "pseudopotential"
         assert simple["subtype"] == "us"
 
@@ -110,9 +108,9 @@ class TestMethodConversionHandler:
                 {"categories": {"type": "psp", "subtype": "nc"}},
             ]
         }
-        
+
         simple = MethodConversionHandler.convert_to_simple(categorized)
-        
+
         assert simple["type"] == "pseudopotential"
         assert simple["subtype"] == "any"
 
@@ -128,16 +126,16 @@ class TestMethodConversionHandler:
                 }
             ]
         }
-        
+
         simple = MethodConversionHandler.convert_to_simple(categorized)
-        
+
         assert simple["type"] == "localorbital"
         assert simple["subtype"] == "pople"
 
     def test_convert_to_simple_unknown(self):
         """Test converting unknown method to simple."""
         simple = MethodConversionHandler.convert_to_simple(None)
-        
+
         assert simple["type"] == "unknown"
         assert simple["subtype"] == "unknown"
 
@@ -147,7 +145,7 @@ class TestMethodConversionHandler:
             "type": "pseudopotential",
             "subtype": "us",
         }
-        
+
         all_methods = [
             {
                 "name": "Pseudopotential US",
@@ -155,9 +153,9 @@ class TestMethodConversionHandler:
                 "units": [],
             }
         ]
-        
+
         categorized = MethodConversionHandler.convert_to_categorized(simple, all_methods)
-        
+
         assert categorized is not None
         assert categorized.name == "Pseudopotential US"
 
@@ -167,9 +165,9 @@ class TestMethodConversionHandler:
             "type": "localorbital",
             "subtype": "pople",
         }
-        
+
         categorized = MethodConversionHandler.convert_ao_to_categorized(simple)
-        
+
         assert categorized.name == "Wave function: LCAO - Pople basis set (6-31G)"
         assert len(categorized.units) == 1
 
@@ -180,9 +178,9 @@ class TestMethodConversionHandler:
             "subtype": "least_squares",
             "precision": 0.01,
         }
-        
+
         categorized = MethodConversionHandler.convert_regression_to_categorized(simple)
-        
+
         assert "regression" in categorized.name.lower()
         assert len(categorized.units) == 1
         assert categorized.units[0]["precision"] == 0.01
