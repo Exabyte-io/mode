@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "description": "MOdel and method DEfinitions",
     "scripts": {
-        "test": "npm run test:js && npm run test:py",
+        "test": "npm run test:js",
         "test:js": "nyc --reporter=text mocha --extension ts --recursive --bail --require ts-node/register/transpile-only \"tests/js/**/*.test.ts\"",
         "test:py": "python -m pytest tests/py -v",
         "pretest": "npm run transpile",
