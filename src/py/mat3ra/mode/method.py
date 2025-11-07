@@ -62,7 +62,8 @@ class Method(InMemoryEntity):
     @property
     def search_text(self) -> str:
         """Get search text from data."""
-        return self.get_prop("data.searchText", "")
+        data = self.get_prop("data", {})
+        return data.get("searchText", "")
 
     def set_search_text(self, search_text: str) -> None:
         """Set search text in data."""

@@ -24,7 +24,7 @@ class TestModelConversionHandler:
         
         assert simple["type"] == "dft"
         assert simple["subtype"] == "gga"
-        assert simple["functional"]["slug"] == "pbe"
+        assert simple["functional"].slug == "pbe"
 
     def test_convert_to_simple_ml(self):
         """Test converting ML categorized model to simple."""

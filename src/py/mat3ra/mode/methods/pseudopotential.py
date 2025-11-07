@@ -17,12 +17,14 @@ class PseudopotentialMethod(Method):
     @property
     def pseudo(self) -> List[Dict[str, Any]]:
         """Get pseudopotential data."""
-        return self.get_prop("data.pseudo", [])
+        data = self.get_prop("data", {})
+        return data.get("pseudo", [])
 
     @property
     def all_pseudo(self) -> List[Dict[str, Any]]:
         """Get all pseudopotential data."""
-        return self.get_prop("data.allPseudo", [])
+        data = self.get_prop("data", {})
+        return data.get("allPseudo", [])
 
     @property
     def pseudopotentials(self) -> List[PseudopotentialLike]:
