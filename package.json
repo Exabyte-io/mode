@@ -3,12 +3,13 @@
     "version": "0.0.0",
     "description": "MOdel and method DEfinitions",
     "scripts": {
-        "test": "nyc --reporter=text mocha --extension ts --recursive --bail --require ts-node/register/transpile-only tests/js/**/*.test.ts",
+        "test": "nyc --reporter=text mocha --recursive --bail",
+        "pretest": "npm run transpile",
         "lint": "eslint --cache src/js tests/js && prettier --write src/js tests/js",
         "lint:fix": "eslint --fix --cache src/js tests/js && prettier --write src/js tests/js",
         "transpile": "tsc --project tsconfig.json",
         "prettier": "prettier --check src/js tests/js",
-        "prepare": "husky install",
+        "prepare": "husky install || exit 0",
         "prepublishOnly": "rm -rf dist && npm run transpile",
         "generate-mixins": "ts-node scripts/generate-mixins.ts"
     },
