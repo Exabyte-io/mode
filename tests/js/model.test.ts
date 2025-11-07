@@ -1,8 +1,8 @@
 import { expect } from "chai";
 
-import { Model } from "../src/js/model";
-import { DFTModel } from "../src/js/models/dft";
-import { ModelConfig } from "../src/js/types";
+import { Model } from "../../src/js/model";
+import { DFTModel } from "../../src/js/models/dft";
+import { ModelConfig } from "../../src/js/types";
 
 describe("Model", () => {
     // @ts-ignore

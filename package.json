@@ -3,12 +3,18 @@
     "version": "0.0.0",
     "description": "MOdel and method DEfinitions",
     "scripts": {
-        "test": "nyc --reporter=text mocha --extension ts --recursive --bail --require ts-node/register/transpile-only \"tests/**/*.test.ts\"",
+        "test": "npm run test:js && npm run test:py",
+        "test:js": "nyc --reporter=text mocha --extension ts --recursive --bail --require ts-node/register/transpile-only \"tests/js/**/*.test.ts\"",
+        "test:py": "python -m pytest tests/py -v",
         "pretest": "npm run transpile",
-        "lint": "eslint src tests && prettier --write src tests",
-        "lint:fix": "eslint --fix --cache src tests && prettier --write src tests",
+        "lint": "npm run lint:js && npm run lint:py",
+        "lint:js": "eslint src/js tests/js && prettier --write src/js tests/js",
+        "lint:py": "cd src/py && ruff check . && black --check .",
+        "lint:fix": "npm run lint:js:fix && npm run lint:py:fix",
+        "lint:js:fix": "eslint --fix --cache src/js tests/js && prettier --write src/js tests/js",
+        "lint:py:fix": "cd src/py && ruff check --fix . && black .",
         "transpile": "tsc --project tsconfig.json",
-        "prettier": "prettier --check src tests",
+        "prettier": "prettier --check src/js tests/js",
         "prepare": "husky install || exit 0",
         "prepublishOnly": "rm -rf dist && npm run transpile",
         "generate-mixins": "ts-node scripts/generate-mixins.ts"
@@ -88,7 +94,9 @@
         "node": ">20.0.0"
     },
     "lint-staged": {
-        "*.js": "eslint --cache --fix",
-        "*.{js,css}": "prettier --write"
+        "src/js/**/*.{js,ts}": ["eslint --cache --fix", "prettier --write"],
+        "tests/js/**/*.{js,ts}": ["eslint --cache --fix", "prettier --write"],
+        "src/py/**/*.py": ["python -m ruff check --fix", "python -m black"],
+        "tests/py/**/*.py": ["python -m ruff check --fix", "python -m black"]
     }
 }
