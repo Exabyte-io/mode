@@ -4,3 +4,5 @@ node_modules/
 src/data/model_method_map.js
 src/data/model_list.js
 src/data/method_list.js
+src/py/
+tests/py/
