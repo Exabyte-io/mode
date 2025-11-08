@@ -157,7 +157,7 @@ class TestMethodConversionHandler:
         categorized = MethodConversionHandler.convert_to_categorized(simple, all_methods)
 
         assert categorized is not None
-        assert categorized.name == "Pseudopotential US"
+        assert categorized["name"] == "Pseudopotential US"
 
     def test_convert_to_categorized_ao(self):
         """Test converting simple atomic orbital method to categorized."""

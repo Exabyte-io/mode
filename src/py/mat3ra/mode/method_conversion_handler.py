@@ -143,7 +143,8 @@ class MethodConversionHandler:
 
         # The "any" subtype represents all planewave-pseudopotential methods
         all_path = (
-            "/qm/wf/none/psp/us::/qm/wf/none/psp/nc::/qm/wf/none/psp/nc-fr::" "/qm/wf/none/psp/paw::/qm/wf/none/pw/none"
+            "/qm/wf/none/psp/us::/qm/wf/none/psp/nc::/qm/wf/none/psp/nc-fr::" 
+            "/qm/wf/none/psp/paw::/qm/wf/none/pw/none"
         )
 
         if subtype == "any":
@@ -154,16 +155,7 @@ class MethodConversionHandler:
                 f"/qm/wf/none/psp/{subtype}::/qm/wf/none/pw/none"
             )
 
-        # Find matching method in all_methods
-        for categorized in all_methods:
-            if categorized.get("path") == path:
-                return SimplifiedCategorizedMethod(
-                    name=categorized.get("name", ""),
-                    path=categorized.get("path", ""),
-                    units=categorized.get("units", []),
-                )
-
-        return None
+        return next((categorized for categorized in all_methods if categorized.get("path") == path), None)
 
     @classmethod
     def convert_ao_to_categorized(cls, simple_method: Dict[str, Any]) -> SimplifiedCategorizedMethod:
