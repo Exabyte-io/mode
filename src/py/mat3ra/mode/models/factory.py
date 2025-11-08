@@ -26,9 +26,9 @@ class ModelFactory:
         model_type = config.get("type", "")
 
         if model_type == "dft":
-            return cls.DFTModel(config)
+            return cls.DFTModel.create(config)
 
-        return cls.Model(config)
+        return cls.Model.create(config)
 
     @classmethod
     def create_from_application(cls, config: Dict[str, Any]) -> Model:

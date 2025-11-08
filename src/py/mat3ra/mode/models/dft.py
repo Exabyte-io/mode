@@ -3,6 +3,7 @@
 from typing import Any, Dict, List, Union
 
 from mat3ra.esse.models.core.primitive.slugified_entry import SlugifiedEntry
+from pydantic import Field
 
 from ..model import Model
 from ..tree import tree_slug_to_named_object
@@ -10,14 +11,15 @@ from ..utils import safe_make_array
 
 
 class DFTModel(Model):
-    """DFT-specific model with functional, refiners, and modifiers."""
+    """DFT-specific model with functional, refiners, and modifiers.
+    
+    Pydantic model inheriting from Model.
+    All fields are automatically initialized via Pydantic.
+    """
 
-    def __init__(self, config: Dict[str, Any]):
-        """Initialize DFTModel."""
-        method_factory = config.pop("MethodFactory", None)
-        super().__init__(config)
-        if method_factory:
-            self._method_factory = method_factory
+    functional: Union[SlugifiedEntry, Dict[str, Any], str, None] = None
+    refiners: List[Union[SlugifiedEntry, Dict[str, Any], str]] = Field(default_factory=list)
+    modifiers: List[Union[SlugifiedEntry, Dict[str, Any], str]] = Field(default_factory=list)
 
     @property
     def group_slug(self) -> str:
@@ -56,60 +58,6 @@ class DFTModel(Model):
     def default_modifiers(self) -> List[SlugifiedEntry]:
         """Get default modifiers."""
         return []
-
-    @property
-    def functional(self) -> Union[SlugifiedEntry, Dict[str, Any]]:
-        """Get functional."""
-        return self.get_prop("functional", self.default_functional)
-
-    @property
-    def refiners(self) -> List[Union[SlugifiedEntry, Dict[str, Any]]]:
-        """Get refiners."""
-        return self.get_prop("refiners", self.default_refiners)
-
-    @property
-    def modifiers(self) -> List[Union[SlugifiedEntry, Dict[str, Any]]]:
-        """Get modifiers."""
-        return self.get_prop("modifiers", self.default_modifiers)
-
-    def set_subtype(self, subtype: Union[str, SlugifiedEntry]) -> None:
-        """Set subtype and update functional."""
-        self.set_prop("subtype", subtype)
-        self.set_functional(self.default_functional)
-
-    def set_functional(self, functional: Union[str, SlugifiedEntry]) -> None:
-        """Set functional."""
-        self.set_prop("functional", self._string_to_slugified_object(functional))
-        self.set_method(self._method_factory.create(self.default_method_config))
-
-    def _set_array_prop(self, name: str, data: Union[Any, List[Any]]) -> None:
-        """Set array property (refiners or modifiers)."""
-        normalized = [self._string_to_slugified_object(item) for item in safe_make_array(data)]
-        self.set_prop(name, normalized)
-
-    def set_refiners(self, refiners: Union[Any, List[Any]]) -> None:
-        """Set refiners."""
-        self._set_array_prop("refiners", refiners)
-
-    def set_modifiers(self, modifiers: Union[Any, List[Any]]) -> None:
-        """Set modifiers."""
-        self._set_array_prop("modifiers", modifiers)
-
-    def to_json(self) -> Dict[str, Any]:
-        """Convert to JSON representation."""
-        json_data = super().to_json()
-
-        def pick_slug(item: Union[SlugifiedEntry, Dict[str, Any]]) -> Dict[str, str]:
-            if isinstance(item, dict):
-                return {"slug": item.get("slug", "")}
-            return {"slug": getattr(item, "slug", "")}
-
-        functional = self.functional
-        json_data["functional"] = pick_slug(functional) if functional else {"slug": ""}
-        json_data["refiners"] = self.refiners
-        json_data["modifiers"] = self.modifiers
-
-        return json_data
 
     @property
     def all_functionals(self) -> List[SlugifiedEntry]:

@@ -9,13 +9,13 @@ class TestModel:
     def test_can_be_created(self):
         """Test that Model can be created."""
         config = {"type": "dft", "subtype": "gga"}
-        model = Model(config)
+        model = Model.create(config)
         assert model.type == "dft"
         assert model.subtype == "gga"
 
     def test_type_property(self):
         """Test type property returns string."""
-        model = Model({"type": "dft", "subtype": "gga"})
+        model = Model.create({"type": "dft", "subtype": "gga"})
         type_value = model.type
 
         assert isinstance(type_value, str)
@@ -23,7 +23,7 @@ class TestModel:
 
     def test_subtype_property(self):
         """Test subtype property."""
-        model = Model({"type": "dft", "subtype": "gga"})
+        model = Model.create({"type": "dft", "subtype": "gga"})
         subtype_value = model.subtype
 
         assert subtype_value is not None
@@ -31,7 +31,7 @@ class TestModel:
 
     def test_method_property_returns_method_instance(self):
         """Test that method property returns Method instance."""
-        model = Model(
+        model = Model.create(
             {
                 "type": "dft",
                 "subtype": "gga",
@@ -45,10 +45,10 @@ class TestModel:
         assert method_value is not None
         assert isinstance(method_value, Method)
 
-        # Check that it has Method class methods
-        assert hasattr(method_value, "set_search_text")
-        assert hasattr(method_value, "set_data")
-        assert callable(method_value.set_data)
+        # Check that it has Method class properties and methods
+        assert hasattr(method_value, "data")
+        assert hasattr(method_value, "search_text")
+        assert hasattr(method_value, "to_json")
 
     def test_default_config(self):
         """Test default configuration."""
@@ -58,8 +58,8 @@ class TestModel:
         assert "method" in config
 
     def test_to_json(self):
-        """Test to_json method."""
-        model = Model(
+        """Test to_dict method (to_json returns string from Pydantic)."""
+        model = Model.create(
             {
                 "type": "dft",
                 "subtype": "gga",
@@ -67,7 +67,7 @@ class TestModel:
             }
         )
 
-        json_data = model.to_json()
+        json_data = model.to_dict()
         assert json_data["type"] == "dft"
         assert json_data["subtype"] == "gga"
         assert "method" in json_data
@@ -75,7 +75,7 @@ class TestModel:
 
     def test_allowed_types(self):
         """Test allowed_types property."""
-        model = Model({"type": "dft", "subtype": "gga"})
+        model = Model.create({"type": "dft", "subtype": "gga"})
         allowed = model.allowed_types
 
         assert len(allowed) > 0
@@ -83,7 +83,7 @@ class TestModel:
 
     def test_allowed_subtypes(self):
         """Test allowed_subtypes property."""
-        model = Model({"type": "dft", "subtype": "gga"})
+        model = Model.create({"type": "dft", "subtype": "gga"})
         allowed = model.allowed_subtypes
 
         assert len(allowed) > 0
@@ -95,7 +95,7 @@ class TestDFTModel:
 
     def test_method_returns_method_instance(self):
         """Test that DFTModel.Method returns Method instance."""
-        dft_model = DFTModel(
+        dft_model = DFTModel.create(
             {
                 "type": "dft",
                 "subtype": "gga",
@@ -110,13 +110,13 @@ class TestDFTModel:
         assert method_value is not None
         assert isinstance(method_value, Method)
 
-        # Check that it has Method class methods
-        assert hasattr(method_value, "set_search_text")
-        assert callable(method_value.set_search_text)
+        # Check that it has Method class properties and methods
+        assert hasattr(method_value, "data")
+        assert hasattr(method_value, "search_text")
 
     def test_functional_property(self):
         """Test functional property."""
-        dft_model = DFTModel(
+        dft_model = DFTModel.create(
             {
                 "type": "dft",
                 "subtype": "gga",
@@ -129,7 +129,7 @@ class TestDFTModel:
 
     def test_refiners_property(self):
         """Test refiners property."""
-        dft_model = DFTModel(
+        dft_model = DFTModel.create(
             {
                 "type": "dft",
                 "subtype": "gga",
@@ -144,7 +144,7 @@ class TestDFTModel:
 
     def test_modifiers_property(self):
         """Test modifiers property."""
-        dft_model = DFTModel(
+        dft_model = DFTModel.create(
             {
                 "type": "dft",
                 "subtype": "gga",
@@ -159,7 +159,7 @@ class TestDFTModel:
 
     def test_group_slug(self):
         """Test group_slug property."""
-        dft_model = DFTModel(
+        dft_model = DFTModel.create(
             {
                 "type": "dft",
                 "subtype": "gga",
@@ -174,8 +174,8 @@ class TestDFTModel:
         assert "pbe" in slug
 
     def test_to_json_includes_functional(self):
-        """Test that to_json includes functional."""
-        dft_model = DFTModel(
+        """Test that to_dict includes functional (to_json returns string from Pydantic)."""
+        dft_model = DFTModel.create(
             {
                 "type": "dft",
                 "subtype": "gga",
@@ -183,13 +183,13 @@ class TestDFTModel:
             }
         )
 
-        json_data = dft_model.to_json()
+        json_data = dft_model.to_dict()
         assert "functional" in json_data
         assert json_data["functional"]["slug"] == "pbe"
 
     def test_all_functionals(self):
         """Test all_functionals property."""
-        dft_model = DFTModel(
+        dft_model = DFTModel.create(
             {
                 "type": "dft",
                 "subtype": "gga",
@@ -202,7 +202,7 @@ class TestDFTModel:
 
     def test_all_refiners(self):
         """Test all_refiners property."""
-        dft_model = DFTModel(
+        dft_model = DFTModel.create(
             {
                 "type": "dft",
                 "subtype": "gga",
@@ -214,7 +214,7 @@ class TestDFTModel:
 
     def test_all_modifiers(self):
         """Test all_modifiers property."""
-        dft_model = DFTModel(
+        dft_model = DFTModel.create(
             {
                 "type": "dft",
                 "subtype": "gga",

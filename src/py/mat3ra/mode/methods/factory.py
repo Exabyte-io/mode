@@ -25,6 +25,6 @@ class MethodFactory:
         method_type = config.get("type", "")
 
         if method_type == "pseudopotential":
-            return cls.PseudopotentialMethod(config)
+            return cls.PseudopotentialMethod.create(config)
 
-        return cls.Method(config)
+        return cls.Method.create(config)

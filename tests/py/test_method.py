@@ -9,13 +9,13 @@ class TestMethod:
     def test_can_be_created(self):
         """Test that Method can be created."""
         config = {"type": "pseudopotential", "subtype": "us"}
-        method = Method(config)
+        method = Method.create(config)
         assert method.type == "pseudopotential"
         assert method.subtype == "us"
 
     def test_type_property(self):
         """Test type property returns string."""
-        method = Method({"type": "pseudopotential", "subtype": "us"})
+        method = Method.create({"type": "pseudopotential", "subtype": "us"})
         type_value = method.type
 
         assert isinstance(type_value, str)
@@ -23,7 +23,7 @@ class TestMethod:
 
     def test_subtype_property(self):
         """Test subtype property."""
-        method = Method({"type": "pseudopotential", "subtype": "us"})
+        method = Method.create({"type": "pseudopotential", "subtype": "us"})
         subtype_value = method.subtype
 
         assert subtype_value is not None
@@ -31,7 +31,7 @@ class TestMethod:
 
     def test_data_property(self):
         """Test data property."""
-        method = Method(
+        method = Method.create(
             {
                 "type": "pseudopotential",
                 "subtype": "us",
@@ -50,22 +50,22 @@ class TestMethod:
         assert "subtype" in config
 
     def test_set_data(self):
-        """Test set_data method."""
-        method = Method({"type": "pseudopotential", "subtype": "us"})
-        method.set_data({"test": "data"})
+        """Test setting data directly via Pydantic field."""
+        method = Method.create({"type": "pseudopotential", "subtype": "us"})
+        method.data = {"test": "data"}
 
         assert method.data["test"] == "data"
 
     def test_set_search_text(self):
-        """Test set_search_text method."""
-        method = Method({"type": "pseudopotential", "subtype": "us"})
-        method.set_search_text("test search")
+        """Test setting search text via data field."""
+        method = Method.create({"type": "pseudopotential", "subtype": "us"})
+        method.data = {"searchText": "test search"}
 
         assert method.search_text == "test search"
 
     def test_clean_data(self):
         """Test clean_data method."""
-        method = Method(
+        method = Method.create(
             {
                 "type": "pseudopotential",
                 "subtype": "us",
@@ -78,8 +78,8 @@ class TestMethod:
         assert "field1" not in cleaned
 
     def test_to_json(self):
-        """Test to_json method."""
-        method = Method(
+        """Test to_dict method (to_json returns string from Pydantic)."""
+        method = Method.create(
             {
                 "type": "pseudopotential",
                 "subtype": "us",
@@ -87,14 +87,14 @@ class TestMethod:
             }
         )
 
-        json_data = method.to_json()
+        json_data = method.to_dict()
         assert json_data["type"] == "pseudopotential"
         assert json_data["subtype"] == "us"
         assert "data" in json_data
 
     def test_clone_without_data(self):
         """Test clone_without_data method."""
-        method = Method(
+        method = Method.create(
             {
                 "type": "pseudopotential",
                 "subtype": "us",
@@ -113,12 +113,12 @@ class TestPseudopotentialMethod:
     def test_can_be_created(self):
         """Test that PseudopotentialMethod can be created."""
         config = {"type": "pseudopotential", "subtype": "us"}
-        method = PseudopotentialMethod(config)
+        method = PseudopotentialMethod.create(config)
         assert method.type == "pseudopotential"
 
     def test_pseudo_property(self):
         """Test pseudo property."""
-        method = PseudopotentialMethod(
+        method = PseudopotentialMethod.create(
             {
                 "type": "pseudopotential",
                 "subtype": "us",
@@ -133,7 +133,7 @@ class TestPseudopotentialMethod:
 
     def test_all_pseudo_property(self):
         """Test all_pseudo property."""
-        method = PseudopotentialMethod(
+        method = PseudopotentialMethod.create(
             {
                 "type": "pseudopotential",
                 "subtype": "us",
@@ -160,7 +160,7 @@ class TestPseudopotentialMethod:
 
     def test_to_json_with_clean_data_excludes_all_pseudo(self):
         """Test that to_json_with_clean_data excludes allPseudo by default."""
-        method = PseudopotentialMethod(
+        method = PseudopotentialMethod.create(
             {
                 "type": "pseudopotential",
                 "subtype": "us",

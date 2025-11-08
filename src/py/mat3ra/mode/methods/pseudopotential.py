@@ -7,24 +7,22 @@ from ..types import PseudopotentialLike
 
 
 class PseudopotentialMethod(Method):
-    """Pseudopotential method with support for pseudopotential data."""
+    """Pseudopotential method with support for pseudopotential data.
+    
+    Inherits from Method, which is a Pydantic model.
+    """
 
-    def __init__(self, config: Dict[str, Any]):
-        """Initialize PseudopotentialMethod."""
-        super().__init__(config)
-        self.pseudopotential_cls: Optional[type] = None
+    pseudopotential_cls: Optional[type] = None
 
     @property
     def pseudo(self) -> List[Dict[str, Any]]:
         """Get pseudopotential data."""
-        data = self.get_prop("data", {})
-        return data.get("pseudo", [])
+        return self.data.get("pseudo", [])
 
     @property
     def all_pseudo(self) -> List[Dict[str, Any]]:
         """Get all pseudopotential data."""
-        data = self.get_prop("data", {})
-        return data.get("allPseudo", [])
+        return self.data.get("allPseudo", [])
 
     @property
     def pseudopotentials(self) -> List[PseudopotentialLike]:
@@ -87,7 +85,7 @@ class PseudopotentialMethod(Method):
         sorted_pseudos = sorted(pseudopotentials, key=lambda p: p.element or "")
         data = self.data.copy()
         data["pseudo"] = [p.to_json() for p in sorted_pseudos]
-        self.set_data(data)
+        self.data = data
 
     def set_all_pseudopotentials(self, pseudopotentials: List[PseudopotentialLike]) -> None:
         """Set all pseudopotentials."""
@@ -95,7 +93,7 @@ class PseudopotentialMethod(Method):
         sorted_pseudos = sorted(pseudopotentials, key=lambda p: p.element or "")
         data = self.data.copy()
         data["allPseudo"] = [p.to_json() for p in sorted_pseudos]
-        self.set_data(data)
+        self.data = data
 
     def to_json_with_clean_data(self, fields_to_exclude: Optional[list] = None) -> Dict[str, Any]:
         """Convert to JSON with clean data, excluding allPseudo by default."""

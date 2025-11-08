@@ -1,10 +1,11 @@
 """Model class implementation."""
 
-import copy
 from typing import Any, Dict, List, Optional, Union
 
-from mat3ra.code.entity import InMemoryEntity
+from mat3ra.code.entity import InMemoryEntityPydantic
 from mat3ra.esse.models.core.primitive.slugified_entry import SlugifiedEntry
+from mat3ra.esse.models.model import BaseModel
+from pydantic import Field
 
 from .default_models import DFTModelConfig
 from .method import Method
@@ -15,45 +16,23 @@ from .types import MethodTreeBranch
 EMPTY_BRANCH = MethodTreeBranch()
 
 
-class Model(InMemoryEntity):
-    """Model class representing a computational model."""
+class Model(InMemoryEntityPydantic, BaseModel):
+    """Model class representing a computational model.
+    
+    Pydantic model with fields inherited from BaseModel (esse).
+    All fields are automatically initialized via Pydantic.
+    """
 
-    def __init__(self, config: Dict[str, Any]):
-        """Initialize Model.
-
-        Args:
-            config: Configuration dictionary with at least 'type' and 'subtype'
-        """
-        self._application = config.pop("application", None)
-        method_config = config.pop("method", Method.get_default_config())
-
-        super().__init__(config)
-        self._json = config
-        self._method_factory = MethodFactory
-        self._method: Optional[Method] = None
-
-        if method_config:
-            self.set_prop("method", method_config)
-
-    @property
-    def type(self) -> str:
-        """Get the model type."""
-        return self.get_prop("type", "")
-
-    @property
-    def subtype(self) -> Any:
-        """Get the model subtype."""
-        return self.get_prop("subtype", "")
-
-    @property
-    def method(self) -> Dict[str, Any]:
-        """Get the method configuration."""
-        return self.get_prop("method", {})
-
-    def set_subtype(self, subtype: Union[str, SlugifiedEntry]) -> None:
-        """Set model subtype and update method accordingly."""
-        self.set_prop("subtype", subtype)
-        self.set_method(self._method_factory.create(self.default_method_config))
+    type: str = ""
+    subtype: Union[str, SlugifiedEntry, Dict[str, Any]] = ""
+    method: Dict[str, Any] = Field(default_factory=dict)
+    
+    # Private attributes for internal state
+    _application: Optional[Dict[str, Any]] = None
+    _method_factory: Any = MethodFactory
+    _method: Optional[Method] = None
+    
+    model_config = {"arbitrary_types_allowed": True}
 
     @property
     def allowed_types(self) -> List[SlugifiedEntry]:
@@ -122,13 +101,9 @@ class Model(InMemoryEntity):
     def Method(self) -> Method:
         """Get Method instance."""
         if not self._method:
-            self._method = self._method_factory.create(self.method)
+            method_config = self.method if self.method else Method.get_default_config()
+            self._method = self._method_factory.create(method_config)
         return self._method
-
-    def set_method(self, method: Method) -> None:
-        """Set method instance."""
-        self._method = method
-        self.set_prop("method", method.to_json())
 
     @property
     def methods_from_tree(self) -> Dict[str, List[str]]:
@@ -174,16 +149,6 @@ class Model(InMemoryEntity):
     def get_all_types(cls) -> List[SlugifiedEntry]:
         """Get all model types."""
         return [tree_slug_to_named_object(slug) for slug in MODEL_TREE.keys()]
-
-    def to_json(self) -> Dict[str, Any]:
-        """Convert to JSON representation."""
-        json_data = copy.deepcopy(self._json)
-        return {
-            **json_data,
-            "type": self.type,
-            "subtype": self.subtype,
-            "method": self.Method.to_json_with_clean_data(),
-        }
 
     def _string_to_slugified_object(self, slug: Union[str, SlugifiedEntry]) -> SlugifiedEntry:
         """Convert string to SlugifiedEntry."""

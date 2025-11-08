@@ -1,57 +1,29 @@
 """Method class implementation."""
 
-import copy
 from typing import Any, Dict, Optional
 
-from mat3ra.code.entity import InMemoryEntity
+from mat3ra.code.entity import InMemoryEntityPydantic
 from mat3ra.esse.models.core.primitive.slugified_entry import SlugifiedEntry
+from mat3ra.esse.models.method import BaseMethod
+from pydantic import Field
 
 from .default_methods import PseudopotentialMethodConfig
 
 
-class Method(InMemoryEntity):
-    """Method class representing a computational method."""
+class Method(BaseMethod, InMemoryEntityPydantic):
+    """Method class representing a computational method.
+    
+    Pydantic model with fields inherited from BaseMethod.
+    All fields are automatically initialized via Pydantic.
+    """
 
-    def __init__(self, config: Dict[str, Any]):
-        """Initialize Method.
-
-        Args:
-            config: Configuration dictionary with at least 'type' and 'subtype'
-        """
-        data = config.get("data", {})
-        config_with_data = {**config, "data": data}
-        super().__init__(config_with_data)
-        self._json = config_with_data
-
-    @property
-    def type(self) -> str:
-        """Get the method type."""
-        return self.get_prop("type", "")
-
-    @property
-    def subtype(self) -> Any:
-        """Get the method subtype."""
-        return self.get_prop("subtype", "")
-
-    @property
-    def data(self) -> Dict[str, Any]:
-        """Get the method data."""
-        return self.get_prop("data", {})
-
-    @property
-    def precision(self) -> Optional[float]:
-        """Get the method precision."""
-        return self.get_prop("precision")
+    data: Dict[str, Any] = Field(default_factory=dict)
 
     def clone_without_data(self) -> "Method":
         """Clone the method without data."""
         cloned = self.clone()
-        cloned.set_data({})
+        cloned.data = {}
         return cloned
-
-    def set_subtype(self, subtype: SlugifiedEntry) -> None:
-        """Set the method subtype."""
-        self.set_prop("subtype", subtype)
 
     @classmethod
     def get_default_config(cls) -> Dict[str, Any]:
@@ -61,18 +33,7 @@ class Method(InMemoryEntity):
     @property
     def search_text(self) -> str:
         """Get search text from data."""
-        data = self.get_prop("data", {})
-        return data.get("searchText", "")
-
-    def set_search_text(self, search_text: str) -> None:
-        """Set search text in data."""
-        data = self.data.copy()
-        data["searchText"] = search_text
-        self.set_data(data)
-
-    def set_data(self, data: Optional[Dict[str, Any]] = None) -> None:
-        """Set method data."""
-        self.set_prop("data", data or {})
+        return self.data.get("searchText", "")
 
     @property
     def omit_in_hash_calculation(self) -> bool:
@@ -100,15 +61,7 @@ class Method(InMemoryEntity):
         if fields_to_exclude is None:
             fields_to_exclude = []
 
-        json_data = copy.deepcopy(self._json)
+        json_data = self.model_dump()
         json_data["data"] = self.clean_data(fields_to_exclude)
         return json_data
 
-    def to_json(self) -> Dict[str, Any]:
-        """Convert to JSON representation."""
-        return {
-            "type": self.type,
-            "subtype": self.subtype,
-            "data": self.data,
-            "precision": self.precision,
-        }
