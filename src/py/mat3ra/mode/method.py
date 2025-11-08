@@ -11,7 +11,7 @@ from .default_methods import PseudopotentialMethodConfig
 
 class Method(BaseMethod, InMemoryEntityPydantic):
     """Method class representing a computational method.
-    
+
     Pydantic model with fields inherited from BaseMethod.
     All fields are automatically initialized via Pydantic.
     """
@@ -63,4 +63,3 @@ class Method(BaseMethod, InMemoryEntityPydantic):
         json_data = self.model_dump()
         json_data["data"] = self.clean_data(fields_to_exclude)
         return json_data
-

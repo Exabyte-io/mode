@@ -8,7 +8,7 @@ from ..types import PseudopotentialLike
 
 class PseudopotentialMethod(Method):
     """Pseudopotential method with support for pseudopotential data.
-    
+
     Inherits from Method, which is a Pydantic model.
     """
 

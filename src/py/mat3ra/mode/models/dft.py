@@ -7,12 +7,11 @@ from pydantic import Field
 
 from ..model import Model
 from ..tree import tree_slug_to_named_object
-from ..utils import safe_make_array
 
 
 class DFTModel(Model):
     """DFT-specific model with functional, refiners, and modifiers.
-    
+
     Pydantic model inheriting from Model.
     All fields are automatically initialized via Pydantic.
     """

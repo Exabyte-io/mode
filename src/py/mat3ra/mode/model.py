@@ -10,7 +10,11 @@ from pydantic import Field
 from .default_models import DFTModelConfig
 from .method import Method
 from .methods.factory import MethodFactory
-from .tree import MODEL_TREE, get_tree_by_application_name_and_version, tree_slug_to_named_object
+from .tree import (
+    MODEL_TREE,
+    get_tree_by_application_name_and_version,
+    tree_slug_to_named_object,
+)
 from .types import MethodTreeBranch
 
 EMPTY_BRANCH = MethodTreeBranch()
@@ -18,7 +22,7 @@ EMPTY_BRANCH = MethodTreeBranch()
 
 class Model(InMemoryEntityPydantic, BaseModel):
     """Model class representing a computational model.
-    
+
     Pydantic model with fields inherited from BaseModel (esse).
     All fields are automatically initialized via Pydantic.
     """
@@ -26,13 +30,11 @@ class Model(InMemoryEntityPydantic, BaseModel):
     type: str = ""
     subtype: Union[str, SlugifiedEntry, Dict[str, Any]] = ""
     method: Dict[str, Any] = Field(default_factory=dict)
-    
+
     # Private attributes for internal state
     _application: Optional[Dict[str, Any]] = None
     _method_factory: Any = MethodFactory
     _method: Optional[Method] = None
-    
-    model_config = {"arbitrary_types_allowed": True}
 
     @property
     def allowed_types(self) -> List[SlugifiedEntry]:
