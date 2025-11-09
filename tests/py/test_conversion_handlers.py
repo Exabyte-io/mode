@@ -149,7 +149,10 @@ class TestMethodConversionHandler:
         all_methods = [
             {
                 "name": "Pseudopotential US",
-                "path": "/qm/wf/none/smearing/gaussian::/linalg/diag/none/davidson/none::/qm/wf/none/psp/us::/qm/wf/none/pw/none",
+                "path": (
+                    "/qm/wf/none/smearing/gaussian::/linalg/diag/none/davidson/none::"
+                    "/qm/wf/none/psp/us::/qm/wf/none/pw/none"
+                ),
                 "units": [],
             }
         ]

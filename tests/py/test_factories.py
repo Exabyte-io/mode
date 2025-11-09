@@ -1,8 +1,14 @@
 """Tests for factory classes."""
 
 import pytest
-
-from mat3ra.mode import DFTModel, Method, MethodFactory, Model, ModelFactory, PseudopotentialMethod
+from mat3ra.mode import (
+    DFTModel,
+    Method,
+    MethodFactory,
+    Model,
+    ModelFactory,
+    PseudopotentialMethod,
+)
 
 
 class TestMethodFactory:

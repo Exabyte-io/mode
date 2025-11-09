@@ -143,7 +143,7 @@ class MethodConversionHandler:
 
         # The "any" subtype represents all planewave-pseudopotential methods
         all_path = (
-            "/qm/wf/none/psp/us::/qm/wf/none/psp/nc::/qm/wf/none/psp/nc-fr::" 
+            "/qm/wf/none/psp/us::/qm/wf/none/psp/nc::/qm/wf/none/psp/nc-fr::"
             "/qm/wf/none/psp/paw::/qm/wf/none/pw/none"
         )
 
