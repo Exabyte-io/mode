@@ -59,7 +59,7 @@ jobs:
         uses: ./actions/py/pytest
         with:
           python-version: ${{ matrix.python-version }}
-          unit-test-directory: tests/python
+          unit-test-directory: tests/py
           bot-ssh-key: ${{ secrets.BOT_GITHUB_KEY }}
 
   run-js-tests:
