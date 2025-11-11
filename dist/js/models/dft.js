@@ -33,9 +33,11 @@ class DFTModel extends model_1.Model {
         const [slug] = this.treeBranchForSubType.functionals || [];
         return (0, tree_1.treeSlugToNamedObject)(slug);
     }
+    // eslint-disable-next-line class-methods-use-this
     get defaultRefiners() {
         return [];
     }
+    // eslint-disable-next-line class-methods-use-this
     get defaultModifiers() {
         return [];
     }
@@ -69,11 +71,17 @@ class DFTModel extends model_1.Model {
     }
     toJSON() {
         const pickSlugFromObject = (item) => underscore_1.default.pick(item, "slug");
+        const baseJson = super.toJSON();
+        const keysToExclude = ["type", "subtype", "functional", "refiners", "modifiers", "method"];
+        const restJson = Object.fromEntries(Object.entries(baseJson).filter(([key]) => !keysToExclude.includes(key)));
         return {
-            ...super.toJSON(),
+            type: this.type,
+            subtype: this.subtype,
+            method: this.Method.toJSONWithCleanData(),
             functional: pickSlugFromObject(this.functional),
             refiners: this.refiners,
             modifiers: this.modifiers,
+            ...restJson,
         };
     }
     get allFunctionals() {
