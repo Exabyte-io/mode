@@ -33,10 +33,12 @@ export class DFTModel extends Model {
         return treeSlugToNamedObject(slug);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     get defaultRefiners(): SlugifiedEntry[] {
         return [];
     }
 
+    // eslint-disable-next-line class-methods-use-this
     get defaultModifiers(): SlugifiedEntry[] {
         return [];
     }
@@ -82,11 +84,19 @@ export class DFTModel extends Model {
 
     toJSON(): Record<string, unknown> {
         const pickSlugFromObject = (item: SlugifiedEntry) => _.pick(item, "slug");
+        const baseJson = super.toJSON();
+        const keysToExclude = ["type", "subtype", "functional", "refiners", "modifiers", "method"];
+        const restJson = Object.fromEntries(
+            Object.entries(baseJson).filter(([key]) => !keysToExclude.includes(key)),
+        );
         return {
-            ...super.toJSON(),
+            type: this.type,
+            subtype: this.subtype,
+            method: this.Method.toJSONWithCleanData(),
             functional: pickSlugFromObject(this.functional),
             refiners: this.refiners,
             modifiers: this.modifiers,
+            ...restJson,
         };
     }
 
