@@ -54,7 +54,7 @@
     "devDependencies": {
         "@exabyte-io/eslint-config": "2025.5.13-0",
         "@mat3ra/esse": "2025.10.8-0",
-        "@mat3ra/standata":  "git+https://github.com/Exabyte-io/standata.git#c2b0f91e3368810a1017d20261a821d75ccc02cf",
+        "@mat3ra/standata":  "git+https://github.com/Exabyte-io/standata.git#5a8f617c225e6b199915e8a15cbdb1bd646a218e",
         "@mat3ra/code": "2025.10.8-0",
         "@mat3ra/tsconfig": "2024.6.3-0",
         "@types/chai": "^4.3.11",
