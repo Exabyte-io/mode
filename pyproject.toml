@@ -23,6 +23,7 @@ dependencies = [
     "mat3ra-esse",
     "mat3ra-code",
     "mat3ra-utils",
+    "mat3ra-standata @ git+https://github.com/Exabyte-io/standata.git@abbcd35197808d9dc3664f393229c25ec7e1f8ab"
 ]
 
 [project.optional-dependencies]
@@ -91,4 +92,3 @@ pythonpath = [
 testpaths = [
     "tests/py"
 ]
-
