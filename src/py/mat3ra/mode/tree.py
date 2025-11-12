@@ -1,5 +1,3 @@
-
-
 from typing import Any, Dict, List, Optional
 
 from mat3ra.esse.models.core.primitive.slugified_entry import SlugifiedEntry
@@ -20,19 +18,11 @@ def tree_slug_to_named_object(slug: str) -> SlugifiedEntry:
 
 
 def get_tree_by_application_name_and_version(name: str, version: str) -> Dict[str, Any]:
-    """Get tree by application name and version.
-    
-    Mimics TypeScript: getTreeByApplicationNameAndVersion from tree.ts
-    """
     # TODO: add logic to filter by version when necessary
     return MODELS_TREE_CONFIG_BY_APPLICATION.get(name, {})
 
 
 def get_default_model_type_for_application(application: Dict[str, Any]) -> Optional[str]:
-    """Get default model type for an application.
-    
-    Mimics TypeScript: getDefaultModelTypeForApplication from tree.ts
-    """
     name = application.get("name")
     if not name:
         return None

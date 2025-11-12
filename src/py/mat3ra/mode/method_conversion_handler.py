@@ -130,7 +130,7 @@ class MethodConversionHandler:
         if all_methods is None:
             all_methods = []
 
-        subtype = safely_get_slug(simple_method.get("subtype", "us"))
+        subtype = safely_get_slug(simple_method.get("subtype"))
 
         # The "any" subtype represents all planewave-pseudopotential methods
         all_path = (
@@ -150,7 +150,7 @@ class MethodConversionHandler:
 
     @classmethod
     def convert_ao_to_categorized(cls, simple_method: Dict[str, Any]) -> SimplifiedCategorizedMethod:
-        subtype = safely_get_slug(simple_method.get("subtype", "pople"))
+        subtype = safely_get_slug(simple_method.get("subtype"))
 
         unit = {
             "parameters": {
