@@ -6,7 +6,10 @@ import { MethodConversionHandler } from "../../src/js";
 const allMethods = new MethodStandata().getAll();
 
 const CATEGORIZED_METHOD = {
-    PSEUDOPOTENTIAL: allMethods[0],
+    PSEUDOPOTENTIAL: allMethods.find((method) => {
+        const pspUnits = method.units?.filter((unit) => unit.categories?.type === "psp") || [];
+        return pspUnits.length === 1 && pspUnits[0].categories?.subtype === "nc";
+    })!,
 };
 
 const SIMPLE_METHOD = {
