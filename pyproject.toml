@@ -90,5 +90,5 @@ pythonpath = [
     "src/py",
 ]
 testpaths = [
-    "tests/py"
+    "tests/py/unit"
 ]
