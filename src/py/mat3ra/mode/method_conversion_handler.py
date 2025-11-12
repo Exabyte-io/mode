@@ -1,5 +1,3 @@
-"""Method conversion handler for converting between simple and categorized methods."""
-
 from typing import Any, Dict, List, Optional, Union
 
 from mat3ra.esse.models.core.primitive.slugified_entry import SlugifiedEntry
@@ -9,7 +7,6 @@ from .types import SimplifiedCategorizedMethod
 
 
 def safely_get_slug(slug_obj: Union[str, SlugifiedEntry, Dict[str, Any]]) -> str:
-    """Safely extract slug from various input types."""
     if isinstance(slug_obj, str):
         return slug_obj
     if isinstance(slug_obj, dict):
@@ -18,7 +15,6 @@ def safely_get_slug(slug_obj: Union[str, SlugifiedEntry, Dict[str, Any]]) -> str
 
 
 class MethodConversionHandler:
-    """Handler for converting methods between simple and categorized formats."""
 
     @classmethod
     def convert_to_simple(cls, categorized_method: Optional[Dict[str, Any]]) -> Dict[str, Any]:
@@ -55,12 +51,10 @@ class MethodConversionHandler:
 
     @classmethod
     def convert_unknown_to_simple(cls) -> Dict[str, Any]:
-        """Convert unknown method to simple format."""
         return UnknownMethodConfig.copy()
 
     @classmethod
     def convert_psp_units_to_simple(cls, units: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """Convert pseudopotential units to simple format."""
         if not units:
             return cls.convert_unknown_to_simple()
 
@@ -81,12 +75,10 @@ class MethodConversionHandler:
 
     @classmethod
     def convert_ao_unit_to_simple(cls) -> Dict[str, Any]:
-        """Convert atomic orbital unit to simple format."""
         return LocalOrbitalMethodConfig.copy()
 
     @classmethod
     def convert_regression_unit_to_simple(cls, unit: Dict[str, Any]) -> Dict[str, Any]:
-        """Convert regression unit to simple format."""
         categories = unit.get("categories", {})
         type_obj = categories.get("type", "linear")
         subtype_obj = categories.get("subtype", "least_squares")
@@ -99,9 +91,9 @@ class MethodConversionHandler:
 
     @classmethod
     def convert_to_categorized(
-        cls,
-        simple_method: Optional[Dict[str, Any]],
-        all_methods: Optional[List[Dict[str, Any]]] = None,
+            cls,
+            simple_method: Optional[Dict[str, Any]],
+            all_methods: Optional[List[Dict[str, Any]]] = None,
     ) -> Optional[SimplifiedCategorizedMethod]:
         """Convert simple method to categorized format.
 
@@ -131,11 +123,10 @@ class MethodConversionHandler:
 
     @classmethod
     def convert_psp_to_categorized(
-        cls,
-        simple_method: Dict[str, Any],
-        all_methods: Optional[List[Dict[str, Any]]] = None,
+            cls,
+            simple_method: Dict[str, Any],
+            all_methods: Optional[List[Dict[str, Any]]] = None,
     ) -> Optional[SimplifiedCategorizedMethod]:
-        """Convert simple pseudopotential method to categorized format."""
         if all_methods is None:
             all_methods = []
 
@@ -159,7 +150,6 @@ class MethodConversionHandler:
 
     @classmethod
     def convert_ao_to_categorized(cls, simple_method: Dict[str, Any]) -> SimplifiedCategorizedMethod:
-        """Convert simple atomic orbital method to categorized format."""
         subtype = safely_get_slug(simple_method.get("subtype", "pople"))
 
         unit = {
@@ -185,7 +175,6 @@ class MethodConversionHandler:
 
     @classmethod
     def convert_regression_to_categorized(cls, simple_method: Dict[str, Any]) -> SimplifiedCategorizedMethod:
-        """Convert simple regression method to categorized format."""
         method_type = safely_get_slug(simple_method.get("type", "linear"))
         subtype = safely_get_slug(simple_method.get("subtype", "least_squares"))
         precision = simple_method.get("precision")

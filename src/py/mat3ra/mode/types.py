@@ -1,10 +1,7 @@
-"""Type definitions for mode package."""
-
 from typing import Any, Dict, List, Optional, Protocol
 
 
 class MethodTreeBranch:
-    """Represents a branch in the method tree."""
 
     def __init__(
         self,
@@ -27,19 +24,15 @@ MethodConfig = Dict[str, Any]
 
 
 class PseudopotentialLike(Protocol):
-    """Protocol for pseudopotential-like objects."""
-
     element: Optional[str]
 
     def to_json(self) -> Dict[str, Any]:
-        """Convert to JSON representation."""
+
         ...
 
 
 # Simplified categorized types for conversion
 class SimplifiedCategorizedModel:
-    """Simplified categorized model for conversion."""
-
     def __init__(
         self,
         name: str,
@@ -54,8 +47,6 @@ class SimplifiedCategorizedModel:
 
 
 class SimplifiedCategorizedMethod:
-    """Simplified categorized method for conversion."""
-
     def __init__(
         self,
         name: str,

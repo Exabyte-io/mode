@@ -1,5 +1,3 @@
-"""Default model configurations."""
-
 from typing import Any, Dict
 
 DFTModelConfig: Dict[str, Any] = {

@@ -1,4 +1,4 @@
-"""Tree structures defining allowed model and method types and their relationships."""
+
 
 from typing import Any, Dict, List, Optional
 
@@ -10,13 +10,11 @@ from mat3ra.standata.data.models_tree_config_by_application import (
 
 
 def get_pseudopotential_types_from_tree() -> List[str]:
-    """Get all pseudopotential types from the tree."""
     methods_tree = MODEL_TREE.get("dft", {}).get("gga", {}).get("methods", {})
     return methods_tree.get("pseudopotential", [])
 
 
 def tree_slug_to_named_object(slug: str) -> SlugifiedEntry:
-    """Convert a slug to a SlugifiedEntry with name."""
     name = MODEL_NAMES.get(slug, slug)
     return SlugifiedEntry(slug=slug, name=name)
 

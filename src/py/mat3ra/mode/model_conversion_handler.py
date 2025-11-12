@@ -1,4 +1,4 @@
-"""Model conversion handler for converting between simple and categorized models."""
+
 
 from typing import Any, Dict, List, Optional, Union
 
@@ -9,7 +9,7 @@ from .types import ModelConfig, SimplifiedCategorizedModel
 
 
 def safely_get_slug(slug_obj: Union[str, SlugifiedEntry, Dict[str, Any]]) -> str:
-    """Safely extract slug from various input types."""
+    
     if isinstance(slug_obj, str):
         return slug_obj
     if isinstance(slug_obj, dict):
@@ -18,7 +18,7 @@ def safely_get_slug(slug_obj: Union[str, SlugifiedEntry, Dict[str, Any]]) -> str
 
 
 class ModelConversionHandler:
-    """Handler for converting models between simple and categorized formats."""
+    
 
     @classmethod
     def convert_to_simple(cls, categorized_model: Optional[Dict[str, Any]]) -> ModelConfig:
@@ -45,7 +45,7 @@ class ModelConversionHandler:
 
     @classmethod
     def convert_dft_to_simple(cls, categorized_model: Dict[str, Any]) -> ModelConfig:
-        """Convert DFT categorized model to simple format."""
+        
         categories = categorized_model.get("categories", {})
         subtype_category = categories.get("subtype")
 
@@ -66,7 +66,7 @@ class ModelConversionHandler:
 
     @classmethod
     def convert_ml_to_simple(cls) -> ModelConfig:
-        """Convert ML categorized model to simple format."""
+        
         return {
             "type": "ml",
             "subtype": "re",
@@ -74,7 +74,7 @@ class ModelConversionHandler:
 
     @classmethod
     def convert_unknown_to_simple(cls) -> ModelConfig:
-        """Convert unknown model to simple format."""
+        
         return {
             "type": "unknown",
             "subtype": "unknown",
@@ -118,7 +118,7 @@ class ModelConversionHandler:
         simple_model: ModelConfig,
         all_models: Optional[List[Dict[str, Any]]] = None,
     ) -> Optional[SimplifiedCategorizedModel]:
-        """Convert simple DFT model to categorized format."""
+        
         if all_models is None:
             all_models = []
 
@@ -152,7 +152,7 @@ class ModelConversionHandler:
 
     @classmethod
     def convert_ml_to_categorized(cls, simple_model: ModelConfig) -> SimplifiedCategorizedModel:
-        """Convert simple ML model to categorized format."""
+        
         subtype_obj = simple_model.get("subtype", "re")
         subtype = safely_get_slug(subtype_obj)
 

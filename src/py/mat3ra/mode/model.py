@@ -1,5 +1,3 @@
-"""Model class implementation."""
-
 from typing import Any, Dict, List, Optional, Union
 
 from mat3ra.code.entity import InMemoryEntityPydantic
@@ -38,29 +36,29 @@ class Model(InMemoryEntityPydantic, BaseModel):
 
     @property
     def allowed_types(self) -> List[SlugifiedEntry]:
-        """Get allowed model types."""
+
         return [tree_slug_to_named_object(slug) for slug in self.tree.keys()]
 
     @property
     def allowed_subtypes(self) -> List[SlugifiedEntry]:
-        """Get allowed model subtypes."""
+
         return [tree_slug_to_named_object(slug) for slug in self.tree_branch_for_type.keys()]
 
     @property
     def default_type(self) -> str:
-        """Get default model type."""
+
         types = self.allowed_types
         return types[0].slug if types else ""
 
     @property
     def default_subtype(self) -> str:
-        """Get default model subtype."""
+
         subtypes = self.allowed_subtypes
         return subtypes[0].slug if subtypes else ""
 
     @property
     def tree(self) -> Dict[str, Any]:
-        """Get the model tree."""
+
         if self._application:
             name = self._application.get("name")
             version = self._application.get("version")
@@ -71,12 +69,12 @@ class Model(InMemoryEntityPydantic, BaseModel):
 
     @property
     def tree_branch_for_type(self) -> Dict[str, Any]:
-        """Get tree branch for current type."""
+
         return self.tree.get(self.type, {})
 
     @property
     def tree_branch_for_subtype(self) -> MethodTreeBranch:
-        """Get tree branch for current subtype."""
+
         subtype_slug = self._subtype_slug
         branch_dict = self.tree_branch_for_type.get(subtype_slug, {})
 
@@ -92,7 +90,7 @@ class Model(InMemoryEntityPydantic, BaseModel):
 
     @property
     def group_slug(self) -> str:
-        """Get group slug for the model."""
+
         subtype = self._subtype_slug
         if not self._application:
             return f"{self.type}:{subtype}"
@@ -101,7 +99,7 @@ class Model(InMemoryEntityPydantic, BaseModel):
 
     @property
     def Method(self) -> Method:
-        """Get Method instance."""
+
         if not self._method:
             method_config = self.method if self.method else Method.get_default_config()
             self._method = self._method_factory.create(method_config)
@@ -109,17 +107,17 @@ class Model(InMemoryEntityPydantic, BaseModel):
 
     @property
     def methods_from_tree(self) -> Dict[str, List[str]]:
-        """Get methods from tree."""
+
         return self.tree_branch_for_subtype.methods
 
     @property
     def method_types(self) -> List[SlugifiedEntry]:
-        """Get method types."""
+
         return [tree_slug_to_named_object(type_) for type_ in self.methods_from_tree.keys()]
 
     @property
     def method_subtypes(self) -> List[SlugifiedEntry]:
-        """Get method subtypes."""
+
         method_obj = self.Method
         method_type = method_obj.type
         subtypes = self.methods_from_tree.get(method_type, [])
@@ -127,7 +125,7 @@ class Model(InMemoryEntityPydantic, BaseModel):
 
     @property
     def default_method_config(self) -> Dict[str, Any]:
-        """Get default method configuration."""
+
         method_types = list(self.methods_from_tree.keys())
         if not method_types:
             return Method.get_default_config()
@@ -141,7 +139,7 @@ class Model(InMemoryEntityPydantic, BaseModel):
 
     @classmethod
     def get_default_config(cls) -> Dict[str, Any]:
-        """Get default configuration."""
+
         return {
             **DFTModelConfig,
             "method": Method.get_default_config(),
@@ -149,23 +147,23 @@ class Model(InMemoryEntityPydantic, BaseModel):
 
     @classmethod
     def get_all_types(cls) -> List[SlugifiedEntry]:
-        """Get all model types."""
+
         return [tree_slug_to_named_object(slug) for slug in MODEL_TREE.keys()]
 
     def _string_to_slugified_object(self, slug: Union[str, SlugifiedEntry]) -> SlugifiedEntry:
-        """Convert string to SlugifiedEntry."""
+
         if isinstance(slug, str):
             return tree_slug_to_named_object(slug)
         return slug
 
     @property
     def is_unknown(self) -> bool:
-        """Check if model type is unknown."""
+
         return self.type == "unknown"
 
     @property
     def _subtype_slug(self) -> str:
-        """Get subtype as slug string."""
+
         subtype = self.subtype
         if isinstance(subtype, dict):
             return subtype.get("slug", "")

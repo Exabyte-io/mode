@@ -1,5 +1,3 @@
-"""Utility functions for mode package."""
-
 from typing import List, TypeVar, Union
 
 T = TypeVar("T")
