@@ -1,5 +1,3 @@
-"""Model factory for creating model instances."""
-
 from typing import Any, Dict
 
 from ..model import Model
@@ -8,21 +6,11 @@ from .dft import DFTModel
 
 
 class ModelFactory:
-    """Factory for creating model instances."""
-
     DFTModel = DFTModel
     Model = Model
 
     @classmethod
     def create(cls, config: Dict[str, Any]) -> Model:
-        """Create a model instance based on configuration.
-
-        Args:
-            config: Model configuration dictionary
-
-        Returns:
-            Model instance (or specialized subclass)
-        """
         model_type = config.get("type", "")
 
         if model_type == "dft":
@@ -32,17 +20,6 @@ class ModelFactory:
 
     @classmethod
     def create_from_application(cls, config: Dict[str, Any]) -> Model:
-        """Create a model from application configuration.
-
-        Args:
-            config: Model configuration with 'application' key
-
-        Returns:
-            Model instance
-
-        Raises:
-            ValueError: If application is not provided or model type cannot be determined
-        """
         application = config.get("application")
         if not application:
             raise ValueError("ModelFactory.create_from_application: application is required")

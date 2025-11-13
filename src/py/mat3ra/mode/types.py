@@ -2,7 +2,6 @@ from typing import Any, Dict, List, Optional, Protocol
 
 
 class MethodTreeBranch:
-
     def __init__(
         self,
         methods: Optional[Dict[str, List[str]]] = None,
@@ -27,7 +26,6 @@ class PseudopotentialLike(Protocol):
     element: Optional[str]
 
     def to_json(self) -> Dict[str, Any]:
-
         ...
 
 

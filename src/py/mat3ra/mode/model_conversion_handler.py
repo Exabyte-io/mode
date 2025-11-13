@@ -1,5 +1,3 @@
-
-
 from typing import Any, Dict, List, Optional, Union
 
 from mat3ra.esse.models.core.primitive.slugified_entry import SlugifiedEntry
@@ -9,7 +7,6 @@ from .types import ModelConfig, SimplifiedCategorizedModel
 
 
 def safely_get_slug(slug_obj: Union[str, SlugifiedEntry, Dict[str, Any]]) -> str:
-    
     if isinstance(slug_obj, str):
         return slug_obj
     if isinstance(slug_obj, dict):
@@ -18,7 +15,6 @@ def safely_get_slug(slug_obj: Union[str, SlugifiedEntry, Dict[str, Any]]) -> str
 
 
 class ModelConversionHandler:
-    
 
     @classmethod
     def convert_to_simple(cls, categorized_model: Optional[Dict[str, Any]]) -> ModelConfig:
@@ -45,7 +41,6 @@ class ModelConversionHandler:
 
     @classmethod
     def convert_dft_to_simple(cls, categorized_model: Dict[str, Any]) -> ModelConfig:
-        
         categories = categorized_model.get("categories", {})
         subtype_category = categories.get("subtype")
 
@@ -66,7 +61,6 @@ class ModelConversionHandler:
 
     @classmethod
     def convert_ml_to_simple(cls) -> ModelConfig:
-        
         return {
             "type": "ml",
             "subtype": "re",
@@ -74,7 +68,6 @@ class ModelConversionHandler:
 
     @classmethod
     def convert_unknown_to_simple(cls) -> ModelConfig:
-        
         return {
             "type": "unknown",
             "subtype": "unknown",
@@ -82,9 +75,9 @@ class ModelConversionHandler:
 
     @classmethod
     def convert_to_categorized(
-        cls,
-        simple_model: Optional[ModelConfig],
-        all_models: Optional[List[Dict[str, Any]]] = None,
+            cls,
+            simple_model: Optional[ModelConfig],
+            all_models: Optional[List[Dict[str, Any]]] = None,
     ) -> Optional[SimplifiedCategorizedModel]:
         """Convert simple model to categorized format.
 
@@ -114,11 +107,10 @@ class ModelConversionHandler:
 
     @classmethod
     def convert_dft_to_categorized(
-        cls,
-        simple_model: ModelConfig,
-        all_models: Optional[List[Dict[str, Any]]] = None,
+            cls,
+            simple_model: ModelConfig,
+            all_models: Optional[List[Dict[str, Any]]] = None,
     ) -> Optional[SimplifiedCategorizedModel]:
-        
         if all_models is None:
             all_models = []
 
@@ -152,7 +144,6 @@ class ModelConversionHandler:
 
     @classmethod
     def convert_ml_to_categorized(cls, simple_model: ModelConfig) -> SimplifiedCategorizedModel:
-        
         subtype_obj = simple_model.get("subtype", "re")
         subtype = safely_get_slug(subtype_obj)
 

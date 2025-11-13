@@ -1,5 +1,3 @@
-"""Methods package."""
-
 from .factory import MethodFactory
 from .pseudopotential import PseudopotentialMethod
 

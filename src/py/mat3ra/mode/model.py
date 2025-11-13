@@ -19,12 +19,6 @@ EMPTY_BRANCH = MethodTreeBranch()
 
 
 class Model(InMemoryEntityPydantic, BaseModel):
-    """Model class representing a computational model.
-
-    Pydantic model with fields inherited from BaseModel (esse).
-    All fields are automatically initialized via Pydantic.
-    """
-
     type: str = ""
     subtype: Union[str, SlugifiedEntry, Dict[str, Any]] = ""
     method: Dict[str, Any] = Field(default_factory=dict)

@@ -1,5 +1,3 @@
-"""Mode package - Model and Method definitions."""
-
 from . import default_methods, default_models, tree
 from .method import Method
 from .method_conversion_handler import MethodConversionHandler

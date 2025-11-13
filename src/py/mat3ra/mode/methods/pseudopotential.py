@@ -1,5 +1,3 @@
-"""Pseudopotential method implementation."""
-
 from typing import Any, Dict, List, Optional, Union
 
 from ..method import Method
@@ -7,40 +5,30 @@ from ..types import PseudopotentialLike
 
 
 class PseudopotentialMethod(Method):
-    """Pseudopotential method with support for pseudopotential data.
-
-    Inherits from Method, which is a Pydantic model.
-    """
-
     pseudopotential_cls: Optional[type] = None
 
     @property
     def pseudo(self) -> List[Dict[str, Any]]:
-        """Get pseudopotential data."""
         return self.data.get("pseudo", [])
 
     @property
     def all_pseudo(self) -> List[Dict[str, Any]]:
-        """Get all pseudopotential data."""
         return self.data.get("allPseudo", [])
 
     @property
     def pseudopotentials(self) -> List[PseudopotentialLike]:
-        """Get pseudopotential objects."""
         if not self.pseudopotential_cls:
             return []
         return [self.pseudopotential_cls(config) for config in self.pseudo]
 
     @property
     def all_pseudopotentials(self) -> List[PseudopotentialLike]:
-        """Get all pseudopotential objects."""
         if not self.pseudopotential_cls:
             return []
         return [self.pseudopotential_cls(config) for config in self.all_pseudo]
 
     @staticmethod
     def extract_exchange_correlation_from_subworkflow(subworkflow: Dict[str, Any]) -> Dict[str, str]:
-        """Extract exchange correlation from subworkflow."""
         model = subworkflow.get("model", {})
         approximation = model.get("subtype", "")
         functional_value = model.get("functional", {})
@@ -56,11 +44,9 @@ class PseudopotentialMethod(Method):
         }
 
     def has_pseudopotential_for(self, element: str) -> bool:
-        """Check if pseudopotential exists for element."""
         return any(pseudo.element == element for pseudo in self.pseudopotentials)
 
     def set_pseudopotential_per_element(self, pseudo: Optional[PseudopotentialLike]) -> None:
-        """Set pseudopotential for a specific element."""
         if not pseudo:
             self.set_pseudopotentials([])
             return
@@ -71,7 +57,6 @@ class PseudopotentialMethod(Method):
         self.set_pseudopotentials(filtered)
 
     def add_to_all_pseudos(self, pseudos: Union[PseudopotentialLike, List[PseudopotentialLike]]) -> None:
-        """Add pseudopotentials to all pseudos list."""
         if not isinstance(pseudos, list):
             pseudos = [pseudos]
 
@@ -80,7 +65,6 @@ class PseudopotentialMethod(Method):
         self.set_all_pseudopotentials(all_pseudos)
 
     def set_pseudopotentials(self, pseudopotentials: List[PseudopotentialLike]) -> None:
-        """Set pseudopotentials."""
         # Sort by element and convert to JSON
         sorted_pseudos = sorted(pseudopotentials, key=lambda p: p.element or "")
         data = self.data.copy()
@@ -88,7 +72,6 @@ class PseudopotentialMethod(Method):
         self.data = data
 
     def set_all_pseudopotentials(self, pseudopotentials: List[PseudopotentialLike]) -> None:
-        """Set all pseudopotentials."""
         # Sort by element and convert to JSON
         sorted_pseudos = sorted(pseudopotentials, key=lambda p: p.element or "")
         data = self.data.copy()
@@ -96,7 +79,6 @@ class PseudopotentialMethod(Method):
         self.data = data
 
     def to_json_with_clean_data(self, fields_to_exclude: Optional[list] = None) -> Dict[str, Any]:
-        """Convert to JSON with clean data, excluding allPseudo by default."""
         if fields_to_exclude is None:
             fields_to_exclude = []
 
