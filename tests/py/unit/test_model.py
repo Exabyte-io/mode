@@ -1,5 +1,3 @@
-"""Tests for Model class."""
-
 from mat3ra.mode import Method, Model
 
 

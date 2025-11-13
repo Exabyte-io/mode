@@ -1,5 +1,3 @@
-"""Tests for DFTModel class."""
-
 from mat3ra.mode import DFTModel, Method
 
 

@@ -1,5 +1,3 @@
-"""Tests for MethodFactory."""
-
 from mat3ra.mode import Method, MethodFactory, PseudopotentialMethod
 
 

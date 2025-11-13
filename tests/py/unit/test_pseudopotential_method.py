@@ -1,5 +1,3 @@
-"""Tests for PseudopotentialMethod class."""
-
 from mat3ra.mode import PseudopotentialMethod
 
 

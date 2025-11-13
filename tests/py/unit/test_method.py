@@ -1,5 +1,3 @@
-"""Tests for Method class."""
-
 from mat3ra.mode import Method
 
 

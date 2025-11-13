@@ -1,5 +1,3 @@
-"""Tests for ModelFactory."""
-
 import pytest
 from mat3ra.mode import DFTModel, Model, ModelFactory
 

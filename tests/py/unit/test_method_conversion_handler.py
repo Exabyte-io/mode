@@ -1,5 +1,3 @@
-"""Tests for MethodConversionHandler."""
-
 from mat3ra.mode import MethodConversionHandler
 
 
