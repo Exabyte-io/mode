@@ -62,6 +62,14 @@ export declare const MODEL_TREE: {
     ml: string;
     re: string;
 };
+export declare const METHODS: {
+    readonly pseudopotential: "pseudopotential";
+    readonly localorbital: "localorbital";
+    readonly unknown: "unknown";
+};
+export declare const getPseudopotentialTypesFromTree: () => string[];
+export declare const getDFTFunctionalsFromTree: () => string[];
+export declare const getDFTFunctionalsByApproximation: (approximation: string) => string[] | undefined;
 export declare const treeSlugToNamedObject: (modelSlug: string) => SlugifiedEntry;
 export declare const getTreeByApplicationNameAndVersion: ({ name, }: Pick<ApplicationSchemaBase, "name" | "version">) => ModelTree;
 export declare const getDefaultModelTypeForApplication: (application: ApplicationSchemaBase) => string;

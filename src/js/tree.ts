@@ -7,6 +7,28 @@ import type { ModelTree } from "./types";
 
 export const { MODEL_TREE, MODEL_NAMES } = MODEL_TREE_DATA;
 
+export const METHODS = {
+    pseudopotential: "pseudopotential",
+    localorbital: "localorbital",
+    unknown: "unknown",
+} as const;
+
+export const getPseudopotentialTypesFromTree = (): string[] => {
+    const dftTree = MODEL_TREE.dft as Record<string, any>;
+    const firstBranch = Object.values(dftTree)[0];
+    return firstBranch?.methods?.pseudopotential || [];
+};
+
+export const getDFTFunctionalsFromTree = (): string[] => {
+    return Object.keys(MODEL_TREE.dft);
+};
+
+export const getDFTFunctionalsByApproximation = (approximation: string): string[] | undefined => {
+    const dftTree = MODEL_TREE.dft as Record<string, any>;
+    const branch = dftTree[approximation];
+    return branch?.functionals;
+};
+
 export const treeSlugToNamedObject = (modelSlug: string): SlugifiedEntry => {
     return {
         slug: modelSlug,
