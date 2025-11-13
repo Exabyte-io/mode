@@ -54,7 +54,7 @@
     "devDependencies": {
         "@exabyte-io/eslint-config": "2025.5.13-0",
         "@mat3ra/esse": "2025.10.8-0",
-        "@mat3ra/standata": "2025.10.2-0",
+        "@mat3ra/standata": "2025.11.12-0",
         "@mat3ra/code": "2025.10.8-0",
         "@mat3ra/tsconfig": "2024.6.3-0",
         "@types/chai": "^4.3.11",
@@ -88,7 +88,13 @@
         "node": ">20.0.0"
     },
     "lint-staged": {
-        "src/js/**/*.{js,ts}": ["eslint --cache --fix", "prettier --write"],
-        "tests/js/**/*.{js,ts}": ["eslint --cache --fix", "prettier --write"]
+        "src/js/**/*.{js,ts}": [
+            "eslint --cache --fix",
+            "prettier --write"
+        ],
+        "tests/js/**/*.{js,ts}": [
+            "eslint --cache --fix",
+            "prettier --write"
+        ]
     }
 }

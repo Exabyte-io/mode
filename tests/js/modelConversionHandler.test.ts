@@ -6,7 +6,12 @@ import { ModelConversionHandler } from "../../src/js";
 const allModels = new ModelStandata().getAll();
 
 const CATEGORIZED_MODEL = {
-    DFT: allModels[0],
+    DFT: allModels.find(
+        (model) =>
+            model.categories?.tier3 === "dft" &&
+            model.categories?.subtype === "lda" &&
+            model.parameters?.functional === "pz",
+    )!,
 };
 
 const EXPECTED_MODEL = {
@@ -35,7 +40,7 @@ describe("ModelConversionHandler", () => {
 
     describe("convertToCategorized", () => {
         it("converts simple DFT model to categorized", () => {
-            const simple = ModelConversionHandler.convertToSimple(allModels[0]);
+            const simple = ModelConversionHandler.convertToSimple(CATEGORIZED_MODEL.DFT);
             const categorized = ModelConversionHandler.convertToCategorized(simple, allModels);
 
             expect(categorized).to.exist;
