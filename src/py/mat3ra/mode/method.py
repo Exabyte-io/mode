@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from mat3ra.code.entity import InMemoryEntityPydantic
 from mat3ra.esse.models.method import BaseMethod
@@ -8,7 +8,7 @@ from .default_methods import PseudopotentialMethodConfig
 
 
 class Method(BaseMethod, InMemoryEntityPydantic):
-    data: Dict[str, Any] = Field(default_factory=dict)
+    data: Dict[str, Any] = Field(default_factory=dict, exclude=True)
 
     def clone_without_data(self) -> "Method":
         cloned = self.clone()
@@ -18,6 +18,13 @@ class Method(BaseMethod, InMemoryEntityPydantic):
     @classmethod
     def get_default_config(cls) -> Dict[str, Any]:
         return PseudopotentialMethodConfig.copy()
+
+    @classmethod
+    def clean(cls, config: Dict[str, Any]) -> Dict[str, Any]:
+        data = config.get("data", {})
+        cleaned = super().clean(config)
+        cleaned["data"] = data
+        return cleaned
 
     @property
     def search_text(self) -> str:
@@ -33,19 +40,14 @@ class Method(BaseMethod, InMemoryEntityPydantic):
         other_fields = {k: v for k, v in data.items() if k != "searchText"}
         return not search_text and not other_fields
 
-    def clean_data(self, fields_to_exclude: Optional[list] = None) -> Dict[str, Any]:
-        if fields_to_exclude is None:
-            fields_to_exclude = []
+    def to_dict(self, exclude: Optional[List[str]] = None) -> Dict[str, Any]:
+        exclude_set = set(exclude) if exclude else set()
+        should_exclude_data = "data" in exclude_set
+        exclude_set = {x for x in exclude_set if x != "data"}
 
-        filtered_data = self.data.copy()
-        for field in fields_to_exclude:
-            filtered_data.pop(field, None)
-        return filtered_data
+        dict_data = super().to_dict(exclude=list(exclude_set) if exclude_set else None)
 
-    def to_json_with_clean_data(self, fields_to_exclude: Optional[list] = None) -> Dict[str, Any]:
-        if fields_to_exclude is None:
-            fields_to_exclude = []
+        if not should_exclude_data:
+            dict_data["data"] = self.data.copy()
 
-        json_data = self.model_dump()
-        json_data["data"] = self.clean_data(fields_to_exclude)
-        return json_data
+        return dict_data

@@ -33,7 +33,7 @@ def test_method_property_returns_method_instance():
         }
     )
 
-    method_value = model.Method
+    method_value = model.method
 
     assert method_value is not None
     assert isinstance(method_value, Method)

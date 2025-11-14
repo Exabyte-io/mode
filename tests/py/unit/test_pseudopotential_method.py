@@ -49,7 +49,7 @@ def test_extract_exchange_correlation():
     assert result["functional"] == "pbe"
 
 
-def test_to_json_with_clean_data_excludes_all_pseudo():
+def test_to_dict_excludes_all_pseudo():
     method = PseudopotentialMethod.create(
         {
             "type": "pseudopotential",
@@ -61,7 +61,7 @@ def test_to_json_with_clean_data_excludes_all_pseudo():
         }
     )
 
-    json_data = method.to_json_with_clean_data()
+    json_data = method.to_dict()
     assert "allPseudo" not in json_data["data"]
     assert "pseudo" in json_data["data"]
 

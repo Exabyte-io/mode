@@ -58,20 +58,6 @@ def test_set_search_text():
     assert method.search_text == "test search"
 
 
-def test_clean_data():
-    method = Method.create(
-        {
-            "type": "pseudopotential",
-            "subtype": "us",
-            "data": {"field1": "value1", "field2": "value2"},
-        }
-    )
-
-    cleaned = method.clean_data(["field1"])
-    assert "field2" in cleaned
-    assert "field1" not in cleaned
-
-
 def test_to_json():
     method = Method.create(
         {

@@ -11,7 +11,7 @@ def test_method_returns_method_instance():
         }
     )
 
-    method_value = dft_model.Method
+    method_value = dft_model.method
 
     assert method_value is not None
     assert isinstance(method_value, Method)

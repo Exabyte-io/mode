@@ -78,9 +78,12 @@ class PseudopotentialMethod(Method):
         data["allPseudo"] = [p.to_json() for p in sorted_pseudos]
         self.data = data
 
-    def to_json_with_clean_data(self, fields_to_exclude: Optional[list] = None) -> Dict[str, Any]:
-        if fields_to_exclude is None:
-            fields_to_exclude = []
-
-        exclude = fields_to_exclude + ["allPseudo"]
-        return super().to_json_with_clean_data(exclude)
+    def to_dict(self, exclude: Optional[List[str]] = None) -> Dict[str, Any]:
+        json_data = super().to_dict(exclude=exclude)
+        
+        if exclude is None or "data" not in exclude:
+            filtered_data = self.data.copy()
+            filtered_data.pop("allPseudo", None)
+            json_data["data"] = filtered_data
+        
+        return json_data

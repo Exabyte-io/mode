@@ -23,8 +23,8 @@ class DFTModel(Model):
         modifiers_slug = "+".join(m.get("slug", "") if isinstance(m, dict) else str(m) for m in modifiers)
 
         slugs = []
-        if self._application:
-            slugs.append(self._application.get("shortName", ""))
+        if self.application:
+            slugs.append(self.application.get("shortName", ""))
         slugs.extend([self.type, self.subtype, functional_slug, refiners_slug, modifiers_slug])
 
         # Filter out empty strings
