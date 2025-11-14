@@ -27,8 +27,10 @@ class Model(InMemoryEntityPydantic, BaseModel):
 
     @staticmethod
     def _slugify(subtype: Any) -> str:
-        if isinstance(subtype, SlugifiedEntry): return subtype.slug
-        if isinstance(subtype, dict): return str(subtype.get("slug", ""))
+        if isinstance(subtype, SlugifiedEntry):
+            return subtype.slug
+        if isinstance(subtype, dict):
+            return str(subtype.get("slug", ""))
         return "" if subtype is None else str(subtype)
 
     def __convert_kwargs__(self, **kwargs: Any) -> Dict[str, Any]:
