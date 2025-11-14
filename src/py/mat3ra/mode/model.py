@@ -15,44 +15,25 @@ EMPTY_BRANCH = MethodTreeBranch()
 
 
 class Model(InMemoryEntityPydantic, BaseModel):
-    """
-    Model with strong-typed `method` (like `Basis.cell`), built from config at init.
-    """
-    # Public fields (normalized in __convert_kwargs__)
     type: str = ""
-    # We keep subtype as a string slug internally (simplest + consistent)
     subtype: Union[str, SlugifiedEntry, Dict[str, Any]] = ""
     method: Method = Field(default_factory=Method)  # strong-typed after init
 
-    # Optional application context (excluded from serialization, like Basis.cell in spirit)
     application: Optional[Dict[str, Any]] = Field(default=None, exclude=True)
 
+    @staticmethod
+    def _coerce_method(method: Any) -> Method:
+        return method if isinstance(method, Method) else MethodFactory.create(method or Method.get_default_config())
+
+    @staticmethod
+    def _slugify(subtype: Any) -> str:
+        if isinstance(subtype, SlugifiedEntry): return subtype.slug
+        if isinstance(subtype, dict): return str(subtype.get("slug", ""))
+        return "" if subtype is None else str(subtype)
+
     def __convert_kwargs__(self, **kwargs: Any) -> Dict[str, Any]:
-        # Normalize method: allow dict/config and build strong-typed Method
-        m = kwargs.get("method")
-        if m is None or m == {}:
-            kwargs["method"] = MethodFactory.create(Method.get_default_config())
-        elif isinstance(m, dict):
-            kwargs["method"] = MethodFactory.create(m)
-        elif not isinstance(m, Method):
-            # Defensive: allow passing an already-built Method; otherwise construct default
-            kwargs["method"] = MethodFactory.create(Method.get_default_config())
-
-        # Normalize subtype to a plain slug string
-        st = kwargs.get("subtype")
-        if isinstance(st, SlugifiedEntry):
-            kwargs["subtype"] = st.slug
-        elif isinstance(st, dict):
-            kwargs["subtype"] = str(st.get("slug", ""))  # tolerate loose dicts
-        elif st is None:
-            kwargs["subtype"] = ""
-        else:
-            kwargs["subtype"] = str(st)
-
-        # Normalize type to a plain slug string
-        tp = kwargs.get("type")
-        kwargs["type"] = "" if tp is None else str(tp)
-
+        kwargs["method"] = Model._coerce_method(kwargs.get("method"))
+        kwargs["subtype"] = Model._slugify(kwargs.get("subtype"))
         return kwargs
 
     def __init__(self, *args: Any, **kwargs: Any):
@@ -138,7 +119,6 @@ class Model(InMemoryEntityPydantic, BaseModel):
 
     @classmethod
     def get_default_config(cls) -> Dict[str, Any]:
-        # return a config dict (like Basis.from_dict) — ctor will build Method instance
         return {**DFTModelConfig, "method": Method.get_default_config()}
 
     @classmethod
