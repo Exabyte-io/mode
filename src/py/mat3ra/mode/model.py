@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from mat3ra.code.entity import InMemoryEntityPydantic
 from mat3ra.esse.models.core.primitive.slugified_entry import SlugifiedEntry
@@ -15,7 +15,7 @@ EMPTY_BRANCH = MethodTreeBranch()
 
 
 class Model(BaseModel1, InMemoryEntityPydantic):
-    method: Method = Field(default_factory=Method)  # strong-typed after init
+    method: Method = Field(default_factory=Method)
 
     application: Optional[Dict[str, Any]] = Field(default=None, exclude=True)
 
