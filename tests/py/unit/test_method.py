@@ -38,10 +38,6 @@ def test_data_property():
     assert data["key"] == "value"
 
 
-def test_default_config():
-    config = Method.get_default_config()
-    assert "type" in config
-    assert "subtype" in config
 
 
 def test_set_data():

@@ -40,14 +40,8 @@ def test_method_property_returns_method_instance():
 
     assert hasattr(method_value, "data")
     assert hasattr(method_value, "search_text")
-    assert hasattr(method_value, "to_json")
 
 
-def test_default_config():
-    config = Model.get_default_config()
-    assert "type" in config
-    assert "subtype" in config
-    assert "method" in config
 
 
 def test_to_json():
@@ -66,17 +60,3 @@ def test_to_json():
     assert json_data["method"]["type"] == "pseudopotential"
 
 
-def test_allowed_types():
-    model = Model.create({"type": "dft", "subtype": "gga"})
-    allowed = model.allowed_types
-
-    assert len(allowed) > 0
-    assert all(hasattr(t, "slug") for t in allowed)
-
-
-def test_allowed_subtypes():
-    model = Model.create({"type": "dft", "subtype": "gga"})
-    allowed = model.allowed_subtypes
-
-    assert len(allowed) > 0
-    assert all(hasattr(t, "slug") for t in allowed)

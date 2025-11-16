@@ -1,7 +1,5 @@
 from typing import Any, Dict, List, Optional
 
-from mat3ra.esse.models.methods_directory.physical.psp import PseudopotentialFile
-
 from ..method import Method
 
 
@@ -16,15 +14,14 @@ class PseudopotentialMethod(Method):
     def all_pseudo(self) -> List[Dict[str, Any]]:
         return self.data.get("allPseudo", [])
 
-    # TODO: Possibly use a different type
     @property
-    def pseudopotentials(self) -> List[PseudopotentialFile]:
+    def pseudopotentials(self) -> List[Any]:
         if not self.pseudopotential_cls:
             return []
         return [self.pseudopotential_cls(config) for config in self.pseudo]
 
     @property
-    def all_pseudopotentials(self) -> List[PseudopotentialFile]:
+    def all_pseudopotentials(self) -> List[Any]:
         if not self.pseudopotential_cls:
             return []
         return [self.pseudopotential_cls(config) for config in self.all_pseudo]

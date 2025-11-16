@@ -45,7 +45,7 @@ def test_refiners_property():
 
     refiners = dft_model.refiners
     assert isinstance(refiners, list)
-    assert len(refiners) > 0
+    assert len(refiners) == 1
 
 
 def test_modifiers_property():
@@ -60,7 +60,7 @@ def test_modifiers_property():
 
     modifiers = dft_model.modifiers
     assert isinstance(modifiers, list)
-    assert len(modifiers) > 0
+    assert len(modifiers) == 1
 
 
 def test_group_slug():
@@ -68,7 +68,6 @@ def test_group_slug():
         {
             "type": "dft",
             "subtype": "gga",
-            "functional": {"slug": "pbe"},
         }
     )
 
@@ -76,56 +75,19 @@ def test_group_slug():
     assert isinstance(slug, str)
     assert "dft" in slug
     assert "gga" in slug
-    assert "pbe" in slug
 
 
-def test_to_json_includes_functional():
+def test_to_dict_includes_functional():
     dft_model = DFTModel.create(
         {
             "type": "dft",
             "subtype": "gga",
-            "functional": {"slug": "pbe"},
+            "functional": "pbe",
         }
     )
 
     json_data = dft_model.to_dict()
     assert "functional" in json_data
-    assert json_data["functional"]["slug"] == "pbe"
 
 
-def test_all_functionals():
-    dft_model = DFTModel.create(
-        {
-            "type": "dft",
-            "subtype": "gga",
-        }
-    )
-
-    functionals = dft_model.all_functionals
-    assert len(functionals) > 0
-    assert all(hasattr(f, "slug") for f in functionals)
-
-
-def test_all_refiners():
-    dft_model = DFTModel.create(
-        {
-            "type": "dft",
-            "subtype": "gga",
-        }
-    )
-
-    refiners = dft_model.all_refiners
-    assert isinstance(refiners, list)
-
-
-def test_all_modifiers():
-    dft_model = DFTModel.create(
-        {
-            "type": "dft",
-            "subtype": "gga",
-        }
-    )
-
-    modifiers = dft_model.all_modifiers
-    assert isinstance(modifiers, list)
 

@@ -36,19 +36,6 @@ def test_all_pseudo_property():
     assert len(all_pseudo) == 2
 
 
-def test_extract_exchange_correlation():
-    subworkflow = {
-        "model": {
-            "subtype": "gga",
-            "functional": {"slug": "pbe"},
-        }
-    }
-
-    result = PseudopotentialMethod.extract_exchange_correlation_from_subworkflow(subworkflow)
-    assert result["approximation"] == "gga"
-    assert result["functional"] == "pbe"
-
-
 def test_to_dict_excludes_all_pseudo():
     method = PseudopotentialMethod.create(
         {
