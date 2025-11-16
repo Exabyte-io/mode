@@ -14,21 +14,12 @@ class Model(BaseModel1, InMemoryEntityPydantic):
 
     application: Optional[Dict[str, Any]] = Field(default=None, exclude=True)
 
-    @staticmethod
-    def _coerce_method(method: Any) -> Method:
-        return method if isinstance(method, Method) else MethodFactory.create(method or Method.get_default_config())
-
-    @staticmethod
-    def _slugify(subtype: Any) -> str:
-        if isinstance(subtype, SlugifiedEntry):
-            return subtype.slug
-        if isinstance(subtype, dict):
-            return str(subtype.get("slug", ""))
-        return "" if subtype is None else str(subtype)
 
     def __convert_kwargs__(self, **kwargs: Any) -> Dict[str, Any]:
-        kwargs["method"] = Model._coerce_method(kwargs.get("method"))
-        kwargs["subtype"] = Model._slugify(kwargs.get("subtype"))
+        if isinstance(kwargs.get("method"), dict):
+            kwargs["method"] =  MethodFactory.create(kwargs.get("method", Method().to_dict()))
+        if isinstance(kwargs.get("subtype"), dict):
+            kwargs["subtype"] =  str(kwargs["subtype"].get("slug", ""))
         return kwargs
 
     def __init__(self, *args: Any, **kwargs: Any):
