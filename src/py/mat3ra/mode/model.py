@@ -1,7 +1,6 @@
 from typing import Any, Dict, Optional
 
 from mat3ra.code.entity import InMemoryEntityPydantic
-from mat3ra.esse.models.core.primitive.slugified_entry import SlugifiedEntry
 from mat3ra.esse.models.model import BaseModel1
 from pydantic import Field
 
