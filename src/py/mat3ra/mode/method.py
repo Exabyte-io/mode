@@ -4,7 +4,6 @@ from mat3ra.code.entity import InMemoryEntityPydantic
 from mat3ra.esse.models.method import BaseMethod
 from pydantic import Field
 
-from .default_methods import PseudopotentialMethodConfig
 
 
 class Method(BaseMethod, InMemoryEntityPydantic):
@@ -15,9 +14,6 @@ class Method(BaseMethod, InMemoryEntityPydantic):
         cloned.data = {}
         return cloned
 
-    @classmethod
-    def get_default_config(cls) -> Dict[str, Any]:
-        return PseudopotentialMethodConfig.copy()
 
     @classmethod
     def clean(cls, config: Dict[str, Any]) -> Dict[str, Any]:

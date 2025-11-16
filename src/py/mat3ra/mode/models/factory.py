@@ -1,7 +1,8 @@
 from typing import Any, Dict
 
+from mat3ra.standata.model_tree import ModelTreeStandata
+
 from ..model import Model
-from ..tree import get_default_model_type_for_application
 from .dft import DFTModel
 
 
@@ -24,7 +25,7 @@ class ModelFactory:
         if not application:
             raise ValueError("ModelFactory.create_from_application: application is required")
 
-        model_type = get_default_model_type_for_application(application)
+        model_type = ModelTreeStandata().get_default_model_type_for_application(application)
         if not model_type:
             raise ValueError(f"ModelFactory.create_from_application: cannot determine model type: {model_type}")
 
