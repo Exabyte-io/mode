@@ -9,6 +9,14 @@ from pydantic import Field
 class Method(BaseMethod, InMemoryEntityPydantic):
     data: Dict[str, Any] = Field(default_factory=dict, exclude=True)
 
+    @classmethod
+    def get_default_config(cls) -> Dict[str, Any]:
+        """Return the default configuration for a Method."""
+        return {
+            "type": "pseudopotential",
+            "subtype": "us",
+        }
+
     def clone_without_data(self) -> "Method":
         cloned = self.clone()
         cloned.data = {}
