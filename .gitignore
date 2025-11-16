@@ -21,3 +21,4 @@ __pycache__/
 htmlcov/
 .tox/
 .ruff_cache/
+.python-version

@@ -20,6 +20,10 @@ classifiers = [
 ]
 dependencies = [
     "numpy",
+    "mat3ra-esse @ git+https://github.com/Exabyte-io/esse.git@0386793597a2d4710fc19b8d6a43a91ba59daf5a",
+    "mat3ra-code",
+    "mat3ra-utils",
+    "mat3ra-standata @ git+https://github.com/Exabyte-io/standata.git@abf2fb3ea26ba61b735962a0e7a3c53f3a458c4c"
 ]
 
 [project.optional-dependencies]
@@ -86,6 +90,5 @@ pythonpath = [
     "src/py",
 ]
 testpaths = [
-    "tests/py"
+    "tests/py/unit"
 ]
-
