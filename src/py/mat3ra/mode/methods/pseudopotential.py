@@ -1,9 +1,11 @@
 from typing import Any, Dict, List, Optional
 
+from mat3ra.esse.models.methods_directory.legacy.pseudopotential import LegacyMethodPseudopotential
+
 from ..method import Method
 
 
-class PseudopotentialMethod(Method):
+class PseudopotentialMethod(LegacyMethodPseudopotential, Method):
     pseudopotential_cls: Optional[type] = None
 
     @property

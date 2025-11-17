@@ -7,6 +7,8 @@ from pydantic import Field
 
 
 class Method(BaseMethod, InMemoryEntityPydantic):
+    type: str = Field(default="unknown")
+    subtype: str = Field(default="unknown")
     data: Dict[str, Any] = Field(default_factory=dict, exclude=True)
 
     def clone_without_data(self) -> "Method":
