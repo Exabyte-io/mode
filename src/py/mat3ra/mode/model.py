@@ -4,13 +4,12 @@ from mat3ra.code.entity import InMemoryEntityPydantic
 from mat3ra.esse.models.model import BaseModel1
 from pydantic import Field
 
-from . import PseudopotentialMethod
 from .method import Method
 from .methods.factory import MethodFactory
 
 
 class Model(BaseModel1, InMemoryEntityPydantic):
-    method: Method = Field(default_factory=PseudopotentialMethod)
+    method: Method = Field(default_factory=lambda: MethodFactory.create({}))
 
     application: Optional[Dict[str, Any]] = Field(default=None, exclude=True)
 
