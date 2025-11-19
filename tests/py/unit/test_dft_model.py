@@ -1,15 +1,19 @@
+import pytest
 from mat3ra.mode import DFTModel, Method
 
+DFT_GGA_CONFIG = {"type": "dft", "subtype": "gga"}
+DFT_GGA_WITH_FUNCTIONAL = {**DFT_GGA_CONFIG, "functional": "pbe"}
+PSEUDOPOTENTIAL_NC_METHOD = {"type": "pseudopotential", "subtype": "nc"}
+PSEUDOPOTENTIAL_US_METHOD = {"type": "pseudopotential", "subtype": "us"}
 
-def test_method_returns_method_instance():
-    dft_model = DFTModel.create(
-        {
-            "type": "dft",
-            "subtype": "gga",
-            "functional": "pbe",
-            "method": {"type": "pseudopotential", "subtype": "nc"},
-        }
-    )
+TEST_REFINERS = ["hse"]
+TEST_MODIFIERS = ["soc"]
+
+
+@pytest.mark.parametrize("method_config", [PSEUDOPOTENTIAL_NC_METHOD, PSEUDOPOTENTIAL_US_METHOD])
+def test_method_returns_method_instance(method_config):
+    config = {**DFT_GGA_WITH_FUNCTIONAL, "method": method_config}
+    dft_model = DFTModel.create(config)
 
     method_value = dft_model.method
 
@@ -21,27 +25,15 @@ def test_method_returns_method_instance():
 
 
 def test_functional_property():
-    dft_model = DFTModel.create(
-        {
-            "type": "dft",
-            "subtype": "gga",
-            "functional": "pbe",
-        }
-    )
+    dft_model = DFTModel.create(DFT_GGA_WITH_FUNCTIONAL)
 
     functional = dft_model.functional
     assert functional is not None
 
 
 def test_refiners_property():
-    dft_model = DFTModel.create(
-        {
-            "type": "dft",
-            "subtype": "gga",
-            "functional": "pbe",
-            "refiners": ["hse"],
-        }
-    )
+    config = {**DFT_GGA_WITH_FUNCTIONAL, "refiners": TEST_REFINERS}
+    dft_model = DFTModel.create(config)
 
     refiners = dft_model.refiners
     assert isinstance(refiners, list)
@@ -49,14 +41,8 @@ def test_refiners_property():
 
 
 def test_modifiers_property():
-    dft_model = DFTModel.create(
-        {
-            "type": "dft",
-            "subtype": "gga",
-            "functional": "pbe",
-            "modifiers": ["soc"],
-        }
-    )
+    config = {**DFT_GGA_WITH_FUNCTIONAL, "modifiers": TEST_MODIFIERS}
+    dft_model = DFTModel.create(config)
 
     modifiers = dft_model.modifiers
     assert isinstance(modifiers, list)
@@ -64,12 +50,7 @@ def test_modifiers_property():
 
 
 def test_group_slug():
-    dft_model = DFTModel.create(
-        {
-            "type": "dft",
-            "subtype": "gga",
-        }
-    )
+    dft_model = DFTModel.create(DFT_GGA_CONFIG)
 
     slug = dft_model.group_slug
     assert isinstance(slug, str)
@@ -78,13 +59,7 @@ def test_group_slug():
 
 
 def test_to_dict_includes_functional():
-    dft_model = DFTModel.create(
-        {
-            "type": "dft",
-            "subtype": "gga",
-            "functional": "pbe",
-        }
-    )
+    dft_model = DFTModel.create(DFT_GGA_WITH_FUNCTIONAL)
 
     json_data = dft_model.to_dict()
     assert "functional" in json_data
