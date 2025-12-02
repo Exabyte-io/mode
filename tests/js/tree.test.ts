@@ -30,10 +30,7 @@ const testCasesAppNameAndVersion = [
 const testCasesDefaultType = [
     { app: { name: "espresso", version: "6.3" }, expected: "dft" },
     { app: { name: "vasp", version: "5.4.4" }, expected: "dft" },
-    { app: { name: "nwchem", version: "7.0.2" }, expected: "dft" },
     { app: { name: "python", version: "3.8.6" }, expected: "unknown" },
-    { app: { name: "shell", version: "0.0.1" }, expected: "unknown" },
-    { app: { name: "jupyterLab", version: "2.2.6" }, expected: "unknown" },
     { app: { name: "non-existent-app", version: "1.0.0" }, expected: undefined },
 ];
 

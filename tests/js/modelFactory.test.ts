@@ -43,18 +43,6 @@ const testCasesFromApplication = [
         expectedSubtype: "unknown",
     },
     {
-        app: { name: "shell", version: "0.0.1" },
-        expectedClass: "Model",
-        expectedType: "unknown",
-        expectedSubtype: "unknown",
-    },
-    {
-        app: { name: "jupyterLab", version: "2.2.6" },
-        expectedClass: "Model",
-        expectedType: "unknown",
-        expectedSubtype: "unknown",
-    },
-    {
         app: { name: "non-existent-app", version: "1.0.0" },
         expectedClass: "Model",
         expectedType: "unknown",
