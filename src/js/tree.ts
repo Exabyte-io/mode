@@ -47,3 +47,12 @@ export const getTreeByApplicationNameAndVersion = ({
 export const getDefaultModelTypeForApplication = (application: ApplicationSchemaBase): string => {
     return Object.keys(getTreeByApplicationNameAndVersion(application))[0];
 };
+
+export const getDefaultModelSubtypeForApplicationAndType = (
+    application: ApplicationSchemaBase,
+    type: string,
+): string | undefined => {
+    const tree = getTreeByApplicationNameAndVersion(application);
+    const subtypes = Object.keys(tree[type] || {});
+    return subtypes[0];
+};
