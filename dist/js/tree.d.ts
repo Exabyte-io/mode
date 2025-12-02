@@ -73,3 +73,4 @@ export declare const getDFTFunctionalsByApproximation: (approximation: string) =
 export declare const treeSlugToNamedObject: (modelSlug: string) => SlugifiedEntry;
 export declare const getTreeByApplicationNameAndVersion: ({ name, }: Pick<ApplicationSchemaBase, "name" | "version">) => ModelTree;
 export declare const getDefaultModelTypeForApplication: (application: ApplicationSchemaBase) => string;
+export declare const getDefaultModelSubtypeForApplicationAndType: (application: ApplicationSchemaBase, type: string) => string | undefined;

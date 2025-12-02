@@ -1,5 +1,9 @@
 import { Model } from "../model";
-import { getDefaultModelTypeForApplication } from "../tree";
+import {
+    getDefaultModelSubtypeForApplicationAndType,
+    getDefaultModelTypeForApplication,
+    getTreeByApplicationNameAndVersion,
+} from "../tree";
 import type { ModelConfig } from "../types";
 import { DFTModel } from "./dft";
 
@@ -22,12 +26,15 @@ export class ModelFactory {
         if (!application) {
             throw new Error("ModelFactory.createFromApplication: application is required");
         }
-        const type = getDefaultModelTypeForApplication(application);
-        if (!type) {
-            throw new Error(
-                `ModelFactory.createFromApplication: cannot determine model type: ${type}`,
-            );
+
+        const tree = getTreeByApplicationNameAndVersion(application);
+        if (Object.keys(tree).length === 0) {
+            return this.create({ ...config, type: "unknown", subtype: "unknown" });
         }
-        return this.create({ ...config, type });
+
+        const type = getDefaultModelTypeForApplication(application);
+        const subtype = getDefaultModelSubtypeForApplicationAndType(application, type) || "unknown";
+
+        return this.create({ ...config, type, subtype });
     }
 }

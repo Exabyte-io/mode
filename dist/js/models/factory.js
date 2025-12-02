@@ -18,11 +18,13 @@ class ModelFactory {
         if (!application) {
             throw new Error("ModelFactory.createFromApplication: application is required");
         }
-        const type = (0, tree_1.getDefaultModelTypeForApplication)(application);
-        if (!type) {
-            throw new Error(`ModelFactory.createFromApplication: cannot determine model type: ${type}`);
+        const tree = (0, tree_1.getTreeByApplicationNameAndVersion)(application);
+        if (Object.keys(tree).length === 0) {
+            return this.create({ ...config, type: "unknown", subtype: "unknown" });
         }
-        return this.create({ ...config, type });
+        const type = (0, tree_1.getDefaultModelTypeForApplication)(application);
+        const subtype = (0, tree_1.getDefaultModelSubtypeForApplicationAndType)(application, type) || "unknown";
+        return this.create({ ...config, type, subtype });
     }
 }
 exports.ModelFactory = ModelFactory;
