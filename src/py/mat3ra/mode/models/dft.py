@@ -10,9 +10,13 @@ from ..model import Model
 class DFTModel(Model):
     type: str = Field(default="dft")
     subtype: str = Field(default="gga")
-    functional: Union[Functional1, SlugifiedEntry, Dict[str, Any], str, None] = Field(
+    functional: Union[Functional1, SlugifiedEntry, Dict[str, Any], None] = Field(
         default=Functional1.pbe
     )
     refiners: List[Union[SlugifiedEntry, str]] = Field(default_factory=list)
     modifiers: List[Union[SlugifiedEntry, str]] = Field(default_factory=list)
 
+    def __convert_kwargs__(self, **kwargs: Any) -> Dict[str, Any]:
+        if isinstance(kwargs.get("functional"), str):
+            kwargs["functional"] = {"slug": kwargs["functional"]}
+        return super().__convert_kwargs__(**kwargs)
