@@ -19,8 +19,6 @@ class Model(BaseModel1, InMemoryEntityPydantic):
             kwargs["method"] =  MethodFactory.create(kwargs.get("method", Method().to_dict()))
         if isinstance(kwargs.get("subtype"), dict):
             kwargs["subtype"] =  str(kwargs["subtype"].get("slug", ""))
-        if isinstance(kwargs.get("functional"), str):
-            kwargs["functional"] = {"slug": kwargs["functional"]}
         return kwargs
 
     def __init__(self, *args: Any, **kwargs: Any):

@@ -16,3 +16,7 @@ class DFTModel(Model):
     refiners: List[Union[SlugifiedEntry, str]] = Field(default_factory=list)
     modifiers: List[Union[SlugifiedEntry, str]] = Field(default_factory=list)
 
+    def __convert_kwargs__(self, **kwargs: Any) -> Dict[str, Any]:
+        if isinstance(kwargs.get("functional"), str):
+            kwargs["functional"] = {"slug": kwargs["functional"]}
+        return super().__convert_kwargs__(**kwargs)
