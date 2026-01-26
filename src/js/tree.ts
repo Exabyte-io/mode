@@ -1,4 +1,4 @@
-import { ApplicationSchemaBase, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
+import { ApplicationSchema, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
 import MODELS_TREE_CONFIG_BY_APPLICATION from "@mat3ra/standata/dist/js/runtime_data/models/modelsTreeConfigByApplication.json";
 import MODEL_TREE_DATA from "@mat3ra/standata/dist/js/runtime_data/models/modelTree.json";
 import lodash from "lodash";
@@ -38,18 +38,18 @@ export const treeSlugToNamedObject = (modelSlug: string): SlugifiedEntry => {
 
 export const getTreeByApplicationNameAndVersion = ({
     name,
-}: Pick<ApplicationSchemaBase, "name" | "version">): ModelTree => {
+}: Pick<ApplicationSchema, "name" | "version">): ModelTree => {
     // TODO: add logic to filter by version when necessary
     // @ts-ignore
     return MODELS_TREE_CONFIG_BY_APPLICATION[name] || {};
 };
 
-export const getDefaultModelTypeForApplication = (application: ApplicationSchemaBase): string => {
+export const getDefaultModelTypeForApplication = (application: ApplicationSchema): string => {
     return Object.keys(getTreeByApplicationNameAndVersion(application))[0];
 };
 
 export const getDefaultModelSubtypeForApplicationAndType = (
-    application: ApplicationSchemaBase,
+    application: ApplicationSchema,
     type: string,
 ): string | undefined => {
     const tree = getTreeByApplicationNameAndVersion(application);

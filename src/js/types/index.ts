@@ -1,5 +1,5 @@
 import type {
-    ApplicationSchemaBase,
+    ApplicationSchema,
     BaseModel,
     CategorizedMethod,
     CategorizedModel,
@@ -8,7 +8,7 @@ import type {
 
 export type ModelConfig = Pick<BaseModel, "type" | "subtype"> &
     Partial<Omit<BaseModel, "type" | "subtype">> & {
-        application?: ApplicationSchemaBase;
+        application?: ApplicationSchema;
     };
 
 export type SimplifiedCategorizedModel = Pick<

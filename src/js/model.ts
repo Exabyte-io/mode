@@ -1,7 +1,7 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type {
-    ApplicationSchemaBase,
+    ApplicationSchema,
     BaseMethod,
     BaseModel,
     SlugifiedEntry,
@@ -21,7 +21,7 @@ const EMPTY_BRANCH: MethodTreeBranch = { methods: {} };
 type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin>;
 
 export class Model extends (InMemoryEntity as Base) implements BaseModel {
-    protected _application?: ApplicationSchemaBase;
+    protected _application?: ApplicationSchema;
 
     protected _MethodFactory: typeof MethodFactory;
 
@@ -30,7 +30,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     constructor(config: ModelConfig) {
         const { application, method = Method.defaultConfig, ...entityConfig } = config;
         super(entityConfig);
-        this._application = application as ApplicationSchemaBase | undefined;
+        this._application = application as ApplicationSchema | undefined;
         this._MethodFactory = MethodFactory;
         if (method) {
             this.setProp("method", method);
@@ -142,6 +142,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         };
     }
 
+    // eslint-disable-next-line class-methods-use-this
     protected _stringToSlugifiedObject(slug: SlugifiedEntryOrSlug): SlugifiedEntry {
         if (lodash.isString(slug)) {
             return { slug } as SlugifiedEntry;

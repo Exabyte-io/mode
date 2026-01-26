@@ -1,4 +1,4 @@
-import { ApplicationSchemaBase, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
+import { ApplicationSchema, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
 import type { ModelTree } from "./types";
 export declare const MODEL_TREE: {
     dft: {
@@ -71,6 +71,6 @@ export declare const getPseudopotentialTypesFromTree: () => string[];
 export declare const getDFTFunctionalsFromTree: () => string[];
 export declare const getDFTFunctionalsByApproximation: (approximation: string) => string[] | undefined;
 export declare const treeSlugToNamedObject: (modelSlug: string) => SlugifiedEntry;
-export declare const getTreeByApplicationNameAndVersion: ({ name, }: Pick<ApplicationSchemaBase, "name" | "version">) => ModelTree;
-export declare const getDefaultModelTypeForApplication: (application: ApplicationSchemaBase) => string;
-export declare const getDefaultModelSubtypeForApplicationAndType: (application: ApplicationSchemaBase, type: string) => string | undefined;
+export declare const getTreeByApplicationNameAndVersion: ({ name, }: Pick<ApplicationSchema, "name" | "version">) => ModelTree;
+export declare const getDefaultModelTypeForApplication: (application: ApplicationSchema) => string;
+export declare const getDefaultModelSubtypeForApplicationAndType: (application: ApplicationSchema, type: string) => string | undefined;
