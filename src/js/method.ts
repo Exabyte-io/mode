@@ -1,6 +1,7 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import { deepClone } from "@mat3ra/code/dist/js/utils";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { BaseMethod, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
 import lodash from "lodash";
 
@@ -18,6 +19,8 @@ export class Method extends (InMemoryEntity as Base) implements BaseMethod {
         const data = config.data || {};
         super({ ...config, data });
     }
+
+    declare toJSON: () => BaseMethod & AnyObject;
 
     cloneWithoutData(): Method {
         const clone = this.clone() as Method;

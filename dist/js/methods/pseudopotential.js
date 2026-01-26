@@ -19,14 +19,18 @@ class PseudopotentialMethod extends method_1.Method {
         return this.prop("data.allPseudo", []);
     }
     get pseudopotentials() {
-        if (!this.PseudopotentialCls)
+        const { PseudopotentialCls } = this;
+        if (!PseudopotentialCls) {
             return [];
-        return this.pseudo.map((config) => new this.PseudopotentialCls(config));
+        }
+        return this.pseudo.map((config) => new PseudopotentialCls(config));
     }
     get allPseudopotentials() {
-        if (!this.PseudopotentialCls)
+        const { PseudopotentialCls } = this;
+        if (!PseudopotentialCls) {
             return [];
-        return this.allPseudo.map((config) => new this.PseudopotentialCls(config));
+        }
+        return this.allPseudo.map((config) => new PseudopotentialCls(config));
     }
     static extractExchangeCorrelationFromSubworkflow(subworkflow) {
         const { model } = subworkflow;

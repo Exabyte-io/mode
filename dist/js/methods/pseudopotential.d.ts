@@ -1,9 +1,11 @@
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import { BaseMethod } from "@mat3ra/esse/dist/js/types";
 import { Method } from "../method";
 import type { PseudopotentialCtor, PseudopotentialLike } from "../types";
 export declare class PseudopotentialMethod extends Method {
     PseudopotentialCls: PseudopotentialCtor | null;
     constructor(config: BaseMethod);
+    toJSON: () => BaseMethod & AnyObject;
     get pseudo(): Record<string, unknown>[];
     get allPseudo(): Record<string, unknown>[];
     get pseudopotentials(): PseudopotentialLike[];

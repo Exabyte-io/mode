@@ -1,4 +1,5 @@
 import { safeMakeArray } from "@mat3ra/code/dist/js/utils";
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import { BaseMethod } from "@mat3ra/esse/dist/js/types";
 import _ from "underscore";
 
@@ -13,6 +14,8 @@ export class PseudopotentialMethod extends Method {
         this.PseudopotentialCls = null;
     }
 
+    declare toJSON: () => BaseMethod & AnyObject;
+
     get pseudo(): Record<string, unknown>[] {
         return this.prop<Record<string, unknown>[]>("data.pseudo", []);
     }
@@ -22,13 +25,19 @@ export class PseudopotentialMethod extends Method {
     }
 
     get pseudopotentials(): PseudopotentialLike[] {
-        if (!this.PseudopotentialCls) return [];
-        return this.pseudo.map((config) => new this.PseudopotentialCls!(config));
+        const { PseudopotentialCls } = this;
+        if (!PseudopotentialCls) {
+            return [];
+        }
+        return this.pseudo.map((config) => new PseudopotentialCls(config));
     }
 
     get allPseudopotentials(): PseudopotentialLike[] {
-        if (!this.PseudopotentialCls) return [];
-        return this.allPseudo.map((config) => new this.PseudopotentialCls!(config));
+        const { PseudopotentialCls } = this;
+        if (!PseudopotentialCls) {
+            return [];
+        }
+        return this.allPseudo.map((config) => new PseudopotentialCls(config));
     }
 
     static extractExchangeCorrelationFromSubworkflow(subworkflow: any): {
