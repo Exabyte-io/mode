@@ -1,4 +1,5 @@
-import { SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
+import { type BaseModel, SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
 import { MethodFactory } from "../methods/factory";
 import { Model } from "../model";
 import type { ModelConfig } from "../types";
@@ -18,7 +19,7 @@ export declare class DFTModel extends Model {
     private _setArrayProp;
     setRefiners(refiners: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[]): void;
     setModifiers(modifiers: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[]): void;
-    toJSON(): Record<string, unknown>;
+    toJSON(): BaseModel & AnyObject;
     get allFunctionals(): SlugifiedEntry[];
     get allRefiners(): SlugifiedEntry[];
     get allModifiers(): SlugifiedEntry[];

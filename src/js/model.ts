@@ -1,5 +1,6 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type {
     ApplicationSchema,
     BaseMethod,
@@ -132,7 +133,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return Object.keys(MODEL_TREE).map((modelSlug) => treeSlugToNamedObject(modelSlug));
     }
 
-    toJSON(): Record<string, unknown> {
+    toJSON(): BaseModel & AnyObject {
         const json = super.toJSON();
         return {
             ...json,

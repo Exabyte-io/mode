@@ -1,5 +1,6 @@
 import { safeMakeArray } from "@mat3ra/code/dist/js/utils";
-import { SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
+import { type BaseModel, SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
 import _ from "underscore";
 
 import { MethodFactory } from "../methods/factory";
@@ -82,7 +83,7 @@ export class DFTModel extends Model {
         this._setArrayProp("modifiers", modifiers);
     }
 
-    toJSON(): Record<string, unknown> {
+    toJSON(): BaseModel & AnyObject {
         const pickSlugFromObject = (item: SlugifiedEntry) => _.pick(item, "slug");
         const baseJson = super.toJSON();
         const keysToExclude = ["type", "subtype", "functional", "refiners", "modifiers", "method"];
