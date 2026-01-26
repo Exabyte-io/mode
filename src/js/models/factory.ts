@@ -1,3 +1,5 @@
+import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
+
 import { Model } from "../model";
 import {
     getDefaultModelSubtypeForApplicationAndType,
@@ -21,7 +23,7 @@ export class ModelFactory {
         }
     }
 
-    static createFromApplication(config: ModelConfig): Model {
+    static createFromApplication(config: ModelConfig & { application: ApplicationSchema }): Model {
         const { application } = config;
         if (!application) {
             throw new Error("ModelFactory.createFromApplication: application is required");

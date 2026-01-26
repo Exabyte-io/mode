@@ -1,7 +1,5 @@
-import type { ApplicationSchema, BaseModel, CategorizedMethod, CategorizedModel, CategorizedUnitMethod } from "@mat3ra/esse/dist/js/types";
-export type ModelConfig = Pick<BaseModel, "type" | "subtype"> & Partial<Omit<BaseModel, "type" | "subtype">> & {
-    application?: ApplicationSchema;
-};
+import type { BaseModel, CategorizedMethod, CategorizedModel, CategorizedUnitMethod } from "@mat3ra/esse/dist/js/types";
+export type ModelConfig = Pick<Partial<BaseModel>, "type" | "subtype"> & Partial<Omit<BaseModel, "type" | "subtype">>;
 export type SimplifiedCategorizedModel = Pick<CategorizedModel, "name" | "path" | "categories" | "parameters">;
 export type SimplifiedCategorizedMethod = Pick<CategorizedMethod, "name" | "path"> & {
     units: CategorizedUnitMethod[];

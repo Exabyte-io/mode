@@ -1,15 +1,12 @@
 import type {
-    ApplicationSchema,
     BaseModel,
     CategorizedMethod,
     CategorizedModel,
     CategorizedUnitMethod,
 } from "@mat3ra/esse/dist/js/types";
 
-export type ModelConfig = Pick<BaseModel, "type" | "subtype"> &
-    Partial<Omit<BaseModel, "type" | "subtype">> & {
-        application?: ApplicationSchema;
-    };
+export type ModelConfig = Pick<Partial<BaseModel>, "type" | "subtype"> &
+    Partial<Omit<BaseModel, "type" | "subtype">>;
 
 export type SimplifiedCategorizedModel = Pick<
     CategorizedModel,
