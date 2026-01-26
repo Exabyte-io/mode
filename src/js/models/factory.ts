@@ -9,6 +9,8 @@ import {
 import type { ModelConfig } from "../types";
 import { DFTModel } from "./dft";
 
+export type ModelConfigFromApplication = Partial<ModelConfig> & { application: ApplicationSchema };
+
 export class ModelFactory {
     static DFTModel = DFTModel;
 
@@ -23,7 +25,7 @@ export class ModelFactory {
         }
     }
 
-    static createFromApplication(config: ModelConfig & { application: ApplicationSchema }): Model {
+    static createFromApplication(config: ModelConfigFromApplication): Model {
         const { application } = config;
         if (!application) {
             throw new Error("ModelFactory.createFromApplication: application is required");

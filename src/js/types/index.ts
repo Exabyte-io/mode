@@ -5,7 +5,7 @@ import type {
     CategorizedUnitMethod,
 } from "@mat3ra/esse/dist/js/types";
 
-export type ModelConfig = Pick<Partial<BaseModel>, "type" | "subtype"> &
+export type ModelConfig = Pick<BaseModel, "type" | "subtype"> &
     Partial<Omit<BaseModel, "type" | "subtype">>;
 
 export type SimplifiedCategorizedModel = Pick<
