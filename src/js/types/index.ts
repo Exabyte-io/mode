@@ -1,12 +1,26 @@
 import type {
-    BaseModel,
     CategorizedMethod,
     CategorizedModel,
     CategorizedUnitMethod,
+    DFTModelSchema,
+    MLModelSchema,
+    UnknownModelSchema,
 } from "@mat3ra/esse/dist/js/types";
 
-export type ModelConfig = Pick<BaseModel, "type" | "subtype"> &
-    Partial<Omit<BaseModel, "type" | "subtype">>;
+// type AnyModelSchema = DFTModelSchema | MLModelSchema | UnknownModelSchema;
+
+/**
+ * Makes specified fields required and all others optional
+ * TODO: consider moving to code.js
+ */
+type RequireFields<T, K extends keyof T> = Required<Pick<T, K>> & Partial<Omit<T, K>>;
+type ModelRequiredFields = "type" | "subtype";
+
+export type DFTModelConfig = RequireFields<DFTModelSchema, ModelRequiredFields>;
+export type MLModelConfig = RequireFields<MLModelSchema, ModelRequiredFields>;
+export type UnknownModelConfig = RequireFields<UnknownModelSchema, ModelRequiredFields>;
+
+export type ModelConfig = DFTModelConfig | MLModelConfig | UnknownModelConfig;
 
 export type SimplifiedCategorizedModel = Pick<
     CategorizedModel,

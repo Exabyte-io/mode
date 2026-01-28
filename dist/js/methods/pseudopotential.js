@@ -35,11 +35,10 @@ class PseudopotentialMethod extends method_1.Method {
     static extractExchangeCorrelationFromSubworkflow(subworkflow) {
         const { model } = subworkflow;
         const approximation = model.subtype;
-        const functionalValue = model.functional;
-        const functional = functionalValue && (functionalValue.slug || functionalValue);
+        const functional = "functional" in model ? model.functional : "";
         return {
             approximation,
-            functional: functional || "",
+            functional,
         };
     }
     hasPseudopotentialFor(element) {

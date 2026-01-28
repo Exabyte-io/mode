@@ -5,17 +5,28 @@ export type ModelSchemaMixin = BaseModel;
 
 export type ModelInMemoryEntity = InMemoryEntity & ModelSchemaMixin;
 
-export function modelSchemaMixin(item: InMemoryEntity) {
+export function modelSchemaMixin<T extends InMemoryEntity>(
+    item: InMemoryEntity,
+): asserts item is T & ModelSchemaMixin {
     // @ts-expect-error
     const properties: InMemoryEntity & ModelSchemaMixin = {
         get type() {
             return this.requiredProp<BaseModel["type"]>("type");
         },
+        set type(value: BaseModel["type"]) {
+            this.setProp("type", value);
+        },
         get subtype() {
             return this.requiredProp<BaseModel["subtype"]>("subtype");
         },
+        set subtype(value: BaseModel["subtype"]) {
+            this.setProp("subtype", value);
+        },
         get method() {
             return this.requiredProp<BaseModel["method"]>("method");
+        },
+        set method(value: BaseModel["method"]) {
+            this.setProp("method", value);
         },
     };
 

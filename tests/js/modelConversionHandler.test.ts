@@ -19,7 +19,7 @@ const EXPECTED_MODEL = {
         SIMPLE: {
             type: "dft",
             subtype: "lda",
-            functional: { slug: "pz", name: "pz" },
+            functional: "pz",
         },
         CATEGORIZED: {
             PATH: "/pb/qm/dft/ksdft/lda?functional=pz",

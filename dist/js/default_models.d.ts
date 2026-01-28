@@ -1,3 +1,8 @@
-import type { ModelConfig } from "./types";
-export declare const DFTModelConfig: ModelConfig;
-export declare const UnknownModelConfig: ModelConfig;
+export declare const DFTModelConfig: {
+    readonly type: "dft";
+    readonly subtype: "gga";
+};
+export declare const UnknownModelConfig: {
+    readonly type: "unknown";
+    readonly subtype: "unknown";
+};

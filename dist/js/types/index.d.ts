@@ -1,5 +1,14 @@
-import type { BaseModel, CategorizedMethod, CategorizedModel, CategorizedUnitMethod } from "@mat3ra/esse/dist/js/types";
-export type ModelConfig = Pick<BaseModel, "type" | "subtype"> & Partial<Omit<BaseModel, "type" | "subtype">>;
+import type { CategorizedMethod, CategorizedModel, CategorizedUnitMethod, DFTModelSchema, MLModelSchema, UnknownModelSchema } from "@mat3ra/esse/dist/js/types";
+/**
+ * Makes specified fields required and all others optional
+ * TODO: consider moving to code.js
+ */
+type RequireFields<T, K extends keyof T> = Required<Pick<T, K>> & Partial<Omit<T, K>>;
+type ModelRequiredFields = "type" | "subtype";
+export type DFTModelConfig = RequireFields<DFTModelSchema, ModelRequiredFields>;
+export type MLModelConfig = RequireFields<MLModelSchema, ModelRequiredFields>;
+export type UnknownModelConfig = RequireFields<UnknownModelSchema, ModelRequiredFields>;
+export type ModelConfig = DFTModelConfig | MLModelConfig | UnknownModelConfig;
 export type SimplifiedCategorizedModel = Pick<CategorizedModel, "name" | "path" | "categories" | "parameters">;
 export type SimplifiedCategorizedMethod = Pick<CategorizedMethod, "name" | "path"> & {
     units: CategorizedUnitMethod[];
@@ -16,3 +25,4 @@ export interface MethodTreeBranch {
     modifiers?: string[];
 }
 export type ModelTree = Record<string, Record<string, MethodTreeBranch>>;
+export {};

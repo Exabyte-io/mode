@@ -12,7 +12,9 @@ export declare class Model extends Model_base implements BaseModel {
     protected _application?: ApplicationSchema;
     protected _MethodFactory: typeof MethodFactory;
     protected _method?: Method;
-    constructor(config: ModelConfig);
+    constructor(config: ModelConfig & {
+        application?: ApplicationSchema;
+    });
     setSubtype(subtype: SlugifiedEntryOrSlug): void;
     get allowedTypes(): SlugifiedEntry[];
     get allowedSubtypes(): SlugifiedEntry[];

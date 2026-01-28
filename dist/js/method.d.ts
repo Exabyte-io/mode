@@ -13,7 +13,10 @@ export declare class Method extends Method_base implements BaseMethod {
     toJSON: () => BaseMethod & AnyObject;
     cloneWithoutData(): Method;
     setSubtype(subtype: SlugifiedEntry): void;
-    static get defaultConfig(): BaseMethod;
+    static get defaultConfig(): {
+        readonly type: "pseudopotential";
+        readonly subtype: "us";
+    };
     get searchText(): string;
     setSearchText(searchText: string): void;
     setData(data?: MethodData): void;

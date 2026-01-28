@@ -28,17 +28,16 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
 
     protected _method?: Method;
 
-    constructor(config: ModelConfig) {
+    constructor(config: ModelConfig & { application?: ApplicationSchema }) {
         const { application, method = Method.defaultConfig, ...entityConfig } = config;
         super(entityConfig);
-        this._application = application as ApplicationSchema | undefined;
+        this._application = application;
         this._MethodFactory = MethodFactory;
-        if (method) {
-            this.setProp("method", method);
-        }
+        this.method = method || this.method;
     }
 
     setSubtype(subtype: SlugifiedEntryOrSlug): void {
+        // TODO-question: subtype is a string, but we're setting it to a SlugifiedEntryOrSlug
         this.setProp("subtype", subtype);
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
     }

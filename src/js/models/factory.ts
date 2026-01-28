@@ -2,8 +2,7 @@ import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
 
 import { Model } from "../model";
 import {
-    getDefaultModelSubtypeForApplicationAndType,
-    getDefaultModelTypeForApplication,
+    getDefaultModelTypeSubtypeForApplication,
     getTreeByApplicationNameAndVersion,
 } from "../tree";
 import type { ModelConfig } from "../types";
@@ -32,13 +31,12 @@ export class ModelFactory {
         }
 
         const tree = getTreeByApplicationNameAndVersion(application);
-        if (Object.keys(tree).length === 0) {
+        if (!tree || Object.keys(tree).length === 0) {
             return this.create({ ...config, type: "unknown", subtype: "unknown" });
         }
 
-        const type = getDefaultModelTypeForApplication(application);
-        const subtype = getDefaultModelSubtypeForApplicationAndType(application, type) || "unknown";
+        const typeSubtype = getDefaultModelTypeSubtypeForApplication(application);
 
-        return this.create({ ...config, type, subtype });
+        return this.create({ ...config, ...typeSubtype });
     }
 }

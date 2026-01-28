@@ -32,7 +32,7 @@ export class Method extends (InMemoryEntity as Base) implements BaseMethod {
         this.setProp("subtype", subtype);
     }
 
-    static get defaultConfig(): BaseMethod {
+    static get defaultConfig() {
         return PseudopotentialMethodConfig;
     }
 

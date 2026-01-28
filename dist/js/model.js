@@ -18,11 +18,10 @@ class Model extends entity_1.InMemoryEntity {
         super(entityConfig);
         this._application = application;
         this._MethodFactory = factory_1.MethodFactory;
-        if (method) {
-            this.setProp("method", method);
-        }
+        this.method = method || this.method;
     }
     setSubtype(subtype) {
+        // TODO-question: subtype is a string, but we're setting it to a SlugifiedEntryOrSlug
         this.setProp("subtype", subtype);
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
     }

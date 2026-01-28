@@ -1,6 +1,6 @@
 import { safeMakeArray } from "@mat3ra/code/dist/js/utils";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
-import { BaseMethod } from "@mat3ra/esse/dist/js/types";
+import { type SubworkflowSchema, BaseMethod } from "@mat3ra/esse/dist/js/types";
 import _ from "underscore";
 
 import { Method } from "../method";
@@ -40,17 +40,16 @@ export class PseudopotentialMethod extends Method {
         return this.allPseudo.map((config) => new PseudopotentialCls(config));
     }
 
-    static extractExchangeCorrelationFromSubworkflow(subworkflow: any): {
+    static extractExchangeCorrelationFromSubworkflow(subworkflow: SubworkflowSchema): {
         approximation: string;
         functional: string;
     } {
         const { model } = subworkflow;
         const approximation = model.subtype;
-        const functionalValue = model.functional;
-        const functional = functionalValue && (functionalValue.slug || functionalValue);
+        const functional = "functional" in model ? model.functional : "";
         return {
             approximation,
-            functional: functional || "",
+            functional,
         };
     }
 

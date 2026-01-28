@@ -1,5 +1,5 @@
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
-import { BaseMethod } from "@mat3ra/esse/dist/js/types";
+import { type SubworkflowSchema, BaseMethod } from "@mat3ra/esse/dist/js/types";
 import { Method } from "../method";
 import type { PseudopotentialCtor, PseudopotentialLike } from "../types";
 export declare class PseudopotentialMethod extends Method {
@@ -10,7 +10,7 @@ export declare class PseudopotentialMethod extends Method {
     get allPseudo(): Record<string, unknown>[];
     get pseudopotentials(): PseudopotentialLike[];
     get allPseudopotentials(): PseudopotentialLike[];
-    static extractExchangeCorrelationFromSubworkflow(subworkflow: any): {
+    static extractExchangeCorrelationFromSubworkflow(subworkflow: SubworkflowSchema): {
         approximation: string;
         functional: string;
     };
