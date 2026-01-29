@@ -12,9 +12,7 @@ export declare class Model extends Model_base implements BaseModel {
     protected _application?: ApplicationSchema;
     protected _MethodFactory: typeof MethodFactory;
     protected _method?: Method;
-    constructor(config: ModelConfig & {
-        application?: ApplicationSchema;
-    });
+    constructor(config: ModelConfig);
     setSubtype(subtype: SlugifiedEntryOrSlug): void;
     get allowedTypes(): SlugifiedEntry[];
     get allowedSubtypes(): SlugifiedEntry[];
@@ -31,7 +29,14 @@ export declare class Model extends Model_base implements BaseModel {
     get methodTypes(): SlugifiedEntry[];
     get methodSubtypes(): SlugifiedEntry[];
     get defaultMethodConfig(): BaseMethod;
-    static get defaultConfig(): ModelConfig;
+    static get defaultConfig(): {
+        method: {
+            readonly type: "pseudopotential";
+            readonly subtype: "us";
+        };
+        type: "dft";
+        subtype: "gga";
+    };
     static get allTypes(): SlugifiedEntry[];
     toJSON(): AnyModelSchema & AnyObject;
     protected _stringToSlugifiedObject(slug: SlugifiedEntryOrSlug): SlugifiedEntry;

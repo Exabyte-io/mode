@@ -5,7 +5,6 @@ import {
     SlugifiedEntry,
     SlugifiedEntryOrSlug,
 } from "@mat3ra/esse/dist/js/types";
-import _ from "underscore";
 
 import { MethodFactory } from "../methods/factory";
 import { Model } from "../model";

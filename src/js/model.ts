@@ -29,7 +29,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
 
     protected _method?: Method;
 
-    constructor(config: ModelConfig & { application?: ApplicationSchema }) {
+    constructor(config: ModelConfig) {
         const { application, method = Method.defaultConfig, ...entityConfig } = config;
         super(entityConfig);
         this._application = application;
@@ -122,7 +122,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return { type, subtype };
     }
 
-    static get defaultConfig(): ModelConfig {
+    static get defaultConfig() {
         return {
             ...DFTModelConfig,
             method: Method.defaultConfig,

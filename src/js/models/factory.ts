@@ -1,14 +1,10 @@
-import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
-
 import { Model } from "../model";
 import {
     getDefaultModelTypeSubtypeForApplication,
     getTreeByApplicationNameAndVersion,
 } from "../tree";
-import type { ModelConfig } from "../types";
+import type { ModelConfig, RequireFields } from "../types";
 import { DFTModel } from "./dft";
-
-export type ModelConfigFromApplication = Partial<ModelConfig> & { application: ApplicationSchema };
 
 export class ModelFactory {
     static DFTModel = DFTModel;
@@ -24,7 +20,7 @@ export class ModelFactory {
         }
     }
 
-    static createFromApplication(config: ModelConfigFromApplication): Model {
+    static createFromApplication(config: RequireFields<ModelConfig, "application">): Model {
         const { application } = config;
         if (!application) {
             throw new Error("ModelFactory.createFromApplication: application is required");
