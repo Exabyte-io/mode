@@ -1,7 +1,7 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
-import type { ApplicationSchema, BaseMethod, BaseModel, SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
+import type { AnyModelSchema, ApplicationSchema, BaseMethod, BaseModel, SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
 import { type ModelSchemaMixin } from "./generated/ModelSchemaMixin";
 import { Method } from "./method";
 import { MethodFactory } from "./methods/factory";
@@ -33,7 +33,7 @@ export declare class Model extends Model_base implements BaseModel {
     get defaultMethodConfig(): BaseMethod;
     static get defaultConfig(): ModelConfig;
     static get allTypes(): SlugifiedEntry[];
-    toJSON(): BaseModel & AnyObject;
+    toJSON(): AnyModelSchema & AnyObject;
     protected _stringToSlugifiedObject(slug: SlugifiedEntryOrSlug): SlugifiedEntry;
     get isUnknown(): boolean;
     protected get subtypeSlug(): string;

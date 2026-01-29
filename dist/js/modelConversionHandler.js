@@ -47,7 +47,7 @@ class ModelConversionHandler {
             subtype: "unknown",
         };
     }
-    static convertToCategorized(simpleModel, allModels = []) {
+    static convertToCategorized(simpleModel, allModels) {
         switch (simpleModel === null || simpleModel === void 0 ? void 0 : simpleModel.type) {
             case "dft":
                 return this.convertDftToCategorized(simpleModel, allModels);

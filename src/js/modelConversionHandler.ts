@@ -1,7 +1,7 @@
 import {
+    type AnyModelSchema,
     type DFTModelSchema,
     type MLModelSchema,
-    type UnknownModelSchema,
     CategorizedModel,
     SlugifiedEntryOrSlug,
 } from "@mat3ra/esse/dist/js/types";
@@ -64,10 +64,7 @@ export class ModelConversionHandler {
         } as const;
     }
 
-    static convertToCategorized(
-        simpleModel?: DFTModelSchema | MLModelSchema | UnknownModelSchema,
-        allModels: CategorizedModel[] = [],
-    ) {
+    static convertToCategorized(simpleModel?: AnyModelSchema, allModels?: CategorizedModel[]) {
         switch (simpleModel?.type) {
             case "dft":
                 return this.convertDftToCategorized(simpleModel, allModels);

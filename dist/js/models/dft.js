@@ -1,29 +1,26 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DFTModel = void 0;
 const utils_1 = require("@mat3ra/code/dist/js/utils");
-const underscore_1 = __importDefault(require("underscore"));
 const factory_1 = require("../methods/factory");
 const model_1 = require("../model");
 const tree_1 = require("../tree");
 class DFTModel extends model_1.Model {
     constructor(config) {
         super(config);
+        this.defaultRefiners = [];
+        this.defaultModifiers = [];
         this._MethodFactory = config.MethodFactory || factory_1.MethodFactory;
     }
     get groupSlug() {
         var _a;
-        const functionalSlug = this.functional.slug;
         const refinersSlug = this.refiners.map((o) => o.slug).join("+");
         const modifiersSlug = this.modifiers.map((o) => o.slug).join("+");
         const slugs = [
             (_a = this._application) === null || _a === void 0 ? void 0 : _a.shortName,
             this.type,
             this.subtype,
-            functionalSlug,
+            this.functional,
             refinersSlug,
             modifiersSlug,
         ].filter(Boolean);
@@ -33,16 +30,11 @@ class DFTModel extends model_1.Model {
         const [slug] = this.treeBranchForSubType.functionals || [];
         return (0, tree_1.treeSlugToNamedObject)(slug);
     }
-    // eslint-disable-next-line class-methods-use-this
-    get defaultRefiners() {
-        return [];
-    }
-    // eslint-disable-next-line class-methods-use-this
-    get defaultModifiers() {
-        return [];
+    get slugifiedFunctional() {
+        return this._stringToSlugifiedObject(this.functional);
     }
     get functional() {
-        return this.prop("functional", this.defaultFunctional);
+        return this.requiredProp("functional");
     }
     get refiners() {
         return this.prop("refiners", this.defaultRefiners);
@@ -70,7 +62,6 @@ class DFTModel extends model_1.Model {
         this._setArrayProp("modifiers", modifiers);
     }
     toJSON() {
-        const pickSlugFromObject = (item) => underscore_1.default.pick(item, "slug");
         const baseJson = super.toJSON();
         const keysToExclude = ["type", "subtype", "functional", "refiners", "modifiers", "method"];
         const restJson = Object.fromEntries(Object.entries(baseJson).filter(([key]) => !keysToExclude.includes(key)));
@@ -78,7 +69,7 @@ class DFTModel extends model_1.Model {
             type: this.type,
             subtype: this.subtype,
             method: this.Method.toJSONWithCleanData(),
-            functional: pickSlugFromObject(this.functional),
+            functional: this.functional,
             refiners: this.refiners,
             modifiers: this.modifiers,
             ...restJson,

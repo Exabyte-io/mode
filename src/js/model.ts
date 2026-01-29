@@ -2,6 +2,7 @@ import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type {
+    AnyModelSchema,
     ApplicationSchema,
     BaseMethod,
     BaseModel,
@@ -132,14 +133,13 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return Object.keys(MODEL_TREE).map((modelSlug) => treeSlugToNamedObject(modelSlug));
     }
 
-    toJSON(): BaseModel & AnyObject {
-        const json = super.toJSON();
+    toJSON(): AnyModelSchema & AnyObject {
         return {
-            ...json,
+            ...super.toJSON(),
             type: this.type,
             subtype: this.subtype,
             method: this.Method.toJSONWithCleanData(),
-        };
+        } as AnyModelSchema & AnyObject;
     }
 
     // eslint-disable-next-line class-methods-use-this

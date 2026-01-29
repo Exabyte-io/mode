@@ -1,4 +1,4 @@
-import { type DFTModelSchema, type MLModelSchema, type UnknownModelSchema, CategorizedModel, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
+import { type AnyModelSchema, type DFTModelSchema, type MLModelSchema, CategorizedModel, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
 import type { DFTModelConfig, SimplifiedCategorizedModel, UnknownModelConfig } from "./types";
 export declare function safelyGetSlug(slugObj: SlugifiedEntryOrSlug): string;
 export declare class ModelConversionHandler {
@@ -18,7 +18,7 @@ export declare class ModelConversionHandler {
         readonly type: "unknown";
         readonly subtype: "unknown";
     };
-    static convertToCategorized(simpleModel?: DFTModelSchema | MLModelSchema | UnknownModelSchema, allModels?: CategorizedModel[]): SimplifiedCategorizedModel | {
+    static convertToCategorized(simpleModel?: AnyModelSchema, allModels?: CategorizedModel[]): SimplifiedCategorizedModel | {
         readonly name: "Regression";
         readonly path: "/st/det/ml/re/none";
         readonly categories: {

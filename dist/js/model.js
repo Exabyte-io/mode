@@ -107,9 +107,8 @@ class Model extends entity_1.InMemoryEntity {
         return Object.keys(tree_1.MODEL_TREE).map((modelSlug) => (0, tree_1.treeSlugToNamedObject)(modelSlug));
     }
     toJSON() {
-        const json = super.toJSON();
         return {
-            ...json,
+            ...super.toJSON(),
             type: this.type,
             subtype: this.subtype,
             method: this.Method.toJSONWithCleanData(),

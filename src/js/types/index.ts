@@ -7,8 +7,6 @@ import type {
     UnknownModelSchema,
 } from "@mat3ra/esse/dist/js/types";
 
-// type AnyModelSchema = DFTModelSchema | MLModelSchema | UnknownModelSchema;
-
 /**
  * Makes specified fields required and all others optional
  * TODO: consider moving to code.js
