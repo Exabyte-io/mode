@@ -15,6 +15,8 @@ export class DFTModel extends Model {
     constructor(config: ModelConfig & { MethodFactory?: typeof MethodFactory }) {
         super(config);
         this._MethodFactory = config.MethodFactory || MethodFactory;
+        this.functional =
+            this.prop<DFTModelSchema["functional"]>("functional") || this.defaultFunctional.slug;
     }
 
     declare type: DFTModelSchema["type"];
@@ -35,9 +37,9 @@ export class DFTModel extends Model {
         return slugs.join(":");
     }
 
-    get defaultFunctional(): SlugifiedEntry {
+    private get defaultFunctional() {
         const [slug] = this.treeBranchForSubType.functionals || [];
-        return treeSlugToNamedObject(slug);
+        return treeSlugToNamedObject(slug as DFTModelSchema["functional"]);
     }
 
     readonly defaultRefiners: SlugifiedEntry[] = [];
@@ -50,6 +52,10 @@ export class DFTModel extends Model {
 
     get functional() {
         return this.requiredProp<DFTModelSchema["functional"]>("functional");
+    }
+
+    set functional(functional) {
+        this.setProp("functional", functional);
     }
 
     get refiners() {

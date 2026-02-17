@@ -3,7 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTreeByApplicationNameAndVersion = exports.treeSlugToNamedObject = exports.getDFTFunctionalsByApproximation = exports.getDFTFunctionalsFromTree = exports.getPseudopotentialTypesFromTree = exports.METHODS = exports.MODEL_NAMES = exports.MODEL_TREE = void 0;
+exports.getTreeByApplicationNameAndVersion = exports.getDFTFunctionalsByApproximation = exports.getDFTFunctionalsFromTree = exports.getPseudopotentialTypesFromTree = exports.METHODS = exports.MODEL_NAMES = exports.MODEL_TREE = void 0;
+exports.treeSlugToNamedObject = treeSlugToNamedObject;
 exports.getDefaultModelTypeSubtypeForApplication = getDefaultModelTypeSubtypeForApplication;
 const modelsTreeConfigByApplication_json_1 = __importDefault(require("@mat3ra/standata/dist/js/runtime_data/models/modelsTreeConfigByApplication.json"));
 const modelTree_json_1 = __importDefault(require("@mat3ra/standata/dist/js/runtime_data/models/modelTree.json"));
@@ -31,13 +32,12 @@ const getDFTFunctionalsByApproximation = (approximation) => {
     return branch === null || branch === void 0 ? void 0 : branch.functionals;
 };
 exports.getDFTFunctionalsByApproximation = getDFTFunctionalsByApproximation;
-const treeSlugToNamedObject = (modelSlug) => {
+function treeSlugToNamedObject(modelSlug) {
     return {
         slug: modelSlug,
         name: lodash_1.default.get(exports.MODEL_NAMES, modelSlug, modelSlug),
     };
-};
-exports.treeSlugToNamedObject = treeSlugToNamedObject;
+}
 const getTreeByApplicationNameAndVersion = ({ name, }) => {
     // TODO: add logic to filter by version when necessary
     if (!(name in modelsTreeConfigByApplication_json_1.default)) {

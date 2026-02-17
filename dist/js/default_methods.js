@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UnknownMethodConfig = exports.LocalOrbitalMethodConfig = exports.PseudopotentialMethodConfig = void 0;
+exports.methodConfigs = exports.UnknownMethodConfig = exports.LocalOrbitalMethodConfig = exports.PseudopotentialMethodConfig = void 0;
 exports.allowedTypes = allowedTypes;
 exports.allowedSubtypes = allowedSubtypes;
 const lodash_1 = __importDefault(require("lodash"));
@@ -19,6 +19,11 @@ exports.LocalOrbitalMethodConfig = {
 exports.UnknownMethodConfig = {
     type: "unknown",
     subtype: "unknown",
+};
+exports.methodConfigs = {
+    pseudopotential: exports.PseudopotentialMethodConfig,
+    localorbital: exports.LocalOrbitalMethodConfig,
+    unknown: exports.UnknownMethodConfig,
 };
 const mapSlugToNamedObject = (slug) => {
     return {

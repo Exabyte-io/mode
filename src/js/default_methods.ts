@@ -18,6 +18,12 @@ export const UnknownMethodConfig = {
     subtype: "unknown",
 } as const;
 
+export const methodConfigs = {
+    pseudopotential: PseudopotentialMethodConfig,
+    localorbital: LocalOrbitalMethodConfig,
+    unknown: UnknownMethodConfig,
+} as const;
+
 const mapSlugToNamedObject = (slug: string): SlugifiedEntry => {
     return {
         slug,

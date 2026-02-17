@@ -10,11 +10,12 @@ export declare class DFTModel extends Model {
     type: DFTModelSchema["type"];
     subtype: DFTModelSchema["subtype"];
     get groupSlug(): string;
-    get defaultFunctional(): SlugifiedEntry;
+    private get defaultFunctional();
     readonly defaultRefiners: SlugifiedEntry[];
     readonly defaultModifiers: SlugifiedEntry[];
     get slugifiedFunctional(): SlugifiedEntry;
     get functional(): "pbe" | "pbesol" | "pw91" | "other" | "pz" | "pw" | "vwn" | "b3lyp" | "hse06";
+    set functional(functional: "pbe" | "pbesol" | "pw91" | "other" | "pz" | "pw" | "vwn" | "b3lyp" | "hse06");
     get refiners(): SlugifiedEntry[];
     get modifiers(): SlugifiedEntry[];
     setSubtype(subtype: SlugifiedEntryOrSlug): void;

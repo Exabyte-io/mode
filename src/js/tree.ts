@@ -3,7 +3,6 @@ import {
     type MLModelSchema,
     type UnknownModelSchema,
     ApplicationSchema,
-    SlugifiedEntry,
 } from "@mat3ra/esse/dist/js/types";
 import MODELS_TREE_CONFIG_BY_APPLICATION from "@mat3ra/standata/dist/js/runtime_data/models/modelsTreeConfigByApplication.json";
 import MODEL_TREE_DATA from "@mat3ra/standata/dist/js/runtime_data/models/modelTree.json";
@@ -37,12 +36,12 @@ export const getDFTFunctionalsByApproximation = (
     return branch?.functionals;
 };
 
-export const treeSlugToNamedObject = (modelSlug: string): SlugifiedEntry => {
+export function treeSlugToNamedObject<T extends string>(modelSlug: T) {
     return {
         slug: modelSlug,
-        name: lodash.get(MODEL_NAMES, modelSlug, modelSlug),
-    };
-};
+        name: lodash.get(MODEL_NAMES, modelSlug, modelSlug) as string,
+    } as const;
+}
 
 export const getTreeByApplicationNameAndVersion = ({
     name,

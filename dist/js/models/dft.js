@@ -11,6 +11,8 @@ class DFTModel extends model_1.Model {
         this.defaultRefiners = [];
         this.defaultModifiers = [];
         this._MethodFactory = config.MethodFactory || factory_1.MethodFactory;
+        this.functional =
+            this.prop("functional") || this.defaultFunctional.slug;
     }
     get groupSlug() {
         var _a;
@@ -35,6 +37,9 @@ class DFTModel extends model_1.Model {
     }
     get functional() {
         return this.requiredProp("functional");
+    }
+    set functional(functional) {
+        this.setProp("functional", functional);
     }
     get refiners() {
         return this.prop("refiners", this.defaultRefiners);
