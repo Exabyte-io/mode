@@ -133,6 +133,8 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return Object.keys(MODEL_TREE).map((modelSlug) => treeSlugToNamedObject(modelSlug));
     }
 
+    declare _json: AnyModelSchema & AnyObject;
+
     toJSON(): AnyModelSchema & AnyObject {
         return {
             ...super.toJSON(),

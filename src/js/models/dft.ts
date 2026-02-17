@@ -93,6 +93,8 @@ export class DFTModel extends Model {
         this._setArrayProp("modifiers", modifiers);
     }
 
+    declare _json: DFTModelSchema & AnyObject;
+
     toJSON(): DFTModelSchema & AnyObject {
         const baseJson = super.toJSON();
         const keysToExclude = ["type", "subtype", "functional", "refiners", "modifiers", "method"];
