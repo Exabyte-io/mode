@@ -68,11 +68,11 @@ export class DFTModel extends Model {
 
     setSubtype(subtype: SlugifiedEntryOrSlug): void {
         this.setProp("subtype", subtype);
-        this.setFunctional(this.defaultFunctional);
+        this.setFunctional(this.defaultFunctional.slug);
     }
 
-    setFunctional(functional: SlugifiedEntryOrSlug): void {
-        this.setProp("functional", this._stringToSlugifiedObject(functional));
+    setFunctional(functional: string): void {
+        this.setProp("functional", functional);
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
     }
 

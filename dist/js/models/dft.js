@@ -49,10 +49,10 @@ class DFTModel extends model_1.Model {
     }
     setSubtype(subtype) {
         this.setProp("subtype", subtype);
-        this.setFunctional(this.defaultFunctional);
+        this.setFunctional(this.defaultFunctional.slug);
     }
     setFunctional(functional) {
-        this.setProp("functional", this._stringToSlugifiedObject(functional));
+        this.setProp("functional", functional);
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
     }
     _setArrayProp(name, data) {

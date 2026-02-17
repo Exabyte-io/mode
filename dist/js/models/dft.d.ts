@@ -19,7 +19,7 @@ export declare class DFTModel extends Model {
     get refiners(): SlugifiedEntry[];
     get modifiers(): SlugifiedEntry[];
     setSubtype(subtype: SlugifiedEntryOrSlug): void;
-    setFunctional(functional: SlugifiedEntryOrSlug): void;
+    setFunctional(functional: string): void;
     private _setArrayProp;
     setRefiners(refiners: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[]): void;
     setModifiers(modifiers: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[]): void;
