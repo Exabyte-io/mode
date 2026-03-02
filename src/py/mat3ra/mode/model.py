@@ -6,6 +6,7 @@ from pydantic import Field
 
 from .method import Method
 from .methods.factory import MethodFactory
+from mat3ra.utils.object import calculate_hash_from_object
 
 
 class Model(BaseModel1, InMemoryEntityPydantic):
@@ -36,3 +37,11 @@ class Model(BaseModel1, InMemoryEntityPydantic):
     @property
     def is_unknown(self) -> bool:
         return self.type == "unknown"
+
+    def calculate_hash(self) -> str:
+        cfg = self.to_dict()
+        if getattr(self.method, "omit_in_hash_calculation", False):
+            method_cfg = cfg.get("method") or {}
+            if isinstance(method_cfg, dict):
+                method_cfg.pop("data", None)
+        return calculate_hash_from_object(cfg)

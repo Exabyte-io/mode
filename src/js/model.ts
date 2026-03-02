@@ -7,6 +7,7 @@ import type {
     SlugifiedEntry,
     SlugifiedEntryOrSlug,
 } from "@mat3ra/esse/dist/js/types";
+import { Utils } from "@mat3ra/utils";
 import lodash from "lodash";
 
 import { DFTModelConfig } from "./default_models";
@@ -142,6 +143,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         };
     }
 
+    // eslint-disable-next-line class-methods-use-this
     protected _stringToSlugifiedObject(slug: SlugifiedEntryOrSlug): SlugifiedEntry {
         if (lodash.isString(slug)) {
             return { slug } as SlugifiedEntry;
@@ -156,6 +158,16 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     protected get subtypeSlug(): string {
         const subtype = this.subtype as SlugifiedEntryOrSlug;
         return typeof subtype === "string" ? subtype : subtype.slug;
+    }
+
+    calculateHash(): string {
+        const json = this.toJSON() as Record<string, unknown> & {
+            method?: { data?: unknown };
+        };
+        if (this.Method.omitInHashCalculation) {
+            delete json.method?.data;
+        }
+        return Utils.hash.calculateHashFromObject(json as Record<string, unknown>);
     }
 }
 
