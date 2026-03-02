@@ -1,0 +1,12 @@
+{
+  "config": {
+    "type": "dft",
+    "subtype": "gga",
+    "method": {
+      "type": "pseudopotential",
+      "subtype": "nc",
+      "data": {}
+    }
+  },
+  "hash": "cbf4fd58b630cae0f88168be6cd8536a"
+}

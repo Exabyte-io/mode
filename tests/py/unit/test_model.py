@@ -1,5 +1,7 @@
 import pytest
 from mat3ra.mode import Method, Model
+from pathlib import Path
+import json
 
 DFT_GGA_CONFIG = {"type": "dft", "subtype": "gga"}
 ML_RE_CONFIG = {"type": "ml", "subtype": "re"}
@@ -65,3 +67,8 @@ def test_to_json(config, method_config):
     assert json_data["method"]["type"] == "pseudopotential"
 
 
+def test_calculate_hash_matches_fixture():
+    fixture_path = Path(__file__).parents[2] / "fixtures" / "model_hash.json"
+    fixture = json.loads(fixture_path.read_text())
+    model = Model.create(fixture["config"])
+    assert model.calculate_hash() == fixture["hash"]
