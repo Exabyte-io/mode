@@ -117,6 +117,7 @@ class Model extends entity_1.InMemoryEntity {
             method: this.Method.toJSONWithCleanData(),
         };
     }
+    // eslint-disable-next-line class-methods-use-this
     _stringToSlugifiedObject(slug) {
         if (lodash_1.default.isString(slug)) {
             return { slug };

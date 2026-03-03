@@ -39,7 +39,7 @@ class Model(BaseModel1, InMemoryEntityPydantic):
         return self.type == "unknown"
 
     def calculate_hash(self) -> str:
-        cfg = self.to_dict()
+        cfg = self.model_dump(mode="json", by_alias=True, exclude_none=True)
         if getattr(self.method, "omit_in_hash_calculation", False):
             method_cfg = cfg.get("method") or {}
             if isinstance(method_cfg, dict):
