@@ -1,12 +1,7 @@
 {
-  "config": {
-    "type": "dft",
-    "subtype": "gga",
-    "method": {
-      "type": "pseudopotential",
-      "subtype": "nc",
-      "data": {}
-    }
+  "standata": {
+    "application": "espresso",
+    "workflow": "band_gap"
   },
-  "hash": "cbf4fd58b630cae0f88168be6cd8536a"
+  "hash": "39f527f9089b504b529f4a0646b454bf"
 }

@@ -1,3 +1,4 @@
+import { WorkflowStandata } from "@mat3ra/standata";
 import { expect } from "chai";
 import { readFileSync } from "fs";
 import { resolve } from "path";
@@ -78,7 +79,12 @@ describe("Model", () => {
         const fixture = JSON.parse(
             readFileSync(resolve(__dirname, "../fixtures/model_hash.json"), "utf-8"),
         );
-        const model = new Model(fixture.config);
+        const standata = new WorkflowStandata();
+        const [wfConfig] = standata.findEntitiesByTags(
+            fixture.standata.application,
+            fixture.standata.workflow,
+        );
+        const model = new Model(wfConfig.subworkflows[0].model);
         expect(model.calculateHash()).to.equal(fixture.hash);
     });
 });
