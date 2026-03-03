@@ -1,7 +1,10 @@
-import pytest
-from mat3ra.mode import Method, Model
-from pathlib import Path
 import json
+from pathlib import Path
+
+import pytest
+from mat3ra.standata.workflows import WorkflowStandata
+
+from mat3ra.mode import Method, Model
 
 DFT_GGA_CONFIG = {"type": "dft", "subtype": "gga"}
 ML_RE_CONFIG = {"type": "ml", "subtype": "re"}
@@ -70,7 +73,6 @@ def test_to_json(config, method_config):
 def test_calculate_hash_matches_fixture():
     fixture_path = Path(__file__).parents[2] / "fixtures" / "model_hash.json"
     fixture = json.loads(fixture_path.read_text())
-    from mat3ra.standata.workflows import WorkflowStandata
 
     st = fixture["standata"]
     wf_config = WorkflowStandata.get_by_name_and_categories(st["workflow"], st["application"])
