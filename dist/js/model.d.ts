@@ -34,5 +34,6 @@ export declare class Model extends Model_base implements BaseModel {
     protected _stringToSlugifiedObject(slug: SlugifiedEntryOrSlug): SlugifiedEntry;
     get isUnknown(): boolean;
     protected get subtypeSlug(): string;
+    calculateHash(): string;
 }
 export {};

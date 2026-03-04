@@ -1,4 +1,7 @@
+import { WorkflowStandata } from "@mat3ra/standata";
 import { expect } from "chai";
+import { readFileSync } from "fs";
+import { resolve } from "path";
 
 import { Model } from "../../src/js/model";
 import { DFTModel } from "../../src/js/models/dft";
@@ -70,5 +73,18 @@ describe("Model", () => {
             expect(methodValue).to.have.property("setSearchText");
             expect(methodValue.setSearchText).to.be.a("function");
         });
+    });
+
+    it("calculateHash matches fixture", () => {
+        const fixture = JSON.parse(
+            readFileSync(resolve(__dirname, "../fixtures/model_hash.json"), "utf-8"),
+        );
+        const standata = new WorkflowStandata();
+        const [wfConfig] = standata.findEntitiesByTags(
+            fixture.standata.application,
+            fixture.standata.workflow,
+        );
+        const model = new Model(wfConfig.subworkflows[0].model);
+        expect(model.calculateHash()).to.equal(fixture.hash);
     });
 });

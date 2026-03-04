@@ -1,4 +1,9 @@
+import json
+from pathlib import Path
+
 import pytest
+from mat3ra.standata.workflows import WorkflowStandata
+
 from mat3ra.mode import Method, Model
 
 DFT_GGA_CONFIG = {"type": "dft", "subtype": "gga"}
@@ -65,3 +70,11 @@ def test_to_json(config, method_config):
     assert json_data["method"]["type"] == "pseudopotential"
 
 
+def test_calculate_hash_matches_fixture():
+    fixture_path = Path(__file__).parents[2] / "fixtures" / "model_hash.json"
+    fixture = json.loads(fixture_path.read_text())
+
+    st = fixture["standata"]
+    wf_config = WorkflowStandata.get_by_name_and_categories(st["workflow"], st["application"])
+    model = Model.create(wf_config["subworkflows"][0]["model"])
+    assert model.calculate_hash() == fixture["hash"]
