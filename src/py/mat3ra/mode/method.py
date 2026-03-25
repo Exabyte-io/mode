@@ -44,6 +44,7 @@ class Method(BaseMethod, InMemoryEntityPydantic):
         exclude_set = {x for x in exclude_set if x != "data"}
 
         dict_data = super().to_dict(exclude=list(exclude_set) if exclude_set else None)
+        dict_data = {k: v for k, v in dict_data.items() if v is not None}
 
         if not should_exclude_data:
             dict_data["data"] = self.data.copy()

@@ -38,9 +38,11 @@ export declare class Model extends Model_base implements BaseModel {
         subtype: "gga";
     };
     static get allTypes(): SlugifiedEntry[];
+    _json: AnyModelSchema & AnyObject;
     toJSON(): AnyModelSchema & AnyObject;
     protected _stringToSlugifiedObject(slug: SlugifiedEntryOrSlug): SlugifiedEntry;
     get isUnknown(): boolean;
     protected get subtypeSlug(): string;
+    calculateHash(): string;
 }
 export {};

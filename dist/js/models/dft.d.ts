@@ -14,8 +14,8 @@ export declare class DFTModel extends Model {
     readonly defaultRefiners: SlugifiedEntry[];
     readonly defaultModifiers: SlugifiedEntry[];
     get slugifiedFunctional(): SlugifiedEntry;
-    get functional(): "pbe" | "pbesol" | "pw91" | "other" | "pz" | "pw" | "vwn" | "b3lyp" | "hse06";
-    set functional(functional: "pbe" | "pbesol" | "pw91" | "other" | "pz" | "pw" | "vwn" | "b3lyp" | "hse06");
+    get functional(): "pz" | "pw" | "vwn" | "other" | "pbe" | "pbesol" | "pw91" | "b3lyp" | "hse06";
+    set functional(functional: "pz" | "pw" | "vwn" | "other" | "pbe" | "pbesol" | "pw91" | "b3lyp" | "hse06");
     get refiners(): SlugifiedEntry[];
     get modifiers(): SlugifiedEntry[];
     setSubtype(subtype: SlugifiedEntryOrSlug): void;
@@ -23,6 +23,7 @@ export declare class DFTModel extends Model {
     private _setArrayProp;
     setRefiners(refiners: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[]): void;
     setModifiers(modifiers: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[]): void;
+    _json: DFTModelSchema & AnyObject;
     toJSON(): DFTModelSchema & AnyObject;
     get allFunctionals(): SlugifiedEntry[];
     get allRefiners(): SlugifiedEntry[];
