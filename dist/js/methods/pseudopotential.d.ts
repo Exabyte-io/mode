@@ -1,23 +1,22 @@
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
-import { type SubworkflowSchema, BaseMethod } from "@mat3ra/esse/dist/js/types";
+import { type BaseMethod, type FileDataItem } from "@mat3ra/esse/dist/js/types";
+import { PseudopotentialFilter, PseudopotentialMetaProperty } from "@mat3ra/prode";
 import { Method } from "../method";
-import type { PseudopotentialCtor, PseudopotentialLike } from "../types";
+export type ExchangeCorrelation = {
+    approximation: string;
+    functional: string;
+};
 export declare class PseudopotentialMethod extends Method {
-    PseudopotentialCls: PseudopotentialCtor | null;
-    constructor(config: BaseMethod);
     toJSON: () => BaseMethod & AnyObject;
-    get pseudo(): Record<string, unknown>[];
-    get allPseudo(): Record<string, unknown>[];
-    get pseudopotentials(): PseudopotentialLike[];
-    get allPseudopotentials(): PseudopotentialLike[];
-    static extractExchangeCorrelationFromSubworkflow(subworkflow: SubworkflowSchema): {
-        approximation: string;
-        functional: string;
-    };
+    get pseudo(): FileDataItem[];
+    get allPseudo(): FileDataItem[];
+    get pseudopotentials(): PseudopotentialMetaProperty[];
+    get allPseudopotentials(): PseudopotentialMetaProperty[];
     hasPseudopotentialFor(element: string): boolean;
-    setPseudopotentialPerElement(pseudo: PseudopotentialLike | undefined): void;
-    addToAllPseudos(pseudos: PseudopotentialLike | PseudopotentialLike[]): void;
-    setPseudopotentials(pseudopotentials: PseudopotentialLike[]): void;
-    setAllPseudopotentials(pseudopotentials: PseudopotentialLike[]): void;
+    setPseudopotentialPerElement(pseudo?: PseudopotentialMetaProperty): void;
+    addToAllPseudos(pseudos: PseudopotentialMetaProperty | PseudopotentialMetaProperty[]): void;
+    setPseudopotentials(pseudopotentials: PseudopotentialMetaProperty[]): void;
+    setAllPseudopotentials(pseudopotentials: PseudopotentialMetaProperty[]): void;
     toJSONWithCleanData(exclude?: string[]): BaseMethod;
+    updateMethodDataByApplicationAndMaterials(methodDataItems: PseudopotentialMetaProperty[], pseudoFilter: Pick<PseudopotentialFilter, "elements" | "appName" | "exchangeCorrelation">): this;
 }

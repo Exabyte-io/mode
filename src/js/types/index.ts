@@ -33,13 +33,6 @@ export type SimplifiedCategorizedMethod = Pick<CategorizedMethod, "name" | "path
     units: CategorizedUnitMethod[];
 };
 
-export interface PseudopotentialLike {
-    element?: string;
-    toJSON(): Record<string, unknown>;
-}
-
-export type PseudopotentialCtor = new (config: Record<string, unknown>) => PseudopotentialLike;
-
 export interface MethodTreeBranch {
     methods: Record<string, string[]>;
     functionals?: string[];

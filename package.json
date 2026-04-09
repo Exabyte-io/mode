@@ -56,6 +56,7 @@
         "@exabyte-io/eslint-config": "2025.5.13-0",
         "@mat3ra/code": "git+https://github.com/Exabyte-io/code.git#c3c9e5eb177fe70b8bc221832b6f9d93104d7e2d",
         "@mat3ra/esse": "git+https://github.com/Exabyte-io/esse#75ec994043d2dfadfff0c36a23ec9f6fbcf214e4",
+        "@mat3ra/prode": "git+https://github.com/Exabyte-io/prode.git#156fd7a12c355207ecf3c9b430e8405e60a85e02",
         "@mat3ra/standata": "2025.11.12-0",
         "@mat3ra/tsconfig": "2024.6.3-0",
         "@types/chai": "^4.3.11",
@@ -82,7 +83,8 @@
     },
     "peerDependencies": {
         "@mat3ra/esse": "*",
-        "@mat3ra/code": "*"
+        "@mat3ra/code": "*",
+        "@mat3ra/prode": "*"
     },
     "engines": {
         "node": ">20.0.0"
