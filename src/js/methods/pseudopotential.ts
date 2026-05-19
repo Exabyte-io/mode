@@ -70,10 +70,16 @@ export class PseudopotentialMethod extends Method {
         methodDataItems: PseudopotentialMetaProperty[],
         pseudoFilter: Pick<PseudopotentialFilter, "elements" | "appName" | "exchangeCorrelation">,
     ) {
-        let pseudos = PseudopotentialMetaProperty.applyPseudoFilters(methodDataItems, pseudoFilter);
+        const typeFilter = { type: this.subtype };
+        let pseudos = PseudopotentialMetaProperty.applyPseudoFilters(methodDataItems, {
+            ...pseudoFilter,
+            ...typeFilter,
+        });
 
         // sorting pseudos, this is very hacky! TODO: find better approach for default pseudos per application
-        pseudos = PseudopotentialMetaProperty.sortPseudosByPattern(pseudos);
+        if (this.subtype === "us") {
+            pseudos = PseudopotentialMetaProperty.sortPseudosByPattern(pseudos);
+        }
         pseudos = PseudopotentialMetaProperty.sortByPathVASP(pseudos);
         pseudos = PseudopotentialMetaProperty.filterUnique(pseudos);
 
@@ -91,6 +97,7 @@ export class PseudopotentialMethod extends Method {
             appName: pseudoFilter.appName,
             exchangeCorrelation: pseudoFilter.exchangeCorrelation,
             searchText: this.searchText,
+            ...typeFilter,
         };
 
         // try to keep previously selected pseudos

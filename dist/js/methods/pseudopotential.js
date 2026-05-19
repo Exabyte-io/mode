@@ -52,9 +52,15 @@ class PseudopotentialMethod extends method_1.Method {
     }
     updateMethodDataByApplicationAndMaterials(methodDataItems, pseudoFilter) {
         var _a;
-        let pseudos = prode_1.PseudopotentialMetaProperty.applyPseudoFilters(methodDataItems, pseudoFilter);
+        const typeFilter = { type: this.subtype };
+        let pseudos = prode_1.PseudopotentialMetaProperty.applyPseudoFilters(methodDataItems, {
+            ...pseudoFilter,
+            ...typeFilter,
+        });
         // sorting pseudos, this is very hacky! TODO: find better approach for default pseudos per application
-        pseudos = prode_1.PseudopotentialMetaProperty.sortPseudosByPattern(pseudos);
+        if (this.subtype === "us") {
+            pseudos = prode_1.PseudopotentialMetaProperty.sortPseudosByPattern(pseudos);
+        }
         pseudos = prode_1.PseudopotentialMetaProperty.sortByPathVASP(pseudos);
         pseudos = prode_1.PseudopotentialMetaProperty.filterUnique(pseudos);
         this.setAllPseudopotentials(pseudos);
@@ -66,6 +72,7 @@ class PseudopotentialMethod extends method_1.Method {
             appName: pseudoFilter.appName,
             exchangeCorrelation: pseudoFilter.exchangeCorrelation,
             searchText: this.searchText,
+            ...typeFilter,
         };
         // try to keep previously selected pseudos
         // TODO: rework creating/updating method data items once methodData has been removed from store
