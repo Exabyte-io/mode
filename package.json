@@ -56,7 +56,7 @@
         "@exabyte-io/eslint-config": "2025.5.13-0",
         "@mat3ra/code": "https://github.com/Exabyte-io/code/archive/b7f90fbfe37f852344cdb65520fb395a860ea274.tar.gz",
         "@mat3ra/esse": "https://github.com/Exabyte-io/esse/archive/d858d1b235eb0af35af3abae31d7df8b785417d0.tar.gz",
-        "@mat3ra/prode": "https://github.com/Exabyte-io/prode/archive/ca265ffa14b5a57247dc200bcd9e3d7d811ab8b2.tar.gz",
+        "@mat3ra/prode": "https://github.com/Exabyte-io/prode/archive/a6500343c8ce4d04074e6ab22275b99335745cbc.tar.gz",
         "@mat3ra/standata": "2025.11.12-0",
         "@mat3ra/tsconfig": "2024.6.3-0",
         "@types/chai": "^4.3.11",

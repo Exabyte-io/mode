@@ -80,7 +80,10 @@ export class PseudopotentialMethod extends Method {
         if (this.subtype === "us") {
             pseudos = PseudopotentialMetaProperty.sortPseudosByPattern(pseudos);
         }
-        pseudos = PseudopotentialMetaProperty.sortByPathVASP(pseudos);
+        pseudos = PseudopotentialMetaProperty.sortByPathApplicationSpecific(
+            pseudos,
+            pseudoFilter.appName,
+        );
         pseudos = PseudopotentialMetaProperty.filterUnique(pseudos);
 
         this.setAllPseudopotentials(pseudos);
