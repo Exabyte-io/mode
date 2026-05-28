@@ -1,15 +1,28 @@
 import type {
-    ApplicationSchemaBase,
-    BaseModel,
+    ApplicationSchema,
     CategorizedMethod,
     CategorizedModel,
     CategorizedUnitMethod,
+    DFTModelSchema,
+    MLModelSchema,
+    UnknownModelSchema,
 } from "@mat3ra/esse/dist/js/types";
 
-export type ModelConfig = Pick<BaseModel, "type" | "subtype"> &
-    Partial<Omit<BaseModel, "type" | "subtype">> & {
-        application?: ApplicationSchemaBase;
-    };
+/**
+ * Makes specified fields required and all others optional
+ * TODO: consider moving to code.js
+ */
+export type RequireFields<T, K extends keyof T> = Required<Pick<T, K>> & Partial<Omit<T, K>>;
+
+type ModelRequiredFields = "type" | "subtype";
+
+export type DFTModelConfig = RequireFields<DFTModelSchema, ModelRequiredFields>;
+export type MLModelConfig = RequireFields<MLModelSchema, ModelRequiredFields>;
+export type UnknownModelConfig = RequireFields<UnknownModelSchema, ModelRequiredFields>;
+
+export type ModelConfig = (DFTModelConfig | MLModelConfig | UnknownModelConfig) & {
+    application?: ApplicationSchema;
+};
 
 export type SimplifiedCategorizedModel = Pick<
     CategorizedModel,
@@ -19,13 +32,6 @@ export type SimplifiedCategorizedModel = Pick<
 export type SimplifiedCategorizedMethod = Pick<CategorizedMethod, "name" | "path"> & {
     units: CategorizedUnitMethod[];
 };
-
-export interface PseudopotentialLike {
-    element?: string;
-    toJSON(): Record<string, unknown>;
-}
-
-export type PseudopotentialCtor = new (config: Record<string, unknown>) => PseudopotentialLike;
 
 export interface MethodTreeBranch {
     methods: Record<string, string[]>;

@@ -10,11 +10,11 @@ class PseudopotentialMethod(LegacyMethodPseudopotential, Method):
 
     @property
     def pseudo(self) -> List[Dict[str, Any]]:
-        return self.data.get("pseudo", [])
+        return self.data.pseudo
 
     @property
     def all_pseudo(self) -> List[Dict[str, Any]]:
-        return self.data.get("allPseudo", [])
+        return self.data.allPseudo
 
     @property
     def pseudopotentials(self) -> List[Any]:
@@ -33,7 +33,7 @@ class PseudopotentialMethod(LegacyMethodPseudopotential, Method):
 
         if exclude is None or "data" not in exclude:
             filtered_data = self.data.copy()
-            filtered_data.pop("allPseudo", None)
+            # filtered_data.pop("allPseudo", None)
             json_data["data"] = filtered_data
 
         return json_data

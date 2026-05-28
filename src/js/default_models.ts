@@ -1,11 +1,9 @@
-import type { ModelConfig } from "./types";
-
-export const DFTModelConfig: ModelConfig = {
+export const DFTModelConfig = {
     type: "dft",
     subtype: "gga",
-};
+} as const;
 
-export const UnknownModelConfig: ModelConfig = {
+export const UnknownModelConfig = {
     type: "unknown",
     subtype: "unknown",
-};
+} as const;

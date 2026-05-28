@@ -1,10 +1,9 @@
 import { Model } from "../model";
 import {
-    getDefaultModelSubtypeForApplicationAndType,
-    getDefaultModelTypeForApplication,
+    getDefaultModelTypeSubtypeForApplication,
     getTreeByApplicationNameAndVersion,
 } from "../tree";
-import type { ModelConfig } from "../types";
+import type { ModelConfig, RequireFields } from "../types";
 import { DFTModel } from "./dft";
 
 export class ModelFactory {
@@ -21,20 +20,19 @@ export class ModelFactory {
         }
     }
 
-    static createFromApplication(config: ModelConfig): Model {
+    static createFromApplication(config: RequireFields<ModelConfig, "application">): Model {
         const { application } = config;
         if (!application) {
             throw new Error("ModelFactory.createFromApplication: application is required");
         }
 
         const tree = getTreeByApplicationNameAndVersion(application);
-        if (Object.keys(tree).length === 0) {
+        if (!tree || Object.keys(tree).length === 0) {
             return this.create({ ...config, type: "unknown", subtype: "unknown" });
         }
 
-        const type = getDefaultModelTypeForApplication(application);
-        const subtype = getDefaultModelSubtypeForApplicationAndType(application, type) || "unknown";
+        const typeSubtype = getDefaultModelTypeSubtypeForApplication(application);
 
-        return this.create({ ...config, type, subtype });
+        return this.create({ ...config, ...typeSubtype });
     }
 }

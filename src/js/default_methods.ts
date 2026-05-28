@@ -1,22 +1,28 @@
-import { BaseMethod, BaseModel, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
+import { BaseModel, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
 import lodash from "lodash";
 
 import { MODEL_NAMES, MODEL_TREE } from "./tree";
 
-export const PseudopotentialMethodConfig: BaseMethod = {
+export const PseudopotentialMethodConfig = {
     type: "pseudopotential",
     subtype: "us",
-};
+} as const;
 
-export const LocalOrbitalMethodConfig: BaseMethod = {
+export const LocalOrbitalMethodConfig = {
     type: "localorbital",
     subtype: "pople",
-};
+} as const;
 
-export const UnknownMethodConfig: BaseMethod = {
+export const UnknownMethodConfig = {
     type: "unknown",
     subtype: "unknown",
-};
+} as const;
+
+export const methodConfigs = {
+    pseudopotential: PseudopotentialMethodConfig,
+    localorbital: LocalOrbitalMethodConfig,
+    unknown: UnknownMethodConfig,
+} as const;
 
 const mapSlugToNamedObject = (slug: string): SlugifiedEntry => {
     return {
@@ -30,7 +36,10 @@ export function allowedTypes(model: Pick<BaseModel, "type" | "subtype">): Slugif
     return lodash.keys(branch).map(mapSlugToNamedObject);
 }
 
-export function allowedSubtypes(model: Pick<BaseModel, "type" | "subtype">, type: string): SlugifiedEntry[] {
+export function allowedSubtypes(
+    model: Pick<BaseModel, "type" | "subtype">,
+    type: string,
+): SlugifiedEntry[] {
     const branch = lodash.get(MODEL_TREE, `${model.type}.${model.subtype}.methods.${type}`, []);
     return (branch as string[]).map(mapSlugToNamedObject);
 }

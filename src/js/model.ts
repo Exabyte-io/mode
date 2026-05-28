@@ -1,7 +1,9 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type {
-    ApplicationSchemaBase,
+    AnyModelSchema,
+    ApplicationSchema,
     BaseMethod,
     BaseModel,
     SlugifiedEntry,
@@ -22,7 +24,7 @@ const EMPTY_BRANCH: MethodTreeBranch = { methods: {} };
 type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin>;
 
 export class Model extends (InMemoryEntity as Base) implements BaseModel {
-    protected _application?: ApplicationSchemaBase;
+    protected _application?: ApplicationSchema;
 
     protected _MethodFactory: typeof MethodFactory;
 
@@ -31,14 +33,13 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     constructor(config: ModelConfig) {
         const { application, method = Method.defaultConfig, ...entityConfig } = config;
         super(entityConfig);
-        this._application = application as ApplicationSchemaBase | undefined;
+        this._application = application;
         this._MethodFactory = MethodFactory;
-        if (method) {
-            this.setProp("method", method);
-        }
+        this.method = method || this.method;
     }
 
     setSubtype(subtype: SlugifiedEntryOrSlug): void {
+        // TODO-question: subtype is a string, but we're setting it to a SlugifiedEntryOrSlug
         this.setProp("subtype", subtype);
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
     }
@@ -122,7 +123,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return { type, subtype };
     }
 
-    static get defaultConfig(): ModelConfig {
+    static get defaultConfig() {
         return {
             ...DFTModelConfig,
             method: Method.defaultConfig,
@@ -133,14 +134,15 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return Object.keys(MODEL_TREE).map((modelSlug) => treeSlugToNamedObject(modelSlug));
     }
 
-    toJSON(): Record<string, unknown> {
-        const json = super.toJSON();
+    declare _json: AnyModelSchema & AnyObject;
+
+    toJSON(): AnyModelSchema & AnyObject {
         return {
-            ...json,
+            ...super.toJSON(),
             type: this.type,
             subtype: this.subtype,
             method: this.Method.toJSONWithCleanData(),
-        };
+        } as AnyModelSchema & AnyObject;
     }
 
     // eslint-disable-next-line class-methods-use-this

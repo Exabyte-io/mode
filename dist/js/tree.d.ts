@@ -1,4 +1,4 @@
-import { ApplicationSchemaBase, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
+import { type DFTModelSchema, type MLModelSchema, type UnknownModelSchema, ApplicationSchema } from "@mat3ra/esse/dist/js/types";
 import type { ModelTree } from "./types";
 export declare const MODEL_TREE: {
     dft: {
@@ -69,8 +69,10 @@ export declare const METHODS: {
 };
 export declare const getPseudopotentialTypesFromTree: () => string[];
 export declare const getDFTFunctionalsFromTree: () => string[];
-export declare const getDFTFunctionalsByApproximation: (approximation: string) => string[] | undefined;
-export declare const treeSlugToNamedObject: (modelSlug: string) => SlugifiedEntry;
-export declare const getTreeByApplicationNameAndVersion: ({ name, }: Pick<ApplicationSchemaBase, "name" | "version">) => ModelTree;
-export declare const getDefaultModelTypeForApplication: (application: ApplicationSchemaBase) => string;
-export declare const getDefaultModelSubtypeForApplicationAndType: (application: ApplicationSchemaBase, type: string) => string | undefined;
+export declare const getDFTFunctionalsByApproximation: (approximation: "gga" | "lda" | "hybrid" | "other") => string[] | undefined;
+export declare function treeSlugToNamedObject<T extends string>(modelSlug: T): {
+    readonly slug: T;
+    readonly name: string;
+};
+export declare const getTreeByApplicationNameAndVersion: ({ name, }: Pick<ApplicationSchema, "name" | "version">) => ModelTree | undefined;
+export declare function getDefaultModelTypeSubtypeForApplication(application: Pick<ApplicationSchema, "name" | "version">): Pick<DFTModelSchema, "type" | "subtype"> | Pick<MLModelSchema, "type" | "subtype"> | Pick<UnknownModelSchema, "type" | "subtype">;

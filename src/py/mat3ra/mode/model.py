@@ -1,7 +1,7 @@
 from typing import Any, Dict, Optional
 
 from mat3ra.code.entity import InMemoryEntityPydantic
-from mat3ra.esse.models.model import BaseModel1
+from mat3ra.esse.models.model import BaseModelModel
 from pydantic import Field
 
 from .method import Method
@@ -9,7 +9,7 @@ from .methods.factory import MethodFactory
 from mat3ra.utils.object import calculate_hash_from_object
 
 
-class Model(BaseModel1, InMemoryEntityPydantic):
+class Model(BaseModelModel, InMemoryEntityPydantic):
     method: Method = Field(default_factory=lambda: MethodFactory.create({}))
 
     application: Optional[Dict[str, Any]] = Field(default=None, exclude=True)

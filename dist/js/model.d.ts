@@ -1,6 +1,7 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
-import type { ApplicationSchemaBase, BaseMethod, BaseModel, SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
+import type { AnyModelSchema, ApplicationSchema, BaseMethod, BaseModel, SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
 import { type ModelSchemaMixin } from "./generated/ModelSchemaMixin";
 import { Method } from "./method";
 import { MethodFactory } from "./methods/factory";
@@ -8,7 +9,7 @@ import type { MethodTreeBranch, ModelConfig, ModelTree } from "./types";
 type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin>;
 declare const Model_base: Base;
 export declare class Model extends Model_base implements BaseModel {
-    protected _application?: ApplicationSchemaBase;
+    protected _application?: ApplicationSchema;
     protected _MethodFactory: typeof MethodFactory;
     protected _method?: Method;
     constructor(config: ModelConfig);
@@ -28,9 +29,17 @@ export declare class Model extends Model_base implements BaseModel {
     get methodTypes(): SlugifiedEntry[];
     get methodSubtypes(): SlugifiedEntry[];
     get defaultMethodConfig(): BaseMethod;
-    static get defaultConfig(): ModelConfig;
+    static get defaultConfig(): {
+        method: {
+            readonly type: "pseudopotential";
+            readonly subtype: "us";
+        };
+        type: "dft";
+        subtype: "gga";
+    };
     static get allTypes(): SlugifiedEntry[];
-    toJSON(): Record<string, unknown>;
+    _json: AnyModelSchema & AnyObject;
+    toJSON(): AnyModelSchema & AnyObject;
     protected _stringToSlugifiedObject(slug: SlugifiedEntryOrSlug): SlugifiedEntry;
     get isUnknown(): boolean;
     protected get subtypeSlug(): string;

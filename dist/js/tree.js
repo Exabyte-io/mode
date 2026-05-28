@@ -3,7 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDefaultModelSubtypeForApplicationAndType = exports.getDefaultModelTypeForApplication = exports.getTreeByApplicationNameAndVersion = exports.treeSlugToNamedObject = exports.getDFTFunctionalsByApproximation = exports.getDFTFunctionalsFromTree = exports.getPseudopotentialTypesFromTree = exports.METHODS = exports.MODEL_NAMES = exports.MODEL_TREE = void 0;
+exports.getTreeByApplicationNameAndVersion = exports.getDFTFunctionalsByApproximation = exports.getDFTFunctionalsFromTree = exports.getPseudopotentialTypesFromTree = exports.METHODS = exports.MODEL_NAMES = exports.MODEL_TREE = void 0;
+exports.treeSlugToNamedObject = treeSlugToNamedObject;
+exports.getDefaultModelTypeSubtypeForApplication = getDefaultModelTypeSubtypeForApplication;
 const modelsTreeConfigByApplication_json_1 = __importDefault(require("@mat3ra/standata/dist/js/runtime_data/models/modelsTreeConfigByApplication.json"));
 const modelTree_json_1 = __importDefault(require("@mat3ra/standata/dist/js/runtime_data/models/modelTree.json"));
 const lodash_1 = __importDefault(require("lodash"));
@@ -30,26 +32,26 @@ const getDFTFunctionalsByApproximation = (approximation) => {
     return branch === null || branch === void 0 ? void 0 : branch.functionals;
 };
 exports.getDFTFunctionalsByApproximation = getDFTFunctionalsByApproximation;
-const treeSlugToNamedObject = (modelSlug) => {
+function treeSlugToNamedObject(modelSlug) {
     return {
         slug: modelSlug,
         name: lodash_1.default.get(exports.MODEL_NAMES, modelSlug, modelSlug),
     };
-};
-exports.treeSlugToNamedObject = treeSlugToNamedObject;
+}
 const getTreeByApplicationNameAndVersion = ({ name, }) => {
     // TODO: add logic to filter by version when necessary
-    // @ts-ignore
-    return modelsTreeConfigByApplication_json_1.default[name] || {};
+    if (!(name in modelsTreeConfigByApplication_json_1.default)) {
+        return undefined;
+    }
+    return modelsTreeConfigByApplication_json_1.default[name];
 };
 exports.getTreeByApplicationNameAndVersion = getTreeByApplicationNameAndVersion;
-const getDefaultModelTypeForApplication = (application) => {
-    return Object.keys((0, exports.getTreeByApplicationNameAndVersion)(application))[0];
-};
-exports.getDefaultModelTypeForApplication = getDefaultModelTypeForApplication;
-const getDefaultModelSubtypeForApplicationAndType = (application, type) => {
+function getDefaultModelTypeSubtypeForApplication(application) {
     const tree = (0, exports.getTreeByApplicationNameAndVersion)(application);
-    const subtypes = Object.keys(tree[type] || {});
-    return subtypes[0];
-};
-exports.getDefaultModelSubtypeForApplicationAndType = getDefaultModelSubtypeForApplicationAndType;
+    if (!tree) {
+        throw new Error(`getDefaultModelTypeForApplication: tree not found for application ${application.name}`);
+    }
+    const type = Object.keys(tree)[0];
+    const subtype = Object.keys(tree[type] || {})[0] || "unknown";
+    return { type, subtype };
+}

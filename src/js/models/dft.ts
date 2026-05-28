@@ -1,6 +1,10 @@
 import { safeMakeArray } from "@mat3ra/code/dist/js/utils";
-import { SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
-import _ from "underscore";
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
+import {
+    type DFTModelSchema,
+    SlugifiedEntry,
+    SlugifiedEntryOrSlug,
+} from "@mat3ra/esse/dist/js/types";
 
 import { MethodFactory } from "../methods/factory";
 import { Model } from "../model";
@@ -11,57 +15,64 @@ export class DFTModel extends Model {
     constructor(config: ModelConfig & { MethodFactory?: typeof MethodFactory }) {
         super(config);
         this._MethodFactory = config.MethodFactory || MethodFactory;
+        this.functional =
+            this.prop<DFTModelSchema["functional"]>("functional") || this.defaultFunctional.slug;
     }
 
+    declare type: DFTModelSchema["type"];
+
+    declare subtype: DFTModelSchema["subtype"];
+
     get groupSlug(): string {
-        const functionalSlug = this.functional.slug;
         const refinersSlug = this.refiners.map((o) => o.slug).join("+");
         const modifiersSlug = this.modifiers.map((o) => o.slug).join("+");
         const slugs = [
             this._application?.shortName,
             this.type,
             this.subtype,
-            functionalSlug,
+            this.functional,
             refinersSlug,
             modifiersSlug,
         ].filter(Boolean);
         return slugs.join(":");
     }
 
-    get defaultFunctional(): SlugifiedEntry {
+    private get defaultFunctional() {
         const [slug] = this.treeBranchForSubType.functionals || [];
-        return treeSlugToNamedObject(slug);
+        return treeSlugToNamedObject(slug as DFTModelSchema["functional"]);
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    get defaultRefiners(): SlugifiedEntry[] {
-        return [];
+    readonly defaultRefiners: SlugifiedEntry[] = [];
+
+    readonly defaultModifiers: SlugifiedEntry[] = [];
+
+    get slugifiedFunctional() {
+        return this._stringToSlugifiedObject(this.functional);
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    get defaultModifiers(): SlugifiedEntry[] {
-        return [];
+    get functional() {
+        return this.requiredProp<DFTModelSchema["functional"]>("functional");
     }
 
-    get functional(): SlugifiedEntry {
-        return this.prop<SlugifiedEntry>("functional", this.defaultFunctional);
+    set functional(functional) {
+        this.setProp("functional", functional);
     }
 
-    get refiners(): SlugifiedEntry[] {
+    get refiners() {
         return this.prop<SlugifiedEntry[]>("refiners", this.defaultRefiners);
     }
 
-    get modifiers(): SlugifiedEntry[] {
+    get modifiers() {
         return this.prop<SlugifiedEntry[]>("modifiers", this.defaultModifiers);
     }
 
     setSubtype(subtype: SlugifiedEntryOrSlug): void {
         this.setProp("subtype", subtype);
-        this.setFunctional(this.defaultFunctional);
+        this.setFunctional(this.defaultFunctional.slug);
     }
 
-    setFunctional(functional: SlugifiedEntryOrSlug): void {
-        this.setProp("functional", this._stringToSlugifiedObject(functional));
+    setFunctional(functional: string): void {
+        this.setProp("functional", functional);
         this.setMethod(this._MethodFactory.create(this.defaultMethodConfig));
     }
 
@@ -82,22 +93,24 @@ export class DFTModel extends Model {
         this._setArrayProp("modifiers", modifiers);
     }
 
-    toJSON(): Record<string, unknown> {
-        const pickSlugFromObject = (item: SlugifiedEntry) => _.pick(item, "slug");
+    declare _json: DFTModelSchema & AnyObject;
+
+    toJSON(): DFTModelSchema & AnyObject {
         const baseJson = super.toJSON();
         const keysToExclude = ["type", "subtype", "functional", "refiners", "modifiers", "method"];
         const restJson = Object.fromEntries(
             Object.entries(baseJson).filter(([key]) => !keysToExclude.includes(key)),
         );
+
         return {
             type: this.type,
             subtype: this.subtype,
             method: this.Method.toJSONWithCleanData(),
-            functional: pickSlugFromObject(this.functional),
+            functional: this.functional,
             refiners: this.refiners,
             modifiers: this.modifiers,
             ...restJson,
-        };
+        } as DFTModelSchema;
     }
 
     get allFunctionals(): SlugifiedEntry[] {
