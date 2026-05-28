@@ -11,7 +11,7 @@ class DFTModel(Model):
     type: str = Field(default="dft")
     subtype: str = Field(default="gga")
     functional: Union[Functional10, SlugifiedEntry, Dict[str, Any], None] = Field(
-        default=Functional10.pbe
+        default=Functional7.pbe
     )
     refiners: List[Union[SlugifiedEntry, str]] = Field(default_factory=list)
     modifiers: List[Union[SlugifiedEntry, str]] = Field(default_factory=list)
