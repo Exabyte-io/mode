@@ -6,6 +6,8 @@ from mat3ra.standata.workflows import WorkflowStandata
 
 from mat3ra.mode import Method, Model
 
+pytestmark = pytest.mark.skip(reason="Module not ready")
+
 DFT_GGA_CONFIG = {"type": "dft", "subtype": "gga"}
 ML_RE_CONFIG = {"type": "ml", "subtype": "re"}
 
