@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Union
 
 from mat3ra.esse.models.core.primitive.slugified_entry import SlugifiedEntry
-from mat3ra.esse.models.models_directory.legacy.dft import Functional10
+from mat3ra.esse.models.models_directory.legacy.dft import Functional7
 from pydantic import Field
 
 from ..model import Model
