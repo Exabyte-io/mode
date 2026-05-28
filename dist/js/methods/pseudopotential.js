@@ -61,7 +61,7 @@ class PseudopotentialMethod extends method_1.Method {
         if (this.subtype === "us") {
             pseudos = prode_1.PseudopotentialMetaProperty.sortPseudosByPattern(pseudos);
         }
-        pseudos = prode_1.PseudopotentialMetaProperty.sortByPathVASP(pseudos);
+        pseudos = prode_1.PseudopotentialMetaProperty.sortByPathApplicationSpecific(pseudos, pseudoFilter.appName);
         pseudos = prode_1.PseudopotentialMetaProperty.filterUnique(pseudos);
         this.setAllPseudopotentials(pseudos);
         this.setSearchText(this.searchText);
