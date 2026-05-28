@@ -10,7 +10,7 @@ from ..model import Model
 class DFTModel(Model):
     type: str = Field(default="dft")
     subtype: str = Field(default="gga")
-    functional: Union[Functional10, SlugifiedEntry, Dict[str, Any], None] = Field(
+    functional: Union[Functional7, SlugifiedEntry, Dict[str, Any], None] = Field(
         default=Functional7.pbe
     )
     refiners: List[Union[SlugifiedEntry, str]] = Field(default_factory=list)
