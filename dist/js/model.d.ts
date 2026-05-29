@@ -1,4 +1,5 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
+import { type HashedEntity } from "@mat3ra/code/dist/js/entity/mixins/HashedEntityMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { AnyModelSchema, ApplicationSchema, BaseMethod, BaseModel, SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
@@ -6,7 +7,7 @@ import { type ModelSchemaMixin } from "./generated/ModelSchemaMixin";
 import { Method } from "./method";
 import { MethodFactory } from "./methods/factory";
 import type { MethodTreeBranch, ModelConfig, ModelTree } from "./types";
-type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin>;
+type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin> & Constructor<HashedEntity>;
 declare const Model_base: Base;
 export declare class Model extends Model_base implements BaseModel {
     protected _application?: ApplicationSchema;
@@ -43,6 +44,6 @@ export declare class Model extends Model_base implements BaseModel {
     protected _stringToSlugifiedObject(slug: SlugifiedEntryOrSlug): SlugifiedEntry;
     get isUnknown(): boolean;
     protected get subtypeSlug(): string;
-    calculateHash(): string;
+    getHashObject(): Record<string, unknown>;
 }
 export {};
