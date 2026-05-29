@@ -2,11 +2,8 @@ import json
 from pathlib import Path
 
 import pytest
-from mat3ra.standata.workflows import WorkflowStandata
-
-from mat3ra.mode import Method, Model
-
 from mat3ra.mode import ModelFactory
+from mat3ra.standata.workflows import WorkflowStandata
 
 DFT_GGA_CONFIG = {"type": "dft", "subtype": "gga"}
 ML_RE_CONFIG = {"type": "ml", "subtype": "re"}

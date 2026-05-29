@@ -1,8 +1,6 @@
 import pytest
 from mat3ra.mode import Method
 
-from mat3ra.mode.method import MethodData
-
 PSEUDOPOTENTIAL_US_CONFIG = {"type": "pseudopotential", "subtype": "us"}
 PSEUDOPOTENTIAL_NC_CONFIG = {"type": "pseudopotential", "subtype": "nc"}
 LOCALORBITAL_POPLE_CONFIG = {"type": "localorbital", "subtype": "pople"}
