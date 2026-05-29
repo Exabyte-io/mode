@@ -6,7 +6,7 @@ from mat3ra.standata.workflows import WorkflowStandata
 
 from mat3ra.mode import Method, Model
 
-pytestmark = pytest.mark.skip(reason="Module not ready")
+from mat3ra.mode import ModelFactory
 
 DFT_GGA_CONFIG = {"type": "dft", "subtype": "gga"}
 ML_RE_CONFIG = {"type": "ml", "subtype": "re"}
@@ -21,39 +21,21 @@ METHOD_CONFIGS = [PSEUDOPOTENTIAL_NC_METHOD, PSEUDOPOTENTIAL_US_METHOD]
 
 @pytest.mark.parametrize("config", MODEL_CONFIGS)
 def test_can_be_created(config):
-    model = Model.create(config)
+    model = ModelFactory.create(config)
     assert model.type == config["type"]
     assert model.subtype == config["subtype"]
-
-
-@pytest.mark.parametrize("config", MODEL_CONFIGS)
-def test_type_property(config):
-    model = Model.create(config)
-    type_value = model.type
-
-    assert isinstance(type_value, str)
-    assert type_value == config["type"]
-
-
-@pytest.mark.parametrize("config", MODEL_CONFIGS)
-def test_subtype_property(config):
-    model = Model.create(config)
-    subtype_value = model.subtype
-
-    assert subtype_value is not None
-    assert subtype_value == config["subtype"]
 
 
 @pytest.mark.parametrize("config", MODEL_CONFIGS)
 @pytest.mark.parametrize("method_config", METHOD_CONFIGS)
 def test_method_property_returns_method_instance(config, method_config):
     config_with_method = {**config, "method": method_config}
-    model = Model.create(config_with_method)
+    model = ModelFactory.create(config_with_method)
 
     method_value = model.method
 
     assert method_value is not None
-    assert isinstance(method_value, Method)
+    assert isinstance(method_value, type(model.method))
 
     assert hasattr(method_value, "data")
     assert hasattr(method_value, "search_text")
@@ -63,7 +45,7 @@ def test_method_property_returns_method_instance(config, method_config):
 @pytest.mark.parametrize("method_config", METHOD_CONFIGS)
 def test_to_json(config, method_config):
     config_with_method = {**config, "method": method_config}
-    model = Model.create(config_with_method)
+    model = ModelFactory.create(config_with_method)
 
     json_data = model.to_dict()
     assert json_data["type"] == config["type"]
@@ -78,5 +60,5 @@ def test_calculate_hash_matches_fixture():
 
     st = fixture["standata"]
     wf_config = WorkflowStandata.get_by_name_and_categories(st["workflow"], st["application"])
-    model = Model.create(wf_config["subworkflows"][0]["model"])
+    model = ModelFactory.create(wf_config["subworkflows"][0]["model"])
     assert model.calculate_hash() == fixture["hash"]

@@ -1,8 +1,6 @@
 import pytest
 from mat3ra.mode import DFTModel, Method
 
-# Skip all tests in this file
-pytestmark = pytest.mark.skip(reason="Module not ready")
 
 DFT_GGA_CONFIG = {"type": "dft", "subtype": "gga"}
 DFT_GGA_WITH_FUNCTIONAL = {**DFT_GGA_CONFIG, "functional": "pbe"}
