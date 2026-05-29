@@ -1,4 +1,8 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
+import {
+    type HashedEntity,
+    hashedEntityMixin,
+} from "@mat3ra/code/dist/js/entity/mixins/HashedEntityMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type {
@@ -9,7 +13,6 @@ import type {
     SlugifiedEntry,
     SlugifiedEntryOrSlug,
 } from "@mat3ra/esse/dist/js/types";
-import { Utils } from "@mat3ra/utils";
 import lodash from "lodash";
 
 import { DFTModelConfig } from "./default_models";
@@ -21,7 +24,7 @@ import type { MethodTreeBranch, ModelConfig, ModelTree } from "./types";
 
 const EMPTY_BRANCH: MethodTreeBranch = { methods: {} };
 
-type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin>;
+type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin> & Constructor<HashedEntity>;
 
 export class Model extends (InMemoryEntity as Base) implements BaseModel {
     protected _application?: ApplicationSchema;
@@ -162,15 +165,12 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return typeof subtype === "string" ? subtype : subtype.slug;
     }
 
-    calculateHash(): string {
-        const json = this.toJSON() as Record<string, unknown> & {
-            method?: { data?: unknown };
-        };
-        if (this.Method.omitInHashCalculation) {
-            delete json.method?.data;
-        }
-        return Utils.hash.calculateHashFromObject(json as Record<string, unknown>);
+    getHashObject(): Record<string, unknown> {
+        const json = this.toJSON() as Record<string, unknown>;
+        json.method = this.Method.calculateHash();
+        return json;
     }
 }
 
 modelSchemaMixin(Model.prototype);
+hashedEntityMixin(Model.prototype);
