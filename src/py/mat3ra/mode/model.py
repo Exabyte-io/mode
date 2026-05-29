@@ -1,12 +1,13 @@
 from typing import Any, Dict, Optional
 
 from mat3ra.code.entity import InMemoryEntityPydantic
+from mat3ra.code.mixins import HashedEntityMixin
 from mat3ra.esse.models.model import BaseModelModel
 from pydantic import Field
 
 from .method import Method
 from .methods.factory import MethodFactory
-from mat3ra.code.mixins import HashedEntityMixin
+
 
 class Model(BaseModelModel, HashedEntityMixin, InMemoryEntityPydantic):
     method: Method = Field(default_factory=lambda: MethodFactory.create({}))
@@ -39,5 +40,5 @@ class Model(BaseModelModel, HashedEntityMixin, InMemoryEntityPydantic):
 
     def get_hash_object(self) -> Dict[str, Any]:
         cfg = self.to_dict()
-        cfg.method = self.method.calculate_hash()
+        cfg["method"] = self.method.calculate_hash()
         return cfg

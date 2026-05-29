@@ -1,14 +1,17 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
+import {
+    type HashedEntity,
+    hashedEntityMixin,
+} from "@mat3ra/code/dist/js/entity/mixins/HashedEntityMixin";
 import { deepClone } from "@mat3ra/code/dist/js/utils";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { BaseMethod, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
-import lodash from "lodash";
 
 import { PseudopotentialMethodConfig } from "./default_methods";
 import { type MethodSchemaMixin, methodSchemaMixin } from "./generated/MethodSchemaMixin";
 
-type Base = typeof InMemoryEntity & Constructor<MethodSchemaMixin>;
+type Base = typeof InMemoryEntity & Constructor<MethodSchemaMixin> & Constructor<HashedEntity>;
 
 interface MethodData extends Record<string, unknown> {
     searchText?: string;
@@ -48,11 +51,6 @@ export class Method extends (InMemoryEntity as Base) implements BaseMethod {
         this.setProp("data", data);
     }
 
-    get omitInHashCalculation(): boolean {
-        const data = this.data as MethodData;
-        return !data?.searchText && lodash.isEmpty(lodash.omit(data, "searchText"));
-    }
-
     cleanData(fieldsToExclude: string[] = []): MethodData {
         const filteredData = { ...(this.data as MethodData) };
         fieldsToExclude.forEach((field) => {
@@ -65,6 +63,13 @@ export class Method extends (InMemoryEntity as Base) implements BaseMethod {
         const json = { ...this._json, data: this.cleanData(fieldsToExclude) };
         return deepClone(json);
     }
+
+    getHashObject(): Record<string, unknown> {
+        const json = { ...this.toJSONWithCleanData() } as Record<string, unknown>;
+        delete json.data;
+        return json;
+    }
 }
 
 methodSchemaMixin(Method.prototype);
+hashedEntityMixin(Method.prototype);

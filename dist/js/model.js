@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Model = void 0;
 const entity_1 = require("@mat3ra/code/dist/js/entity");
-const utils_1 = require("@mat3ra/utils");
+const HashedEntityMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/HashedEntityMixin");
 const lodash_1 = __importDefault(require("lodash"));
 const default_models_1 = require("./default_models");
 const ModelSchemaMixin_1 = require("./generated/ModelSchemaMixin");
@@ -129,14 +129,12 @@ class Model extends entity_1.InMemoryEntity {
         const subtype = this.subtype;
         return typeof subtype === "string" ? subtype : subtype.slug;
     }
-    calculateHash() {
-        var _a;
+    getHashObject() {
         const json = this.toJSON();
-        if (this.Method.omitInHashCalculation) {
-            (_a = json.method) === null || _a === void 0 ? true : delete _a.data;
-        }
-        return utils_1.Utils.hash.calculateHashFromObject(json);
+        json.method = this.Method.calculateHash();
+        return json;
     }
 }
 exports.Model = Model;
 (0, ModelSchemaMixin_1.modelSchemaMixin)(Model.prototype);
+(0, HashedEntityMixin_1.hashedEntityMixin)(Model.prototype);
