@@ -1,12 +1,12 @@
 from typing import Any, Dict, List, Optional
 
 from mat3ra.code.entity import InMemoryEntityPydantic
+from mat3ra.code.mixins import HashedEntityMixin
 from mat3ra.esse.models.method import BaseMethod
 from pydantic import Field
 
 
-
-class Method(BaseMethod, InMemoryEntityPydantic):
+class Method(BaseMethod, HashedEntityMixin, InMemoryEntityPydantic):
     type: str = Field(default="unknown")
     subtype: str = Field(default="unknown")
     data: Dict[str, Any] = Field(default_factory=dict)
@@ -15,7 +15,6 @@ class Method(BaseMethod, InMemoryEntityPydantic):
         cloned = self.clone()
         cloned.data = {}
         return cloned
-
 
     @classmethod
     def clean(cls, config: Dict[str, Any]) -> Dict[str, Any]:
@@ -37,6 +36,9 @@ class Method(BaseMethod, InMemoryEntityPydantic):
         search_text = data.get("searchText", "")
         other_fields = {k: v for k, v in data.items() if k != "searchText"}
         return not search_text and not other_fields
+
+    def get_hash_object(self) -> Dict[str, Any]:
+        return self.to_dict(exclude=["data"])
 
     def to_dict(self, exclude: Optional[List[str]] = None) -> Dict[str, Any]:
         exclude_set = set(exclude) if exclude else set()

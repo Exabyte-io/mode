@@ -6,10 +6,9 @@ from pydantic import Field
 
 from .method import Method
 from .methods.factory import MethodFactory
-from mat3ra.utils.object import calculate_hash_from_object
+from mat3ra.code.mixins import HashedEntityMixin
 
-
-class Model(BaseModelModel, InMemoryEntityPydantic):
+class Model(BaseModelModel, HashedEntityMixin, InMemoryEntityPydantic):
     method: Method = Field(default_factory=lambda: MethodFactory.create({}))
 
     application: Optional[Dict[str, Any]] = Field(default=None, exclude=True)
@@ -38,10 +37,7 @@ class Model(BaseModelModel, InMemoryEntityPydantic):
     def is_unknown(self) -> bool:
         return self.type == "unknown"
 
-    def calculate_hash(self) -> str:
-        cfg = self.model_dump(mode="json", by_alias=True, exclude_none=True)
-        if getattr(self.method, "omit_in_hash_calculation", False):
-            method_cfg = cfg.get("method") or {}
-            if isinstance(method_cfg, dict):
-                method_cfg.pop("data", None)
-        return calculate_hash_from_object(cfg)
+    def get_hash_object(self) -> Dict[str, Any]:
+        cfg = self.to_dict()
+        cfg.method = self.method.calculate_hash()
+        return cfg
