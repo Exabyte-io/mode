@@ -3,47 +3,47 @@ import type { ModelTree } from "./types";
 export declare const MODEL_TREE: {
     dft: {
         gga: {
-            refiners: string[];
-            modifiers: string[];
+            functionals: string[];
             methods: {
-                pseudopotential: string[];
                 localorbital: string[];
+                pseudopotential: string[];
                 unknown: string[];
             };
-            functionals: string[];
-        };
-        lda: {
-            refiners: string[];
             modifiers: string[];
-            methods: {
-                pseudopotential: string[];
-                localorbital: string[];
-                unknown: string[];
-            };
-            functionals: string[];
+            refiners: string[];
         };
         hybrid: {
+            functionals: string[];
             methods: {
-                pseudopotential: string[];
                 localorbital: string[];
+                pseudopotential: string[];
                 unknown: string[];
             };
+        };
+        lda: {
             functionals: string[];
+            methods: {
+                localorbital: string[];
+                pseudopotential: string[];
+                unknown: string[];
+            };
+            modifiers: string[];
+            refiners: string[];
         };
         other: {
+            functionals: string[];
             methods: {
-                pseudopotential: string[];
                 localorbital: string[];
+                pseudopotential: string[];
                 unknown: string[];
             };
-            functionals: string[];
         };
     };
     ml: {
         re: {
             methods: {
-                linear: string[];
                 kernel_ridge: string[];
+                linear: string[];
             };
         };
     };
@@ -56,9 +56,9 @@ export declare const MODEL_TREE: {
     };
 }, MODEL_NAMES: {
     dft: string;
-    lda: string;
     gga: string;
     hybrid: string;
+    lda: string;
     ml: string;
     re: string;
 };

@@ -5,6 +5,8 @@ import pytest
 from mat3ra.mode import ModelFactory
 from mat3ra.standata.workflows import WorkflowStandata
 
+BAND_GAP_WORKFLOW_NAME = "Band Gap"
+
 DFT_GGA_CONFIG = {"type": "dft", "subtype": "gga"}
 ML_RE_CONFIG = {"type": "ml", "subtype": "re"}
 
@@ -56,6 +58,7 @@ def test_calculate_hash_matches_fixture():
     fixture = json.loads(fixture_path.read_text())
 
     st = fixture["standata"]
-    wf_config = WorkflowStandata.get_by_name_and_categories(st["workflow"], st["application"])
+    workflows = WorkflowStandata.get_by_categories(st["application"], st["workflow"])
+    wf_config = next(w for w in workflows if w["name"] == BAND_GAP_WORKFLOW_NAME)
     model = ModelFactory.create(wf_config["subworkflows"][0]["model"])
     assert model.calculate_hash() == fixture["hash"]

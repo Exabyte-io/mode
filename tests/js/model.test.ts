@@ -5,7 +5,10 @@ import { resolve } from "path";
 
 import { Model } from "../../src/js/model";
 import { DFTModel } from "../../src/js/models/dft";
+import { ModelFactory } from "../../src/js/models/factory";
 import { ModelConfig } from "../../src/js/types";
+
+const BAND_GAP_WORKFLOW_NAME = "Band Gap";
 
 describe("Model", () => {
     // @ts-ignore
@@ -80,11 +83,13 @@ describe("Model", () => {
             readFileSync(resolve(__dirname, "../fixtures/model_hash.json"), "utf-8"),
         );
         const standata = new WorkflowStandata();
-        const [wfConfig] = standata.findEntitiesByTags(
+        const workflows = standata.findEntitiesByTags(
             fixture.standata.application,
             fixture.standata.workflow,
         );
-        const model = new Model(wfConfig.subworkflows[0].model);
+        const wfConfig = workflows.find((wf) => wf.name === BAND_GAP_WORKFLOW_NAME);
+        expect(wfConfig).to.exist;
+        const model = ModelFactory.create(wfConfig!.subworkflows[0].model);
         expect(model.calculateHash()).to.equal(fixture.hash);
     });
 });
