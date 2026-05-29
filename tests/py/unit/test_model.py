@@ -61,4 +61,5 @@ def test_calculate_hash_matches_fixture():
     st = fixture["standata"]
     wf_config = WorkflowStandata.get_by_name_and_categories(st["workflow"], st["application"])
     model = ModelFactory.create(wf_config["subworkflows"][0]["model"])
+    print(model.get_hash_object())
     assert model.calculate_hash() == fixture["hash"]
