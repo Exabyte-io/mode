@@ -6,6 +6,8 @@ DFT_GGA_CONFIG = {"type": "dft", "subtype": "gga"}
 DFT_GGA_WITH_FUNCTIONAL = {**DFT_GGA_CONFIG, "functional": "pbe"}
 PSEUDOPOTENTIAL_NC_METHOD = {"type": "pseudopotential", "subtype": "nc"}
 PSEUDOPOTENTIAL_US_METHOD = {"type": "pseudopotential", "subtype": "us"}
+FUNCTIONAL_PBE_STRING_HASH = "4c02178c2ed256d0585d363e069be436"
+FUNCTIONAL_PBE_SLUG_HASH = "cc5abffec41bfb3ceb610090e60be566"
 
 TEST_REFINERS = ["hse"]
 TEST_MODIFIERS = ["soc"]
@@ -64,6 +66,24 @@ def test_to_dict_includes_functional():
 
     json_data = dft_model.to_dict()
     assert "functional" in json_data
+
+
+@pytest.mark.parametrize(
+    "functional,expected_hash",
+    [
+        ("pbe", FUNCTIONAL_PBE_STRING_HASH),
+        ({"slug": "pbe"}, FUNCTIONAL_PBE_SLUG_HASH),
+    ],
+)
+def test_calculate_hash_preserves_functional_shape(functional, expected_hash):
+    config = {
+        **DFT_GGA_WITH_FUNCTIONAL,
+        "functional": functional,
+        "method": PSEUDOPOTENTIAL_US_METHOD,
+    }
+    dft_model = DFTModel.create(config)
+
+    assert dft_model.calculate_hash() == expected_hash
 
 
 

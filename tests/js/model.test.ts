@@ -85,7 +85,6 @@ describe("Model", () => {
             fixture.standata.workflow,
         );
         const model = new Model(wfConfig.subworkflows[0].model);
-        console.log(model.getHashObject());
         expect(model.calculateHash()).to.equal(fixture.hash);
     });
 });
