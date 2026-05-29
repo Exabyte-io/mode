@@ -1,9 +1,10 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from mat3ra.code.entity import InMemoryEntityPydantic
 from mat3ra.code.mixins import HashedEntityMixin
 from mat3ra.esse.models.method import BaseMethod, Data
 from pydantic import Field
+
 
 class MethodData(Data, InMemoryEntityPydantic):
     searchText: Optional[str] = Field(default=None, exclude_if=lambda v: v is None)

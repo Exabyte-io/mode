@@ -31,10 +31,6 @@ class Method extends entity_1.InMemoryEntity {
     setData(data = {}) {
         this.setProp("data", data);
     }
-    // get omitInHashCalculation(): boolean {
-    //     const data = this.data as MethodData;
-    //     return !data?.searchText && lodash.isEmpty(lodash.omit(data, "searchText"));
-    // }
     cleanData(fieldsToExclude = []) {
         const filteredData = { ...this.data };
         fieldsToExclude.forEach((field) => {
