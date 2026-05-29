@@ -39,5 +39,5 @@ class Model(BaseModelModel, HashedEntityMixin, InMemoryEntityPydantic):
 
     def get_hash_object(self) -> Dict[str, Any]:
         cfg = self.to_dict()
-        cfg.method = self.method.calculate_hash()
+        cfg["method"] = self.method.calculate_hash()
         return cfg

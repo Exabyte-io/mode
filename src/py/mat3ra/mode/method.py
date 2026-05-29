@@ -2,53 +2,32 @@ from typing import Any, Dict, List, Optional
 
 from mat3ra.code.entity import InMemoryEntityPydantic
 from mat3ra.code.mixins import HashedEntityMixin
-from mat3ra.esse.models.method import BaseMethod
+from mat3ra.esse.models.method import BaseMethod, Data
 from pydantic import Field
 
+class MethodData(Data, InMemoryEntityPydantic):
+    searchText: Optional[str] = Field(default=None, exclude_if=lambda v: v is None)
 
 class Method(BaseMethod, HashedEntityMixin, InMemoryEntityPydantic):
     type: str = Field(default="unknown")
     subtype: str = Field(default="unknown")
-    data: Dict[str, Any] = Field(default_factory=dict)
+    data: MethodData = Field(default_factory=MethodData)
 
     def clone_without_data(self) -> "Method":
         cloned = self.clone()
-        cloned.data = {}
+        cloned.data = MethodData()
         return cloned
 
     @classmethod
     def clean(cls, config: Dict[str, Any]) -> Dict[str, Any]:
-        data = config.get("data", {})
+        raw_data = config.get("data",{})
         cleaned = super().clean(config)
-        cleaned["data"] = data
+        cleaned["data"] = MethodData(**raw_data).model_dump()
         return cleaned
 
     @property
     def search_text(self) -> str:
-        return self.data.get("searchText", "")
-
-    @property
-    def omit_in_hash_calculation(self) -> bool:
-        data = self.data
-        if not data:
-            return True
-        # Omit if only searchText is present and empty, or no fields at all
-        search_text = data.get("searchText", "")
-        other_fields = {k: v for k, v in data.items() if k != "searchText"}
-        return not search_text and not other_fields
+        return self.data.searchText or ""
 
     def get_hash_object(self) -> Dict[str, Any]:
         return self.to_dict(exclude=["data"])
-
-    def to_dict(self, exclude: Optional[List[str]] = None) -> Dict[str, Any]:
-        exclude_set = set(exclude) if exclude else set()
-        should_exclude_data = "data" in exclude_set
-        exclude_set = {x for x in exclude_set if x != "data"}
-
-        dict_data = super().to_dict(exclude=list(exclude_set) if exclude_set else None)
-        dict_data = {k: v for k, v in dict_data.items() if v is not None}
-
-        if not should_exclude_data:
-            dict_data["data"] = self.data.copy()
-
-        return dict_data
