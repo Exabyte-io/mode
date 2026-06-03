@@ -2,10 +2,11 @@ from typing import Any, Dict, List, Optional
 
 from mat3ra.esse.models.methods_directory.legacy.pseudopotential import LegacyMethodPseudopotential
 
-from ..method import Method
+from ..method import Method, MethodData
 
 
 class PseudopotentialMethod(LegacyMethodPseudopotential, Method):
+    data: MethodData = MethodData()
     pseudopotential_cls: Optional[type] = None
 
     @property
@@ -32,8 +33,6 @@ class PseudopotentialMethod(LegacyMethodPseudopotential, Method):
         json_data = super().to_dict(exclude=exclude)
 
         if exclude is None or "data" not in exclude:
-            filtered_data = self.data.copy()
-            # filtered_data.pop("allPseudo", None)
-            json_data["data"] = filtered_data
+            json_data["data"] = self.data.to_dict(exclude={"allPseudo"})
 
         return json_data
