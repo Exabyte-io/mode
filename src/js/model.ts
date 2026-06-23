@@ -3,11 +3,9 @@ import {
     type HashedEntity,
     hashedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/HashedEntityMixin";
-import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
-import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type {
-    AnyModelSchema,
     ApplicationSchema,
+    BaseInMemoryEntitySchema,
     BaseMethod,
     BaseModel,
     SlugifiedEntry,
@@ -24,9 +22,18 @@ import type { MethodTreeBranch, ModelConfig, ModelTree } from "./types";
 
 const EMPTY_BRANCH: MethodTreeBranch = { methods: {} };
 
-type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin> & Constructor<HashedEntity>;
+export type ModelEntity = BaseInMemoryEntitySchema &
+    Pick<BaseModel, "method"> & {
+        type: string;
+        subtype: SlugifiedEntryOrSlug;
+        refiners?: SlugifiedEntry[];
+        modifiers?: SlugifiedEntry[];
+        functional?: string;
+    };
 
-export class Model extends (InMemoryEntity as Base) implements BaseModel {
+export interface Model extends ModelSchemaMixin, HashedEntity {}
+
+export class Model extends InMemoryEntity<ModelEntity> implements BaseModel {
     protected _application?: ApplicationSchema;
 
     protected _MethodFactory: typeof MethodFactory;
@@ -35,7 +42,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
 
     constructor(config: ModelConfig) {
         const { application, method = Method.defaultConfig, ...entityConfig } = config;
-        super(entityConfig);
+        super({ ...entityConfig, method } as ModelEntity);
         this._application = application;
         this._MethodFactory = MethodFactory;
         this.method = method || this.method;
@@ -137,15 +144,13 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
         return Object.keys(MODEL_TREE).map((modelSlug) => treeSlugToNamedObject(modelSlug));
     }
 
-    declare _json: AnyModelSchema & AnyObject;
-
-    toJSON(): AnyModelSchema & AnyObject {
+    toJSON(): ModelEntity {
         return {
             ...super.toJSON(),
             type: this.type,
             subtype: this.subtype,
             method: this.Method.toJSONWithCleanData(),
-        } as AnyModelSchema & AnyObject;
+        };
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -166,7 +171,7 @@ export class Model extends (InMemoryEntity as Base) implements BaseModel {
     }
 
     getHashObject(): Record<string, unknown> {
-        const json = this.toJSON() as Record<string, unknown>;
+        const json = this.toJSON() as unknown as Record<string, unknown>;
         json.method = this.Method.calculateHash();
         return json;
     }

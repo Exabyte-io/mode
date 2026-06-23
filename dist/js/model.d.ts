@@ -1,15 +1,20 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import { type HashedEntity } from "@mat3ra/code/dist/js/entity/mixins/HashedEntityMixin";
-import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
-import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
-import type { AnyModelSchema, ApplicationSchema, BaseMethod, BaseModel, SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
+import type { ApplicationSchema, BaseInMemoryEntitySchema, BaseMethod, BaseModel, SlugifiedEntry, SlugifiedEntryOrSlug } from "@mat3ra/esse/dist/js/types";
 import { type ModelSchemaMixin } from "./generated/ModelSchemaMixin";
 import { Method } from "./method";
 import { MethodFactory } from "./methods/factory";
 import type { MethodTreeBranch, ModelConfig, ModelTree } from "./types";
-type Base = typeof InMemoryEntity & Constructor<ModelSchemaMixin> & Constructor<HashedEntity>;
-declare const Model_base: Base;
-export declare class Model extends Model_base implements BaseModel {
+export type ModelEntity = BaseInMemoryEntitySchema & Pick<BaseModel, "method"> & {
+    type: string;
+    subtype: SlugifiedEntryOrSlug;
+    refiners?: SlugifiedEntry[];
+    modifiers?: SlugifiedEntry[];
+    functional?: string;
+};
+export interface Model extends ModelSchemaMixin, HashedEntity {
+}
+export declare class Model extends InMemoryEntity<ModelEntity> implements BaseModel {
     protected _application?: ApplicationSchema;
     protected _MethodFactory: typeof MethodFactory;
     protected _method?: Method;
@@ -39,11 +44,9 @@ export declare class Model extends Model_base implements BaseModel {
         subtype: "gga";
     };
     static get allTypes(): SlugifiedEntry[];
-    _json: AnyModelSchema & AnyObject;
-    toJSON(): AnyModelSchema & AnyObject;
+    toJSON(): ModelEntity;
     protected _stringToSlugifiedObject(slug: SlugifiedEntryOrSlug): SlugifiedEntry;
     get isUnknown(): boolean;
     protected get subtypeSlug(): string;
     getHashObject(): Record<string, unknown>;
 }
-export {};

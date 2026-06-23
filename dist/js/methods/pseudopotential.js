@@ -9,10 +9,12 @@ const underscore_1 = __importDefault(require("underscore"));
 const method_1 = require("../method");
 class PseudopotentialMethod extends method_1.Method {
     get pseudo() {
-        return this.prop("data.pseudo", []);
+        var _a;
+        return (_a = this.methodData.pseudo) !== null && _a !== void 0 ? _a : [];
     }
     get allPseudo() {
-        return this.prop("data.allPseudo", []);
+        var _a;
+        return (_a = this.methodData.allPseudo) !== null && _a !== void 0 ? _a : [];
     }
     get pseudopotentials() {
         return this.pseudo.map((config) => new prode_1.PseudopotentialMetaProperty(config));
@@ -37,13 +39,13 @@ class PseudopotentialMethod extends method_1.Method {
     }
     setPseudopotentials(pseudopotentials) {
         this.setData({
-            ...this.data,
+            ...this.methodData,
             pseudo: underscore_1.default.sortBy(pseudopotentials, "element").map((item) => item.toJSON()),
         });
     }
     setAllPseudopotentials(pseudopotentials) {
         this.setData({
-            ...this.data,
+            ...this.methodData,
             allPseudo: underscore_1.default.sortBy(pseudopotentials, "element").map((item) => item.toJSON()),
         });
     }

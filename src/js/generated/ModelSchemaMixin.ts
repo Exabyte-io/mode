@@ -9,21 +9,21 @@ export function modelSchemaMixin<T extends InMemoryEntity>(
     item: InMemoryEntity,
 ): asserts item is T & ModelSchemaMixin {
     // @ts-expect-error
-    const properties: InMemoryEntity & ModelSchemaMixin = {
+    const properties: InMemoryEntity<ModelSchemaMixin> & ModelSchemaMixin = {
         get type() {
-            return this.requiredProp<BaseModel["type"]>("type");
+            return this.requiredProp("type");
         },
         set type(value: BaseModel["type"]) {
             this.setProp("type", value);
         },
         get subtype() {
-            return this.requiredProp<BaseModel["subtype"]>("subtype");
+            return this.requiredProp("subtype");
         },
         set subtype(value: BaseModel["subtype"]) {
             this.setProp("subtype", value);
         },
         get method() {
-            return this.requiredProp<BaseModel["method"]>("method");
+            return this.requiredProp("method");
         },
         set method(value: BaseModel["method"]) {
             this.setProp("method", value);
