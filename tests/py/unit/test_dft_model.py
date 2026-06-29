@@ -1,9 +1,11 @@
 import pytest
 from mat3ra.mode import DFTModel, Method
+from mat3ra.mode.model import Model
 
 
 DFT_GGA_CONFIG = {"type": "dft", "subtype": "gga"}
 DFT_GGA_WITH_FUNCTIONAL = {**DFT_GGA_CONFIG, "functional": "pbe"}
+DFT_LDA_WITH_FUNCTIONAL = {"type": "dft", "subtype": "lda", "functional": "pz"}
 PSEUDOPOTENTIAL_NC_METHOD = {"type": "pseudopotential", "subtype": "nc"}
 PSEUDOPOTENTIAL_US_METHOD = {"type": "pseudopotential", "subtype": "us"}
 FUNCTIONAL_PBE_STRING_HASH = "4c02178c2ed256d0585d363e069be436"
@@ -66,6 +68,38 @@ def test_to_dict_includes_functional():
 
     json_data = dft_model.to_dict()
     assert "functional" in json_data
+
+
+class TestModelCreateDelegation:
+    """Test that Model.create() routes DFT configs to DFTModel via ModelFactory."""
+
+    def test_model_create_returns_dft_model_for_dft_config(self):
+        model = Model.create({**DFT_GGA_WITH_FUNCTIONAL, "method": PSEUDOPOTENTIAL_US_METHOD})
+        assert isinstance(model, DFTModel)
+
+    def test_model_create_preserves_gga_functional(self):
+        config = {**DFT_GGA_WITH_FUNCTIONAL, "method": PSEUDOPOTENTIAL_US_METHOD}
+        model = Model.create(config)
+        model_dict = model.to_dict()
+        assert "functional" in model_dict
+        functional = model_dict["functional"]
+        slug = functional.get("slug") if isinstance(functional, dict) else functional
+        assert slug == "pbe"
+
+    def test_model_create_preserves_lda_functional(self):
+        config = {**DFT_LDA_WITH_FUNCTIONAL, "method": PSEUDOPOTENTIAL_US_METHOD}
+        model = Model.create(config)
+        model_dict = model.to_dict()
+        assert "functional" in model_dict
+        functional = model_dict["functional"]
+        slug = functional.get("slug") if isinstance(functional, dict) else functional
+        assert slug == "pz"
+
+    def test_dft_model_create_still_works_directly(self):
+        config = {**DFT_LDA_WITH_FUNCTIONAL, "method": PSEUDOPOTENTIAL_US_METHOD}
+        model = DFTModel.create(config)
+        model_dict = model.to_dict()
+        assert "functional" in model_dict
 
 
 @pytest.mark.parametrize(

@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Type, TypeVar
 
 from mat3ra.code.entity import InMemoryEntityPydantic
 from mat3ra.code.mixins import HashedEntityMixin
@@ -8,9 +8,24 @@ from pydantic import Field
 from .method import Method
 from .methods.factory import MethodFactory
 
+T = TypeVar("T", bound="Model")
+
 
 class Model(BaseModelModel, HashedEntityMixin, InMemoryEntityPydantic):
     method: Method = Field(default_factory=lambda: MethodFactory.create({}))
+
+    @classmethod
+    def create(cls: Type[T], config: Dict[str, Any]) -> T:
+        # When called on the base Model class, delegate to ModelFactory
+        # for types that have specialized subclasses (e.g. DFTModel for "dft"),
+        # so all fields (like functional) are preserved.
+        if cls is Model:
+            model_type = config.get("type", "")
+            if model_type == "dft":
+                from .models.factory import ModelFactory
+
+                return ModelFactory.create(config)
+        return super().create(config)
 
     application: Optional[Dict[str, Any]] = Field(default=None, exclude=True)
 
