@@ -1,9 +1,9 @@
 import type { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
-import type { BaseMethod } from "@mat3ra/esse/dist/js/types";
+import type { BaseInMemoryEntitySchema, BaseMethod } from "@mat3ra/esse/dist/js/types";
 
 export type MethodSchemaMixin = BaseMethod;
 
-export type MethodInMemoryEntity = InMemoryEntity & MethodSchemaMixin;
+export type MethodInMemoryEntity = InMemoryEntity<BaseInMemoryEntitySchema & MethodSchemaMixin>;
 
 export function methodSchemaMixin<T extends InMemoryEntity>(
     item: InMemoryEntity,

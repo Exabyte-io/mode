@@ -54,9 +54,9 @@
     },
     "devDependencies": {
         "@exabyte-io/eslint-config": "2025.5.13-0",
-        "@mat3ra/code": "https://github.com/Exabyte-io/code/archive/e5f03b02102f51a5792e0b8c4fedac3860aaf7ed.tar.gz",
-        "@mat3ra/esse": "https://github.com/mat3ra/esse/tarball/c9cb5f08236cb513f19f34a03670f80eaf9e466a",
-        "@mat3ra/prode": "https://github.com/Exabyte-io/prode/archive/a1092d2e8bff235c141a81a2429ace113fd8aac5.tar.gz",
+        "@mat3ra/code": "https://github.com/Exabyte-io/code/archive/3676047aad7d15bbbaebbfaafec35b8664a2308b.tar.gz",
+        "@mat3ra/esse": "https://github.com/mat3ra/esse/archive/de8538cf2bd31bdcc240c209f78ab42811add289.tar.gz",
+        "@mat3ra/prode": "https://github.com/Exabyte-io/prode/archive/b1fd149e2adad480255326b104733462c334fd38.tar.gz",
         "@mat3ra/standata": "2026.5.28-0",
         "@mat3ra/tsconfig": "2024.6.3-0",
         "@types/chai": "^4.3.11",
