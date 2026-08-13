@@ -11,15 +11,14 @@ class DFTModel extends model_1.Model {
         this.defaultRefiners = [];
         this.defaultModifiers = [];
         this._MethodFactory = config.MethodFactory || factory_1.MethodFactory;
-        this.functional =
-            this.prop("functional") || this.defaultFunctional.slug;
+        this.functional = this.prop("functional") || this.defaultFunctional.slug;
     }
     get groupSlug() {
-        var _a;
-        const refinersSlug = this.refiners.map((o) => o.slug).join("+");
-        const modifiersSlug = this.modifiers.map((o) => o.slug).join("+");
+        var _a, _b, _c;
+        const refinersSlug = ((_a = this.refiners) !== null && _a !== void 0 ? _a : []).map((o) => o.slug).join("+");
+        const modifiersSlug = ((_b = this.modifiers) !== null && _b !== void 0 ? _b : []).map((o) => o.slug).join("+");
         const slugs = [
-            (_a = this._application) === null || _a === void 0 ? void 0 : _a.shortName,
+            (_c = this._application) === null || _c === void 0 ? void 0 : _c.shortName,
             this.type,
             this.subtype,
             this.functional,
@@ -33,7 +32,8 @@ class DFTModel extends model_1.Model {
         return (0, tree_1.treeSlugToNamedObject)(slug);
     }
     get slugifiedFunctional() {
-        return this._stringToSlugifiedObject(this.functional);
+        var _a;
+        return this._stringToSlugifiedObject((_a = this.functional) !== null && _a !== void 0 ? _a : this.defaultFunctional.slug);
     }
     get functional() {
         return this.requiredProp("functional");

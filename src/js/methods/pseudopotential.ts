@@ -1,4 +1,3 @@
-import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import { type BaseMethod, type FileDataItem } from "@mat3ra/esse/dist/js/types";
 import { PseudopotentialFilter, PseudopotentialMetaProperty } from "@mat3ra/prode";
 import _ from "underscore";
@@ -11,14 +10,12 @@ export type ExchangeCorrelation = {
 };
 
 export class PseudopotentialMethod extends Method {
-    declare toJSON: () => BaseMethod & AnyObject;
-
-    get pseudo() {
-        return this.prop<FileDataItem[]>("data.pseudo", []);
+    get pseudo(): FileDataItem[] {
+        return this.methodData.pseudo ?? [];
     }
 
-    get allPseudo() {
-        return this.prop<FileDataItem[]>("data.allPseudo", []);
+    get allPseudo(): FileDataItem[] {
+        return this.methodData.allPseudo ?? [];
     }
 
     get pseudopotentials() {
@@ -50,14 +47,14 @@ export class PseudopotentialMethod extends Method {
 
     setPseudopotentials(pseudopotentials: PseudopotentialMetaProperty[]) {
         this.setData({
-            ...this.data,
+            ...this.methodData,
             pseudo: _.sortBy(pseudopotentials, "element").map((item) => item.toJSON()),
         });
     }
 
     setAllPseudopotentials(pseudopotentials: PseudopotentialMetaProperty[]) {
         this.setData({
-            ...this.data,
+            ...this.methodData,
             allPseudo: _.sortBy(pseudopotentials, "element").map((item) => item.toJSON()),
         });
     }

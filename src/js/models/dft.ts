@@ -15,8 +15,7 @@ export class DFTModel extends Model {
     constructor(config: ModelConfig & { MethodFactory?: typeof MethodFactory }) {
         super(config);
         this._MethodFactory = config.MethodFactory || MethodFactory;
-        this.functional =
-            this.prop<DFTModelSchema["functional"]>("functional") || this.defaultFunctional.slug;
+        this.functional = this.prop("functional") || this.defaultFunctional.slug;
     }
 
     declare type: DFTModelSchema["type"];
@@ -24,8 +23,8 @@ export class DFTModel extends Model {
     declare subtype: DFTModelSchema["subtype"];
 
     get groupSlug(): string {
-        const refinersSlug = this.refiners.map((o) => o.slug).join("+");
-        const modifiersSlug = this.modifiers.map((o) => o.slug).join("+");
+        const refinersSlug = (this.refiners ?? []).map((o) => o.slug).join("+");
+        const modifiersSlug = (this.modifiers ?? []).map((o) => o.slug).join("+");
         const slugs = [
             this._application?.shortName,
             this.type,
@@ -47,11 +46,11 @@ export class DFTModel extends Model {
     readonly defaultModifiers: SlugifiedEntry[] = [];
 
     get slugifiedFunctional() {
-        return this._stringToSlugifiedObject(this.functional);
+        return this._stringToSlugifiedObject(this.functional ?? this.defaultFunctional.slug);
     }
 
     get functional() {
-        return this.requiredProp<DFTModelSchema["functional"]>("functional");
+        return this.requiredProp("functional");
     }
 
     set functional(functional) {
@@ -59,11 +58,11 @@ export class DFTModel extends Model {
     }
 
     get refiners() {
-        return this.prop<SlugifiedEntry[]>("refiners", this.defaultRefiners);
+        return this.prop("refiners", this.defaultRefiners);
     }
 
     get modifiers() {
-        return this.prop<SlugifiedEntry[]>("modifiers", this.defaultModifiers);
+        return this.prop("modifiers", this.defaultModifiers);
     }
 
     setSubtype(subtype: SlugifiedEntryOrSlug): void {
@@ -92,8 +91,6 @@ export class DFTModel extends Model {
     setModifiers(modifiers: SlugifiedEntryOrSlug | SlugifiedEntryOrSlug[]): void {
         this._setArrayProp("modifiers", modifiers);
     }
-
-    declare _json: DFTModelSchema & AnyObject;
 
     toJSON(): DFTModelSchema & AnyObject {
         const baseJson = super.toJSON();

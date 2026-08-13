@@ -4,26 +4,31 @@ import {
     hashedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/HashedEntityMixin";
 import { deepClone } from "@mat3ra/code/dist/js/utils";
-import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
-import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
-import type { BaseMethod, SlugifiedEntry } from "@mat3ra/esse/dist/js/types";
+import type {
+    BaseInMemoryEntitySchema,
+    BaseMethod,
+    FileDataItem,
+    SlugifiedEntry,
+} from "@mat3ra/esse/dist/js/types";
 
 import { PseudopotentialMethodConfig } from "./default_methods";
 import { type MethodSchemaMixin, methodSchemaMixin } from "./generated/MethodSchemaMixin";
 
-type Base = typeof InMemoryEntity & Constructor<MethodSchemaMixin> & Constructor<HashedEntity>;
+type MethodEntity = BaseMethod & BaseInMemoryEntitySchema;
+
+export interface Method extends MethodSchemaMixin, HashedEntity {}
 
 interface MethodData extends Record<string, unknown> {
     searchText?: string;
+    pseudo?: FileDataItem[];
+    allPseudo?: FileDataItem[];
 }
 
-export class Method extends (InMemoryEntity as Base) implements BaseMethod {
+export class Method extends InMemoryEntity<MethodEntity> implements BaseMethod, HashedEntity {
     constructor(config: BaseMethod) {
         const data = config.data || {};
         super({ ...config, data });
     }
-
-    declare toJSON: () => BaseMethod & AnyObject;
 
     cloneWithoutData(): Method {
         const clone = this.clone() as Method;
@@ -39,20 +44,24 @@ export class Method extends (InMemoryEntity as Base) implements BaseMethod {
         return PseudopotentialMethodConfig;
     }
 
+    get methodData(): MethodData {
+        return (this.data as MethodData | undefined) ?? {};
+    }
+
     get searchText(): string {
-        return this.prop<string>("data.searchText", "");
+        return this.methodData.searchText ?? "";
     }
 
     setSearchText(searchText: string): void {
-        this.setData({ ...this.data, searchText });
+        this.setData({ ...this.methodData, searchText });
     }
 
     setData(data: MethodData = {}): void {
-        this.setProp("data", data);
+        this.data = data;
     }
 
     cleanData(fieldsToExclude: string[] = []): MethodData {
-        const filteredData = { ...(this.data as MethodData) };
+        const filteredData = { ...this.methodData };
         fieldsToExclude.forEach((field) => {
             delete filteredData[field];
         });

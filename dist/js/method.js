@@ -22,17 +22,22 @@ class Method extends entity_1.InMemoryEntity {
     static get defaultConfig() {
         return default_methods_1.PseudopotentialMethodConfig;
     }
+    get methodData() {
+        var _a;
+        return (_a = this.data) !== null && _a !== void 0 ? _a : {};
+    }
     get searchText() {
-        return this.prop("data.searchText", "");
+        var _a;
+        return (_a = this.methodData.searchText) !== null && _a !== void 0 ? _a : "";
     }
     setSearchText(searchText) {
-        this.setData({ ...this.data, searchText });
+        this.setData({ ...this.methodData, searchText });
     }
     setData(data = {}) {
-        this.setProp("data", data);
+        this.data = data;
     }
     cleanData(fieldsToExclude = []) {
-        const filteredData = { ...this.data };
+        const filteredData = { ...this.methodData };
         fieldsToExclude.forEach((field) => {
             delete filteredData[field];
         });

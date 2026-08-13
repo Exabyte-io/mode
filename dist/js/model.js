@@ -16,7 +16,7 @@ const EMPTY_BRANCH = { methods: {} };
 class Model extends entity_1.InMemoryEntity {
     constructor(config) {
         const { application, method = method_1.Method.defaultConfig, ...entityConfig } = config;
-        super(entityConfig);
+        super({ ...entityConfig, method });
         this._application = application;
         this._MethodFactory = factory_1.MethodFactory;
         this.method = method || this.method;
